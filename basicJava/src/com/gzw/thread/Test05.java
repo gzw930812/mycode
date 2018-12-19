@@ -1,5 +1,6 @@
 package com.gzw.thread;
 
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -12,10 +13,11 @@ import java.util.concurrent.TimeUnit;
 public class Test05 {
 	
 	public static void main(String[] args) {
-		Executor exec1 = Executors.newCachedThreadPool();
-		Executor exec2 = Executors.newFixedThreadPool(5);
-		Executor exec3 = Executors.newScheduledThreadPool(3);
-		Executor exec4 = Executors.newSingleThreadExecutor();
+		//ArrayBlockingQueue<E>
+		Executor exec1 = Executors.newCachedThreadPool(); //使用队列：SynchronousQueue
+		Executor exec2 = Executors.newFixedThreadPool(5); //LinkedBlockingQueue
+		Executor exec3 = Executors.newScheduledThreadPool(3);//DelayedWorkQueue
+		Executor exec4 = Executors.newSingleThreadExecutor();//LinkedBlockingQueue
 		
 		/**
 		 * 线程池工作原理

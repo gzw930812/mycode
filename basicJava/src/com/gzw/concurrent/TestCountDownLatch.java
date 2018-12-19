@@ -1,7 +1,10 @@
 package com.gzw.concurrent;
 
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
+
+import javax.management.monitor.Monitor;
 
 /**
  * CountDownLatch  倒计时器
@@ -32,7 +35,6 @@ public class TestCountDownLatch {
 		
 		latch.await();
 		System.out.println("七龙珠找齐了，召唤神龙。。。");
-		
 	}
 
 }

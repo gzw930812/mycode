@@ -1,7 +1,5 @@
 package com.gzw.proxy;
 
-import net.sf.cglib.proxy.Enhancer;
-
 import com.gzw.proxy.interface_.Manager;
 import com.gzw.proxy.jdk_cglib.CglibProxy;
 import com.gzw.proxy.jdk_cglib.JdkProxy;
@@ -19,10 +17,8 @@ public class TestProxy {
 		obj.eatSome();
 		obj.saySome();
 		
-		Enhancer enhancer = new Enhancer();
-		enhancer.setSuperclass(ManagerImpl.class);
-		enhancer.setCallback(new CglibProxy());
-		Manager obj2 = (Manager) enhancer.create();
+		CglibProxy proxy2 = new CglibProxy();
+		Manager obj2 = (Manager) proxy2.newProxyInstance(new ManagerImpl());
 		obj2.eatSome();
 		obj2.saySome();
 	}

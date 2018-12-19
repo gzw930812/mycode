@@ -2,11 +2,22 @@ package com.gzw.proxy.jdk_cglib;
 
 import java.lang.reflect.Method;
 
+import com.gzw.proxy.interface_.Manager;
+import com.gzw.proxy.target.ManagerImpl;
+
+import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
 public class CglibProxy implements MethodInterceptor{
 	
+	public Object newProxyInstance(Object target){
+		Enhancer enhancer = new Enhancer();
+		enhancer.setSuperclass(ManagerImpl.class);
+		enhancer.setCallback(new CglibProxy());
+		Manager obj2 = (Manager) enhancer.create();
+		return obj2;
+	}
 
 	@Override
 	public Object intercept(Object proxy, Method method, Object[] args,
