@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: hystrix-turbine
+    
+server:
+  port: 9004
+  
+trubine:
+  app-config: node01,node02
+  aggregator:
+    clusterConfig: default
+  clusterNameExpression: new String("default")
+  combine-host-port: true
+  instanceUrlSuffix: /hystrix.stream
+    
+eureka:
+  client:
+    serviceUrl:
+      defaultZone:  http://localhost:8000/eureka/  

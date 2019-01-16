@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/gzw930812/mycode/         
+          search-paths: config      
+          username: gzw930812                        
+          password: qwer12345       
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: springcloud
+    password: 123456                                           
+
+server:
+  port: 8005
+  
+eureka:
+  client:
+    serviceUrl:
+      defaultZone:  http://localhost:8000/eureka/ 
+      
+management:
+  security:
+     enabled: false      
+          
+    
