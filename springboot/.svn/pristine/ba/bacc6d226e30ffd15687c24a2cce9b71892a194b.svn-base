@@ -1,0 +1,34 @@
+package com.cptech.oa.dao;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+
+import com.cptech.oa.domain.NotifyDO;
+import com.cptech.oa.domain.NotifyDTO;
+import com.github.pagehelper.Page;
+
+@Mapper
+public interface NotifyDao {
+
+	NotifyDO get(NotifyDO notify);
+
+	List<NotifyDO> findAll(NotifyDO notify);
+	Page<NotifyDO> findByPage(NotifyDO notify);
+
+	int count(NotifyDO notify);
+
+	int save(NotifyDO notify);
+
+	int update(NotifyDO notify);
+
+	int remove(String id);
+
+	int batchRemove(String[] ids);
+
+	List<NotifyDO> listByIds(String[] ids);
+
+	int countDTO(NotifyDO notify);
+
+	Page<NotifyDTO> listDTOByPage(NotifyDO notify);
+}

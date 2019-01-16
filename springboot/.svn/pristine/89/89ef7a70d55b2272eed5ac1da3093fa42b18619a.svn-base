@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cptech.common.dao.TaskDao">
+
+	<sql id="taskColumns">
+		id,cron_expression,method_name,is_concurrent,description,bean_class,job_status,job_group,spring_bean,job_name,
+		create_by,create_date,update_by,update_date,remarks,del_flag
+	</sql>
+	<select id="get" resultType="com.cptech.common.domain.TaskDO">
+		select 
+			<include refid="taskColumns"/>  
+		from sys_task where id = #{id}
+	</select>
+
+	<select id="findAll" resultType="com.cptech.common.domain.TaskDO">
+		select 
+			<include refid="taskColumns"/>  
+		from sys_task
+        <where>  
+  		  <if test="id != null and id != ''"> and id = #{id} </if>
+  		  <if test="cronExpression != null and cronExpression != ''"> and cron_expression = #{cronExpression} </if>
+  		  <if test="methodName != null and methodName != ''"> and method_name = #{methodName} </if>
+  		  <if test="isConcurrent != null and isConcurrent != ''"> and is_concurrent = #{isConcurrent} </if>
+  		  <if test="description != null and description != ''"> and description = #{description} </if>
+  		  <if test="beanClass != null and beanClass != ''"> and bean_class = #{beanClass} </if>
+  		  <if test="jobStatus != null and jobStatus != ''"> and job_status = #{jobStatus} </if>
+  		  <if test="jobGroup != null and jobGroup != ''"> and job_group = #{jobGroup} </if>
+  		  <if test="springBean != null and springBean != ''"> and spring_bean = #{springBean} </if>
+  		  <if test="jobName != null and jobName != ''"> and job_name = #{jobName} </if>
+  		</where>
+  		order by update_date desc
+	</select>
+	
+	<select id="findByPage" resultType="com.cptech.common.domain.TaskDO">
+		select 
+			<include refid="taskColumns"/>  
+		from sys_task
+        <where>  
+  		  <if test="id != null and id != ''"> and id = #{id} </if>
+  		  <if test="cronExpression != null and cronExpression != ''"> and cron_expression = #{cronExpression} </if>
+  		  <if test="methodName != null and methodName != ''"> and method_name = #{methodName} </if>
+  		  <if test="isConcurrent != null and isConcurrent != ''"> and is_concurrent = #{isConcurrent} </if>
+  		  <if test="description != null and description != ''"> and description = #{description} </if>
+  		  <if test="beanClass != null and beanClass != ''"> and bean_class = #{beanClass} </if>
+  		  <if test="jobStatus != null and jobStatus != ''"> and job_status = #{jobStatus} </if>
+  		  <if test="jobGroup != null and jobGroup != ''"> and job_group = #{jobGroup} </if>
+  		  <if test="springBean != null and springBean != ''"> and spring_bean = #{springBean} </if>
+  		  <if test="jobName != null and jobName != ''"> and job_name = #{jobName} </if>
+  		</where>
+  		order by update_date desc
+	</select>
+	
+	<insert id="save" parameterType="com.cptech.common.domain.TaskDO" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_task
+		(
+			id,
+			<if test="cronExpression != null and cronExpression != ''">
+				cron_expression, 
+			</if>
+			<if test="methodName != null and methodName != ''">
+				method_name, 
+			</if>
+			<if test="isConcurrent != null and isConcurrent != ''">
+				is_concurrent, 
+			</if>
+			<if test="description != null and description != ''">
+				description, 
+			</if>
+			<if test="beanClass != null and beanClass != ''">
+				bean_class, 
+			</if>
+			<if test="jobStatus != null and jobStatus != ''">
+				job_status, 
+			</if>
+			<if test="jobGroup != null and jobGroup != ''">
+				job_group, 
+			</if>
+			<if test="springBean != null and springBean != ''">
+				spring_bean, 
+			</if>
+			<if test="jobName != null and jobName != ''">
+				job_name,
+			</if>
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		)
+		values
+		(
+			#{id},
+			<if test="cronExpression != null and cronExpression != ''">
+				#{cronExpression}, 
+			</if>
+			<if test="methodName != null and methodName != ''">
+				#{methodName}, 
+			</if>
+			<if test="isConcurrent != null and isConcurrent != ''">
+				#{isConcurrent}, 
+			</if>
+			<if test="description != null and description != ''">
+				#{description}, 
+			</if>
+			<if test="beanClass != null and beanClass != ''">
+				#{beanClass}, 
+			</if>
+			<if test="jobStatus != null and jobStatus != ''">
+				#{jobStatus}, 
+			</if>
+			<if test="jobGroup != null and jobGroup != ''">
+				#{jobGroup}, 
+			</if>
+			<if test="springBean != null and springBean != ''">
+				#{springBean}, 
+			</if>
+			<if test="jobName != null and jobName != ''">
+				#{jobName},
+			</if>
+			#{createBy},
+			#{createDate},
+			#{updateBy},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.cptech.common.domain.TaskDO">
+		update sys_task 
+		<set>
+			<if test="cronExpression != null">cron_expression = #{cronExpression}, </if>
+			<if test="methodName != null">method_name = #{methodName}, </if>
+			<if test="isConcurrent != null">is_concurrent = #{isConcurrent}, </if>
+			<if test="description != null">description = #{description}, </if>
+			<if test="beanClass != null">bean_class = #{beanClass}, </if>
+			<if test="jobStatus != null">job_status = #{jobStatus}, </if>
+			<if test="jobGroup != null">job_group = #{jobGroup}, </if>
+			<if test="springBean != null">spring_bean = #{springBean}, </if>
+			<if test="jobName != null">job_name = #{jobName},</if>
+			<if test="createBy != null">create_by = #{createBy}, </if>
+			<if test="createDate != null">create_date = #{createDate}, </if>
+			<if test="updateBy != null">update_by = #{updateBy}, </if>
+			<if test="updateDate != null">update_date = #{updateDate}, </if>
+			<if test="remarks != null">remarks = #{remarks}, </if>
+			<if test="delFlag != null">del_flag = #{delFlag} </if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from sys_task where id = #{id}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from sys_task where id in 
+		<foreach item="ids" collection="array" open="(" separator="," close=")">
+			#{ids}
+		</foreach>
+	</delete>
+
+</mapper>

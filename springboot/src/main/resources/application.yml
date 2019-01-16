@@ -1,0 +1,54 @@
+server:
+  session-timeout: 1800
+#    tomcat:
+#        max-threads: 1000
+#        min-spare-threads: 30
+  port: 9099
+#    uri-encoding: utf-8
+  context-path: /springbootDemo
+security:
+  basic:
+    enabled: false
+spring:
+  thymeleaf:
+    mode: LEGACYHTML5
+    cache: false
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  profiles: 
+    active: dev
+  http:
+    multipart:
+      max-file-size: 30Mb
+      max-request-size: 30Mb
+  devtools:
+    restart:
+      enabled: true
+  cache:
+    type: ehcache
+    ehcache:
+      config: config/ehcache.xml
+#mybatis配置
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: mybatis/**/*Mapper.xml
+  typeAliasesPackage: com.cptech.**.domain
+#pagehelper分页插件配置
+pagehelper: 
+  #数据库方言：mysql、oracle 可选
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count
+
+memcache:
+  servers: 127.0.0.1:11211
+  weights: 5
+  initConn: 20
+  minConn: 5
+  maxConn: 50
+  maintSleep: 3000
+  nagle: false
+  socketTO: 3000  

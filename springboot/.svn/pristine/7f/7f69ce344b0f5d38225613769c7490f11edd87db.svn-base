@@ -1,0 +1,63 @@
+package com.cptech.settings.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+import com.cptech.common.utils.R;
+import com.cptech.settings.dao.RechargeTimeIntervalDao;
+import com.cptech.settings.domain.RechargeTimeIntervalDO;
+import com.cptech.settings.service.RechargeTimeIntervalService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
+
+
+@Service
+@Transactional(readOnly=true)
+public class RechargeTimeIntervalServiceImpl implements RechargeTimeIntervalService {
+	@Autowired
+	private RechargeTimeIntervalDao rechargeTimeIntervalDao;
+	
+	@Override
+	public RechargeTimeIntervalDO get(String id){
+		return rechargeTimeIntervalDao.get(id);
+	}
+	
+	@Override
+	public List<RechargeTimeIntervalDO> findAll(RechargeTimeIntervalDO rechargeTimeInterval){
+		return rechargeTimeIntervalDao.findAll(rechargeTimeInterval);
+	}
+	@Override
+	public Page<RechargeTimeIntervalDO> findByPage(RechargeTimeIntervalDO rechargeTimeInterval){
+		PageHelper.startPage(rechargeTimeInterval.getOffset(), rechargeTimeInterval.getLimit());
+		return rechargeTimeIntervalDao.findByPage(rechargeTimeInterval);
+	}
+	
+	@Override
+	@Transactional(readOnly=false)
+	public int set(RechargeTimeIntervalDO rechargeTimeInterval){
+		RechargeTimeIntervalDO searchNewest = new RechargeTimeIntervalDO();
+		searchNewest.setStatus("1");
+		searchNewest.setBottleTypeId(rechargeTimeInterval.getBottleTypeId());
+		List<RechargeTimeIntervalDO> settings = findAll(searchNewest);
+		if(settings.size() > 0) {
+			for (RechargeTimeIntervalDO rechargeTimeIntervalDO : settings) {
+				rechargeTimeIntervalDO.setStatus("2");
+				rechargeTimeIntervalDO.preUpdate();
+				if(rechargeTimeIntervalDao.update(rechargeTimeIntervalDO)<0) {
+					throw new RuntimeException();
+				}
+			}
+		}
+		rechargeTimeInterval.setStatus("1");
+		rechargeTimeInterval.setEarlyWarningTime(0);
+		rechargeTimeInterval.preInsert();
+		
+		return rechargeTimeIntervalDao.save(rechargeTimeInterval);
+	}
+
+	
+}

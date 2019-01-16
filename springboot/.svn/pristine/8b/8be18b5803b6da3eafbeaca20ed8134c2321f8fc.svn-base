@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+							<input type="hidden" name="type" value="2"><!-- 检验站标识 -->
+							<div class="form-group">
+								<label class="col-sm-3 control-label">检验站名称：</label>
+								<div class="col-sm-8">
+									<input id="name" name="name" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">社会统一信用代码：</label>
+								<div class="col-sm-8">
+									<input id="creditCode" name="creditCode" class="form-control"
+										type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">站点地址：</label>
+								<div class="col-sm-8">
+									<input id="address" name="address" class="form-control"
+										type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">所属机构：</label>
+								<div class="col-sm-8">
+									<input id="deptId" name="deptId" class="hidden"> <input
+									id="deptName" name="deptName" class="form-control" type="text"
+									style="cursor: pointer;" onclick="openDept()"
+									readonly="readonly" placeholder="所属机构">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">负责人：</label>
+								<div class="col-sm-8">
+									<input id="chargePerson" name="chargePerson"
+										class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">联系电话：</label>
+								<div class="col-sm-8">
+									<input id="cellPhone" name="cellPhone" class="form-control"
+										type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">核准证号：</label>
+								<div class="col-sm-8">
+									<input id="licenceCode" name="licenceCode" class="form-control"
+										type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">核准证有效期：</label>
+								<div class="col-sm-8">
+									<input type="text" class="laydate-icon layer-date form-control" id="licenceExpireDate" name="licenceExpireDate" 
+                                          onclick="laydate({istime: false, format: 'YYYY-MM-DD'})" style="background-color: #fff;" readonly="readonly"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">站点状态：</label>
+								<div class="col-sm-8">
+									<select id="status" name="status" class="form-control chosen-select" style="width: 100%">
+										<option value="1" selected="selected">营业中</option>
+										<option value="2">停业中</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">检验站核准证照片：</label>
+								<div class="col-sm-8">
+									<input id="picUrls" name="picUrls" class="form-control" type="hidden">
+									<img th:src="${defaultImg}" id="preview" alt="检验站核准证照片" width="200px;" height="200px;">
+									<button type="button" class="layui-btn" id="btn_upload_pic">
+			                            <i class="fa fa-cloud"></i>选择文件
+			                        </button>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script th:inline="javascript">
+		var fileServerAddress=[[${fileServerAddress}]];
+	</script>
+	<script type="text/javascript" th:src="@{/js/appjs/stationinfo/stations/checkStationAdd.js}">
+	</script>
+</body>
+</html>

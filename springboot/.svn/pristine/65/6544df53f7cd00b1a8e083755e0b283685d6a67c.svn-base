@@ -1,0 +1,34 @@
+package com.cptech.basicInfo.domain;
+
+import java.io.Serializable;
+import java.util.Date;
+import com.cptech.common.domain.BaseDo;
+
+
+
+/**
+ * 钢瓶规格表
+ * 
+ * @author pjy
+ * @email 1595418464@qq.com
+ * @date 2018-06-19 09:26:30
+ */
+public class BottleStandardDO extends BaseDo implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
+			//规格名称
+	private String name;
+							
+			/**
+	 * 设置：规格名称
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+	/**
+	 * 获取：规格名称
+	 */
+	public String getName() {
+		return name;
+	}
+							}

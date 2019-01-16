@@ -1,0 +1,138 @@
+package com.cptech.bottle.controller;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.cptech.common.annotation.Log;
+import com.cptech.common.config.Constant;
+import com.cptech.common.utils.PageUtils;
+import com.cptech.common.utils.R;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
+import com.cptech.basicInfo.domain.AreaDO;
+import com.cptech.bottle.domain.SteelBottlesDO;
+import com.cptech.bottle.domain.SteelBottlesStatus;
+import com.cptech.bottle.service.SteelBottlesService;
+
+/**
+ * 钢瓶表
+ * 
+ * @author pjy
+ * @email 1595418464@qq.com
+ * @date 2018-06-20 09:39:47
+ */
+ 
+@Controller
+@RequestMapping("/bottle/steelBottles")
+public class SteelBottlesController {
+	private String prefix = "bottle/steelBottles/";
+	@Autowired
+	private SteelBottlesService steelBottlesService;
+	
+	@GetMapping()
+	@RequiresPermissions("bottle:steelBottles:steelBottles")
+	String SteelBottles(){
+	    return prefix + "steelBottles";
+	}
+	
+	@GetMapping("/notpass")
+	@RequiresPermissions("bottle:steelBottles:steelBottlesNotPass")
+	String SteelBottlesNotPass(){
+	    return prefix + "steelBottlesNotPass";
+	}
+	
+	@GetMapping("/using")
+	@RequiresPermissions("bottle:steelBottles:steelBottlesUsing")
+	String SteelBottlesUsing(){
+	    return prefix + "steelBottlesUsing";
+	}
+	
+	@GetMapping("/unnormal")
+	@RequiresPermissions("bottle:steelBottles:steelBottlesUnnormal")
+	String SteelBottlesUnnormal(){
+	    return prefix + "steelBottlesUnnormal";
+	}
+	
+	@GetMapping("/scrap")
+	@RequiresPermissions("bottle:steelBottles:steelBottlesScrap")
+	String SteelBottlesScrap(){
+	    return prefix + "steelBottlesScrap";
+	}
+	
+	@Log("钢瓶表-查询列表")
+	@ResponseBody
+	@GetMapping("/list")
+	@RequiresPermissions("bottle:steelBottles:steelBottles")
+	public PageUtils list(SteelBottlesDO steelBottles){
+		//查询列表数据
+		Page<SteelBottlesDO> findByPage = steelBottlesService.findByPage(steelBottles);
+		PageInfo<SteelBottlesDO> pageInfo = new PageInfo<>(findByPage);
+		PageUtils pageUtil = new PageUtils(pageInfo.getList(), (int)pageInfo.getTotal());
+		return pageUtil;
+	}
+	
+	@GetMapping("/audit/{id}")
+	@RequiresPermissions("basicInfo:area:edit")
+	String edit(@PathVariable("id") String id,Model model){
+		SteelBottlesDO steelBottlesDO = steelBottlesService.get(id);
+		model.addAttribute("steelBottles", steelBottlesDO);
+	    return prefix + "audit";
+	}
+	
+	@GetMapping("/scrap/{id}")
+	@RequiresPermissions("basicInfo:area:edit")
+	String scrap(@PathVariable("id") String id,Model model){
+		SteelBottlesDO steelBottlesDO = steelBottlesService.get(id);
+		model.addAttribute("steelBottles", steelBottlesDO);
+	    return prefix + "scrap";
+	}
+	
+	@GetMapping("/details/{id}")
+	@RequiresPermissions("basicInfo:area:edit")
+	String details(@PathVariable("id") String id,Model model){
+		SteelBottlesDO steelBottlesDO = steelBottlesService.get(id);
+		model.addAttribute("steelBottles", steelBottlesDO);
+	    return prefix + "details";
+	}
+	
+	/**
+	 * 
+	 * @param id 气瓶id
+	 * @param status 审核状态
+	 * @param notPassReason 不通过原因
+	 * @return
+	 */
+	@Log("钢瓶表-审核")
+	@ResponseBody
+	@PostMapping("/audit")
+	@RequiresPermissions("bottle:steelBottles:audit")
+	public R audit(@RequestParam("id") String id,
+				   @RequestParam("status") String status,
+				   @RequestParam(value="reason",required=false) String notPassReason){
+		SteelBottlesDO steelBottlesDO = steelBottlesService.get(id);
+		if(steelBottlesDO == null) {
+			return R.error(1,"不存在此气瓶");
+		}
+		if(SteelBottlesStatus.Audit.NOTPASS.equals(status) && StringUtils.isBlank(notPassReason)) {
+			return R.error(1, "未通过气瓶必须注明未通过原因");
+		}
+		SteelBottlesDO updateBottle = new SteelBottlesDO();
+		updateBottle.setId(id);
+		updateBottle.setAuditStatus(status);
+		updateBottle.setNotPassReason(notPassReason);
+		updateBottle.setStatus(SteelBottlesStatus.Life.NORMAL);
+		steelBottlesService.update(updateBottle);
+		return R.ok();
+	}
+	
+}

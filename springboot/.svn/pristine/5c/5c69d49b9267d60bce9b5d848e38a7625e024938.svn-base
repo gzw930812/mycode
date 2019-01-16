@@ -1,0 +1,29 @@
+package com.cptech.basicInfo.service;
+
+import com.cptech.basicInfo.domain.LicenseCodeDO;
+
+import java.util.List;
+import com.github.pagehelper.Page;
+
+/**
+ * 项目代码表
+ * 
+ * @author pjy
+ * @email 1595418464@qq.com
+ * @date 2018-06-19 09:27:50
+ */
+public interface LicenseCodeService {
+	
+	LicenseCodeDO get(String id);
+	
+	List<LicenseCodeDO> findAll(LicenseCodeDO licenseCode);
+	Page<LicenseCodeDO> findByPage(LicenseCodeDO licenseCode);
+	
+	int save(LicenseCodeDO licenseCode);
+	
+	int update(LicenseCodeDO licenseCode);
+	
+	int remove(String id);
+	
+	int batchRemove(String[] ids);
+}

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cptech.common.dao.FileDao">
+	<sql id="fileColumns">
+		id,type,url,create_by,create_date,update_by,update_date,remarks,del_flag
+	</sql>
+	<select id="get" resultType="com.cptech.common.domain.FileDO">
+		select <include refid="fileColumns"/> from sys_file where id = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<select id="findAll" resultType="com.cptech.common.domain.FileDO">
+		select <include refid="fileColumns"/> from sys_file
+        <where> 
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="type != null and type != ''"> and type = #{type} </if>
+		  		  <if test="url != null and url != ''"> and url = #{url} </if>
+		  		</where>
+	</select>
+	<select id="findByPage" resultType="com.cptech.common.domain.FileDO">
+		select <include refid="fileColumns"/> from sys_file
+        <where>   
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="type != null and type != ''"> and type = #{type} </if>
+		  		  <if test="url != null and url != ''"> and url = #{url} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+        </choose>
+	</select>
+	
+	<insert id="save" parameterType="com.cptech.common.domain.FileDO" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_file
+		(
+			id,
+			type, 
+			url, 
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		)
+		values
+		(
+			#{id},
+			#{type}, 
+			#{url},
+			#{createBy},
+			#{createDate},
+			#{updateBy},
+			#{updateDate},
+			#{remarks},
+			#{delFlag} 
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.cptech.common.domain.FileDO">
+		update sys_file 
+		<set>
+			<if test="type != null">type = #{type}, </if>
+			<if test="url != null">url = #{url}, </if>
+			<if test="createBy != null">create_by = #{createBy}, </if>
+			<if test="createDate != null">create_date = #{createDate}, </if>
+			<if test="updateBy != null">update_by = #{updateBy}, </if>
+			<if test="updateDate != null">update_date = #{updateDate}, </if>
+			<if test="remarks != null">remarks = #{remarks}, </if>
+			<if test="delFlag != null">del_flag = #{delFlag} </if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from sys_file where id = #{id}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from sys_file where id in 
+		<foreach item="ids" collection="array" open="(" separator="," close=")">
+			#{ids}
+		</foreach>
+	</delete>
+
+</mapper>

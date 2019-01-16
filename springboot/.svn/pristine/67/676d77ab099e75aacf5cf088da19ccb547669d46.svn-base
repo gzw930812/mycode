@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cptech.system.dao.UserDao">
+	<sql id="userColumns">
+		id,username,name,password,dept_id,email,mobile,status,sex,birth,pic_id,live_address,hobby,province,city,district,
+		create_by,create_date,update_by,update_date,remarks,del_flag
+	</sql>
+
+	<select id="get" resultType="com.cptech.system.domain.UserDO">
+		select 
+			<include refid="userColumns"/> 
+		from sys_user where id = #{id}
+	</select>
+
+	<select id="findAll" resultType="com.cptech.system.domain.UserDO">
+		select 
+			<include refid="userColumns"/> 
+		from sys_user
+        <where>  del_flag='0'
+  		  <if test="id != null and id != ''"> and id = #{id} </if>
+  		  <if test="username != null and username != ''"> 
+  		  	<if test="databaseType == 'oracle'.toString()">
+		  		and username like '%${username}%'
+			</if>
+			<if test="databaseType == 'mysql'.toString()">
+				and username like concat('%',#{username},'%')
+			</if>
+  		  </if>
+  		  <if test="name != null and name != ''">
+  		  		<if test="databaseType == 'oracle'.toString()">
+			  		and name like '%${name}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and name like concat('%',#{name},'%')
+				</if>
+  		  </if>
+  		  <if test="password != null and password != ''"> and password = #{password} </if>
+  		  <if test="deptId != null and deptId != ''"> and dept_id = #{deptId} </if>
+  		  <if test="email != null and email != ''"> and email = #{email} </if>
+  		  <if test="mobile != null and mobile != ''"> and mobile = #{mobile} </if>
+  		  <if test="status != null and status != ''"> and status = #{status} </if>
+  		  <if test="sex != null and sex != ''"> and sex = #{sex} </if>
+  		  <if test="birth != null and birth != ''"> and birth = #{birth} </if>
+  		  <if test="picId != null and picId != ''"> and pic_id = #{picId} </if>
+  		  <if test="liveAddress != null and liveAddress != ''"> and live_address = #{liveAddress} </if>
+  		  <if test="hobby != null and hobby != ''"> and hobby = #{hobby} </if>
+  		  <if test="province != null and province != ''"> and province = #{province} </if>
+  		  <if test="city != null and city != ''"> and city = #{city} </if>
+  		  <if test="district != null and district != ''"> and district = #{district} </if>
+  		</where>
+	</select>
+	<select id="findByPage" resultType="com.cptech.system.domain.UserDO">
+		select 
+			<include refid="userColumns"/>  
+		from sys_user
+        <where>   del_flag='0'
+  		  <if test="id != null and id != ''"> and id = #{id} </if>
+  		  <if test="username != null and username != ''"> 
+  		  	<if test="databaseType == 'oracle'.toString()">
+		  		and username like '%${username}%'
+			</if>
+			<if test="databaseType == 'mysql'.toString()">
+				and username like concat('%',#{username},'%')
+			</if>
+  		  </if>
+  		  <if test="name != null and name != ''">
+  		  		<if test="databaseType == 'oracle'.toString()">
+			  		and name like '%${name}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and name like concat('%',#{name},'%')
+				</if>
+  		  </if>
+  		  <if test="password != null and password != ''"> and password = #{password} </if>
+  		  <if test="deptId != null and deptId != ''"> 
+  		  	and FIND_IN_SET(dept_id, fun_get_sys_dept_children(#{deptId})) 
+  		  </if>
+  		  <if test="email != null and email != ''"> and email = #{email} </if>
+  		  <if test="mobile != null and mobile != ''"> and mobile = #{mobile} </if>
+  		  <if test="status != null and status != ''"> and status = #{status} </if>
+  		  <if test="sex != null and sex != ''"> and sex = #{sex} </if>
+  		  <if test="birth != null and birth != ''"> and birth = #{birth} </if>
+  		  <if test="picId != null and picId != ''"> and pic_id = #{picId} </if>
+  		  <if test="liveAddress != null and liveAddress != ''"> and live_address = #{liveAddress} </if>
+  		  <if test="hobby != null and hobby != ''"> and hobby = #{hobby} </if>
+  		  <if test="province != null and province != ''"> and province = #{province} </if>
+  		  <if test="city != null and city != ''"> and city = #{city} </if>
+  		  <if test="district != null and district != ''"> and district = #{district} </if>
+  		</where>
+        order by update_date
+	</select>
+	
+	<insert id="save" parameterType="com.cptech.system.domain.UserDO" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_user
+		(
+			<if test="username !=null and username !='' ">
+				username, 
+			</if>
+			<if test="name !=null and name !='' ">
+				name, 
+			</if>
+			<if test="password !=null and password !='' ">
+				password, 
+			</if>
+			<if test="deptId !=null and deptId !='' ">
+				dept_id, 
+			</if>
+			<if test="email !=null and email !='' ">
+				email, 
+			</if>
+			<if test="mobile !=null and mobile !='' ">
+				mobile, 
+			</if>
+			<if test="status !=null and status !='' ">
+				status, 
+			</if>
+			<if test="sex !=null and sex !='' ">
+				sex, 
+			</if>
+			<if test="birth !=null and birth !='' ">
+				birth, 
+			</if>
+			<if test="picId !=null and picId !='' ">
+				pic_id, 
+			</if>
+			<if test="liveAddress !=null and liveAddress !='' ">
+				live_address, 
+			</if>
+			<if test="hobby !=null and hobby !='' ">
+				hobby, 
+			</if>
+			<if test="province !=null and province !='' ">
+				province, 
+			</if>
+			<if test="city !=null and city !='' ">
+				city, 
+			</if>
+			<if test="district !=null and district !='' ">
+				district, 
+			</if>
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		)
+		values
+		(
+			<if test="username !=null and username !='' ">
+				#{username}, 
+			</if>
+			<if test="name !=null and name !='' ">
+				#{name}, 
+			</if>
+			<if test="password !=null and password !='' ">
+				#{password}, 
+			</if>
+			<if test="deptId !=null and deptId !='' ">
+				#{deptId}, 
+			</if>
+			<if test="email !=null and email !='' ">
+				#{email}, 
+			</if>
+			<if test="mobile !=null and mobile !='' ">
+				#{mobile}, 
+			</if>
+			<if test="status !=null and status !='' ">
+				#{status}, 
+			</if>
+			<if test="sex !=null and sex !='' ">
+				#{sex}, 
+			</if>
+			<if test="birth !=null and birth !='' ">
+				#{birth}, 
+			</if>
+			<if test="picId !=null and picId !='' ">
+				#{picId}, 
+			</if>
+			<if test="liveAddress !=null and liveAddress !='' ">
+				#{liveAddress}, 
+			</if>
+			<if test="hobby !=null and hobby !='' ">
+				#{hobby}, 
+			</if>
+			<if test="province !=null and province !='' ">
+				#{province}, 
+			</if>
+			<if test="city !=null and city !='' ">
+				#{city}, 
+			</if>
+			<if test="district !=null and district !='' ">
+				#{district}, 
+			</if>
+			#{id},
+			#{createBy},
+			#{createDate},
+			#{updateBy},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.cptech.system.domain.UserDO">
+		update sys_user 
+		<set>
+			<if test="username != null">username = #{username}, </if>
+			<if test="name != null">name = #{name}, </if>
+			<if test="password != null">password = #{password}, </if>
+			<if test="deptId != null">dept_id = #{deptId}, </if>
+			<if test="email != null">email = #{email}, </if>
+			<if test="mobile != null">mobile = #{mobile}, </if>
+			<if test="status != null">status = #{status}, </if>
+			<if test="sex != null">sex = #{sex}, </if>
+			<if test="birth != null">birth = #{birth}, </if>
+			<if test="picId != null">pic_id = #{picId}, </if>
+			<if test="liveAddress != null">live_address = #{liveAddress}, </if>
+			<if test="hobby != null">hobby = #{hobby}, </if>
+			<if test="province != null">province = #{province}, </if>
+			<if test="city != null">city = #{city}, </if>
+			<if test="district != null">district = #{district},</if>
+			<if test="createBy != null">create_by = #{createBy}, </if>
+			<if test="createDate != null">create_date = #{createDate}, </if>
+			<if test="updateBy != null">update_by = #{updateBy}, </if>
+			<if test="updateDate != null">update_date = #{updateDate}, </if>
+			<if test="remarks != null">remarks = #{remarks}, </if>
+			<if test="delFlag != null">del_flag = #{delFlag} </if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		update sys_user set del_flag='1' where id = #{id}
+	</delete>
+	
+	<delete id="batchRemove">
+		update sys_user set del_flag='1' where id in 
+		<foreach item="ids" collection="array" open="(" separator="," close=")">
+			#{ids}
+		</foreach>
+	</delete>
+
+	<select id="listAllDept" resultType="string">
+		select DISTINCT dept_id from sys_user where del_flag='0'
+	</select>
+</mapper>

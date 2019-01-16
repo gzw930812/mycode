@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="col-sm-12">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="fixed-table-toolbar">
+						<div class="columns pull-right">
+							<button class="btn btn-success" onclick="reLoad()">查询</button>
+						</div>
+						<div class="columns pull-right col-md-2">
+							<input id="searchBottleNo" name="bottleNo" type="text" class="form-control" placeholder="气瓶编号">
+						</div>
+						<div class="columns pull-right col-md-2">
+							<input id="searchQrcodeNo" name="qrcodeNo" type="text" class="form-control" placeholder="关联二维码">
+						</div>
+						<div class="columns pull-right col-md-2">
+							<select class="form-control chosen-select" id="searchBottleTypeName" name="bottleTypeName">
+								<option value="">==气瓶规格==</option>
+								<option th:each="type : ${types}" th:value="${type.value}" th:text="${type.name}"></option>
+							</select>
+						</div>
+						<div class="columns pull-right col-md-2">
+							<select class="form-control chosen-select" id="searchDeptId" name="deptId">
+								<option value="">==产权单位==</option>
+								<option th:each="station : ${stations}" th:value="${station.id}" th:text="${station.name}"></option>
+							</select>
+						</div>
+					</div>
+					<table id="exampleTable" data-mobile-responsive="true">
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript"
+		th:src="@{/js/appjs/checkInfo/checkRecord/checkRecord.js}"></script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+package com.cptech.basicInfo.service;
+
+import com.cptech.basicInfo.domain.BottleMaterialDO;
+
+import java.util.List;
+import com.github.pagehelper.Page;
+
+/**
+ * 钢瓶材质表
+ * 
+ * @author pjy
+ * @email 1595418464@qq.com
+ * @date 2018-06-20 15:24:26
+ */
+public interface BottleMaterialService {
+	
+	BottleMaterialDO get(String id);
+	
+	List<BottleMaterialDO> findAll(BottleMaterialDO bottleMaterial);
+	Page<BottleMaterialDO> findByPage(BottleMaterialDO bottleMaterial);
+	
+	int save(BottleMaterialDO bottleMaterial);
+	
+	int update(BottleMaterialDO bottleMaterial);
+	
+	int remove(String id);
+	
+	int batchRemove(String[] ids);
+}

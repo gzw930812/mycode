@@ -1,0 +1,70 @@
+$().ready(function() {
+	validateRule();
+});
+
+$.validator.setDefaults({
+	submitHandler : function() {
+		save();
+	}
+});
+function save() {
+	$.ajaxFileUpload({
+		url : ctx+"/appInfor/appVersion/save",
+		data : $('#signupForm').serializeJson(),// 你的formid
+		fileElementId:"uploadAPK",
+		type:"post",
+		dataType:"text",
+		async : false,
+		error : function(request) {
+			parent.layer.alert("Connection error");
+		},
+		success : function(text) {
+			//console.log(text)
+			var data = $(text).text();
+			//console.log(data)
+			var json = $.parseJSON(data)
+			//console.log(json)
+			if (json.code == 0) {
+				parent.layer.msg("操作成功");
+				parent.reLoad();
+				var index = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+				parent.layer.close(index);
+
+			} else {
+				parent.layer.alert(json.msg)
+			}
+
+		}
+	});
+
+}
+function validateRule() {
+	var icon = "<i class='fa fa-times-circle'></i> ";
+	$("#signupForm").validate({
+		rules : {
+			version : {
+				required : true,
+				isVersion : true
+			},
+			appType : {
+				required : true
+			},
+			file : {
+				required : true,
+				extension : 'apk'
+			}
+		},
+		messages : {
+			version : {
+				required : "版本号不能为空"
+			},
+			appType : {
+				required : "请选择一个应用类型"
+			},
+			file : {
+				required : "请上传apk包",
+				extension:'上传包的类型必须为apk包'
+			}
+		}
+	})
+}

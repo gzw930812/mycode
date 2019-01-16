@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head>
+	<div th:replace="include :: header"></div>
+	<style type="text/css">
+		legend {
+			margin-bottom : 0px;
+		}
+	</style>
+</head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="col-sm-12">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="fixed-table-toolbar">
+						<fieldset  class="columns pull-left btn-group">
+							<legend>下次检验日期</legend>
+							<input type="text" class="laydate-icon layer-date" id="searchNextCheckStartDate" name="nextCheckStartDate" 
+                                         onclick="laydate()" style="background-color: #fff;"
+                                         placeholder="下次检验起始时间" readonly="readonly"/>
+                            <span>-</span>
+							<input type="text" class="laydate-icon layer-date" id="searchNextCheckEndDate" name="nextCheckEndDate" 
+                                         onclick="laydate()" style="background-color: #fff;" 
+                                         placeholder="下次检验结束时间" readonly="readonly"/>
+						</fieldset>
+						<div class="columns pull-right">
+							<button class="btn btn-success" onclick="reLoad()">查询</button>
+						</div>
+						<div class="columns pull-right col-md-2">
+							<input id="searchBottleNo" name="bottleNo" type="text" class="form-control" placeholder="气瓶编号">
+						</div>
+						<div class="columns pull-right col-md-2">
+							<input id="searchQrcodeNo" name="qrcodeNo" type="text" class="form-control" placeholder="关联二维码">
+						</div>
+						<div class="columns pull-right col-md-2">
+							<select class="form-control chosen-select" id="searchDeptId" name="deptId">
+								<option value="">==产权单位==</option>
+								<option th:each="station : ${stations}" th:value="${station.id}" th:text="${station.name}"></option>
+							</select>
+						</div>
+					</div>
+					<table id="exampleTable" data-mobile-responsive="true">
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript"
+		th:src="@{/js/appjs/bottle/steelBottles/steelBottles.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/js/appjs/bottle/steelBottles/bottleInfoInclude.js}"></script>
+</body>
+</html>

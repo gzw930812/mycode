@@ -1,0 +1,31 @@
+package com.cptech.basicInfo.dao;
+
+import com.cptech.basicInfo.domain.BottleStandardDO;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+import com.github.pagehelper.Page;
+
+/**
+ * 钢瓶规格表
+ * @author pjy
+ * @email 1595418464@qq.com
+ * @date 2018-06-19 09:26:30
+ */
+@Mapper
+public interface BottleStandardDao {
+
+	BottleStandardDO get(String id);
+	
+	List<BottleStandardDO> findAll(BottleStandardDO bottleStandard);
+	Page<BottleStandardDO> findByPage(BottleStandardDO bottleStandard);
+	
+	int save(BottleStandardDO bottleStandard);
+	
+	int update(BottleStandardDO bottleStandard);
+	
+	int remove(String id);
+	
+	int batchRemove(String[] ids);
+}

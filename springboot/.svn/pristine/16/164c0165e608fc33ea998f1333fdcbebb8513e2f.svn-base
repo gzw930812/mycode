@@ -1,0 +1,15 @@
+package com.cptech.bottle.domain;
+
+public final class SteelBottlesStatus {
+	public static interface Audit{
+		public static final String WAITING = "0"; // 待审核
+		public static final String PASS = "1"; // 审核通过
+		public static final String NOTPASS = "2"; // 审核未通过
+	}
+	
+	public static interface Life{
+		public static final String NORMAL = "1"; // 正常
+		public static final String SCRAP = "2"; // 报废
+		public static final String UNNORMAL = "3"; // 异常
+	}
+}

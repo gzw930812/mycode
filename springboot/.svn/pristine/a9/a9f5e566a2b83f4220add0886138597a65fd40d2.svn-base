@@ -1,0 +1,137 @@
+package com.cptech.basicInfo.controller;
+
+import javax.security.auth.Subject;
+
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.cptech.common.annotation.Log;
+import com.cptech.common.utils.PageUtils;
+import com.cptech.common.utils.R;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
+import com.cptech.basicInfo.domain.SimpleFieldDO;
+import com.cptech.basicInfo.service.SimpleFieldService;
+
+/**
+ * 报废方式、不通过原因、二维码补发原因表
+ * 
+ * @author pjy
+ * @email 1595418464@qq.com
+ * @date 2018-06-19 09:27:12
+ */
+ 
+@Controller
+@RequestMapping("/basicInfo/simpleField")
+public class SimpleFieldController {
+	@Autowired
+	private SimpleFieldService simpleFieldService;
+	
+	@ModelAttribute
+	public void preFunc(@RequestParam(value="type", required=false) String type, Model model) {
+		model.addAttribute("type", type);
+	}
+	@GetMapping()
+	@RequiresPermissions("basicInfo:simpleField:simpleField")
+	String SimpleField(Model model){
+	    return "basicInfo/simpleField/simpleField";
+	}
+	
+	@Log("报废方式、不通过原因、二维码补发原因表-查询列表")
+	@ResponseBody
+	@GetMapping("/list")
+	@RequiresPermissions("basicInfo:simpleField:simpleField")
+	public PageUtils list(SimpleFieldDO simpleField){
+		//查询列表数据
+		Page<SimpleFieldDO> findByPage = simpleFieldService.findByPage(simpleField);
+		PageInfo<SimpleFieldDO> pageInfo = new PageInfo<>(findByPage);
+		PageUtils pageUtil = new PageUtils(pageInfo.getList(), (int)pageInfo.getTotal());
+		return pageUtil;
+	}
+	
+	@GetMapping("/add")
+	@RequiresPermissions("basicInfo:simpleField:add")
+	String add(){
+	    return "basicInfo/simpleField/add";
+	}
+
+	@GetMapping("/edit/{id}")
+	@RequiresPermissions("basicInfo:simpleField:edit")
+	String edit(@PathVariable("id") String id,Model model){
+		SimpleFieldDO simpleField = simpleFieldService.get(id);
+		model.addAttribute("simpleField", simpleField);
+	    return "basicInfo/simpleField/edit";
+	}
+	
+	/**
+	 * 保存
+	 */
+	@Log("报废方式、不通过原因、二维码补发原因表-保存")
+	@ResponseBody
+	@PostMapping("/save")
+	@RequiresPermissions("basicInfo:simpleField:add")
+	public R save( SimpleFieldDO simpleField){
+		if(simpleFieldService.save(simpleField)>0){
+			return R.ok();
+		}
+		return R.error();
+	}
+	/**
+	 * 修改
+	 */
+	@Log("报废方式、不通过原因、二维码补发原因表-修改")
+	@ResponseBody
+	@RequestMapping("/update")
+	@RequiresPermissions("basicInfo:simpleField:edit")
+	public R update( SimpleFieldDO simpleField){
+		simpleFieldService.update(simpleField);
+		return R.ok();
+	}
+	
+	/**
+	 * 删除
+	 */
+	@Log("报废方式、不通过原因、二维码补发原因表-删除")
+	@PostMapping( "/remove")
+	@ResponseBody
+	@RequiresPermissions("basicInfo:simpleField:remove")
+	public R remove( String id){
+		if(simpleFieldService.remove(id)>0){
+		return R.ok();
+		}
+		return R.error();
+	}
+	
+	/**
+	 * 删除
+	 */
+	@Log("报废方式、不通过原因、二维码补发原因表-批量删除")
+	@PostMapping( "/batchRemove")
+	@ResponseBody
+	@RequiresPermissions("basicInfo:simpleField:batchRemove")
+	public R remove(@RequestParam("ids[]") String[] ids){
+		simpleFieldService.batchRemove(ids);
+		return R.ok();
+	}
+	
+	@PostMapping( "/check")
+	@ResponseBody
+	@RequiresPermissions("basicInfo:simpleField:simpleField")
+	public R check(@RequestParam("type") String type,
+					@RequestParam("name") String name){
+		if(simpleFieldService.isExist(type, name) > 0) return R.error(1, "存在此结果");
+		return R.ok();
+	}
+	
+}

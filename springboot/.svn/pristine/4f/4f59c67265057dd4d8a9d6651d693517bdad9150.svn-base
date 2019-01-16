@@ -1,0 +1,18 @@
+$().ready(function() {
+	$(".bottle-img").click(function(e) {
+		showOriginal(e);
+	})
+});
+function showOriginal(e) {
+	var tar = e.target;
+	var img = $(tar).parent().clone();
+	img.find('img').removeClass('bottle-img').css('cursor','');
+	layer.open({
+		type : 1,
+		title : '原图',
+		maxmin : true,
+		shadeClose : false, // 点击遮罩关闭层
+		//area : [ auto, auto ],
+		content : '<div class="text-center">'+$(img).html()+'</div>'
+	});
+}

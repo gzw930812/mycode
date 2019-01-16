@@ -1,0 +1,90 @@
+package com.cptech.appInfor.domain;
+
+import java.io.Serializable;
+import java.util.Date;
+import com.cptech.common.domain.BaseDo;
+
+
+
+/**
+ * app版本管理表
+ * 
+ * @author fb
+ * @email 1595418464@qq.com
+ * @date 2018-06-19 09:41:15
+ */
+public class AppVersionDO extends BaseDo implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
+			//版本号
+	private String version;
+			//描述
+	private String des;
+			//是否强制更新
+	private String isForceUpdate;
+			//应用类型（1：钢瓶注册；2：钢瓶充装；3：钢瓶检验）
+	private String appType;
+			//更新地址
+	private String updateUrl;
+							
+			/**
+	 * 设置：版本号
+	 */
+	public void setVersion(String version) {
+		this.version = version;
+	}
+	/**
+	 * 获取：版本号
+	 */
+	public String getVersion() {
+		return version;
+	}
+			/**
+	 * 设置：描述
+	 */
+	public void setDes(String des) {
+		this.des = des;
+	}
+	/**
+	 * 获取：描述
+	 */
+	public String getDes() {
+		return des;
+	}
+			/**
+	 * 设置：是否强制更新
+	 */
+	public void setIsForceUpdate(String isForceUpdate) {
+		this.isForceUpdate = isForceUpdate;
+	}
+	/**
+	 * 获取：是否强制更新
+	 */
+	public String getIsForceUpdate() {
+		return isForceUpdate;
+	}
+			/**
+	 * 设置：应用类型（1：钢瓶注册；2：钢瓶充装；3：钢瓶检验）
+	 */
+	public void setAppType(String appType) {
+		this.appType = appType;
+	}
+	/**
+	 * 获取：应用类型（1：钢瓶注册；2：钢瓶充装；3：钢瓶检验）
+	 */
+	public String getAppType() {
+		return appType;
+	}
+			/**
+	 * 设置：更新地址
+	 */
+	public void setUpdateUrl(String updateUrl) {
+		this.updateUrl = updateUrl;
+	}
+	/**
+	 * 获取：更新地址
+	 */
+	public String getUpdateUrl() {
+		return updateUrl;
+	}
+							}

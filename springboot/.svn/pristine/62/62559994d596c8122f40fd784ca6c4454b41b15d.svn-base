@@ -1,0 +1,83 @@
+<div th:fragment="steelBottlesBottleInfo">
+	<input id="id" name="id" th:value="${steelBottles.id}" type="hidden">
+	<table data-mobile-responsive="true"
+		class="table table-hover table-striped table-bordered">
+		<tbody>
+			<tr>
+				<td align="center"><label>产权单位</label></td>
+				<td align="center"><label id="deptName"
+					th:text="${steelBottles.deptName}" class=""></label></td>
+				<td align="center"><label>充装钢印码号</label></td>
+				<td align="center"><label id="steelSealCode"
+					th:text="${steelBottles.steelSealCode}" class=""></label></td>
+			</tr>
+			<tr>
+				<td align="center"><label>气瓶编号</label></td>
+				<td align="center"><label id="bottleNo"
+					th:text="${steelBottles.bottleNo}" class=""></label></td>
+				<td align="center"><label>生产厂家</label></td>
+				<td align="center"><label id="produceFactoryName"
+					th:text="${steelBottles.produceFactoryName}" class=""></label></td>
+			</tr>
+			<tr>
+				<td align="center"><label>气瓶规格</label></td>
+				<td align="center"><label id="bottleTypeName"
+					th:text="${steelBottles.bottleTypeName}" class=""></label></td>
+				<td align="center"><label>气瓶型号</label></td>
+				<td align="center"><label id="bottleStandardName"
+					th:text="${steelBottles.bottleStandardName}" class=""></label></td>
+			</tr>
+			<tr>
+				<td align="center"><label>气瓶制造许可证编号</label></td>
+				<td align="center"><label id="produceFactoryLicense"
+					th:text="${steelBottles.produceFactoryLicense}" class=""></label></td>
+				<td align="center"><label>气瓶使用年限</label></td>
+				<td align="center"><label id="useAge"
+					th:text="${steelBottles.useAge}" class=""></label></td>
+			</tr>
+			<tr>
+				<td align="center"><label>联系人</label></td>
+				<td align="center"><label id="workerName"
+					th:text="${steelBottles.workerName}" class=""></label></td>
+				<td align="center"><label>联系电话</label></td>
+				<td align="center"><label id="workerPhone"
+					th:text="${steelBottles.workerPhone}" class=""></label></td>
+			</tr>
+			<tr>
+				<td align="center"><label>制造日期</label></td>
+				<td align="center"><label id="produceDate"
+					th:text="${#strings.isEmpty(steelBottles.produceDate)?'':#dates.format(steelBottles.produceDate,'yyyy-MM-dd')}" class=""></label></td>
+				<td align="center"><label>检验日期</label></td>
+				<td align="center"><label id="checkDate"
+					th:text="${#strings.isEmpty(steelBottles.checkDate)?'':#dates.format(steelBottles.checkDate,'yyyy-MM-dd')}" class=""></label></td>
+			</tr>
+			<tr>
+				<td align="center"><label>下次检验日期</label></td>
+				<td align="center"><label id="nextCheckDate"
+					th:text="${#strings.isEmpty(steelBottles.nextCheckDate)?'':#dates.format(steelBottles.nextCheckDate,'yyyy-MM-dd')}" class=""></label></td>
+				<td align="center"><label>二维码标签号</label></td>
+				<td align="center"><label id="qrcodeNo"
+					th:text="${steelBottles.qrcodeNo}" class=""></label></td>
+			</tr>
+			<tr>
+				<td align="center"><label>检验单位</label></td>
+				<td align="center"><label id="checkDeptName"
+					th:text="${steelBottles.checkDeptName}" class=""></td>
+				<td align="center"><label>气瓶状态</label></td>
+				<td align="center"><label id="newAddOrNot"
+					th:text="${steelBottles.newAddOrNot == '2'?'二维码补办':'新增'}" class=""></td>
+			</tr>
+		</tbody>
+	</table>
+	<div id="imgs" class="layui-row layui-col-space15" th:if="${imgs} != null and ${imgs.size()} > 0">
+		<div class="layui-col-sm2" th:each="img : ${imgs}">
+			<div class="layui-card">
+				<div class="layui-card-header" th:text="${img.key}">卡片面板</div>
+				<div class="layui-card-body">
+					<img alt="" class="img-thumbnail bottle-img" style="cursor:pointer;" th:src="${'http://localhost/host-manager'+img.value}">
+				</div>
+			</div>
+		</div>
+	  </div>
+	</div>
+</div>

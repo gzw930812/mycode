@@ -1,0 +1,132 @@
+package com.cptech.qrc.domain;
+
+import java.io.Serializable;
+import com.cptech.common.domain.BaseDo;
+
+/**
+ * 二维码号段设置表
+ * 
+ * @author fb
+ * @email 1595418464@qq.com
+ * @date 2018-06-20 16:35:19
+ */
+public class QrcodeSectionNumberDO extends BaseDo implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	// 充装站id
+	private String stationId;
+	// 号段前缀
+	private String prefix;
+	// 最小号段
+	private Integer minNo;
+	// 最大号段
+	private Integer maxNo;
+	// 已使用数量
+	private Integer usedNum;
+	// 预警数量
+	private Integer warningNum;
+	//充装站名称
+	private String stationName;
+	//机构id
+	private String deptId;
+	
+	public String getDeptId() {
+		return deptId;
+	}
+
+	public void setDeptId(String deptId) {
+		this.deptId = deptId;
+	}
+
+	public String getStationName() {
+		return stationName;
+	}
+
+	public void setStationName(String stationName) {
+		this.stationName = stationName;
+	}
+
+	/**
+	 * 设置：充装站id
+	 */
+	public void setStationId(String stationId) {
+		this.stationId = stationId;
+	}
+
+	/**
+	 * 获取：充装站id
+	 */
+	public String getStationId() {
+		return stationId;
+	}
+
+	/**
+	 * 设置：号段前缀
+	 */
+	public void setPrefix(String prefix) {
+		this.prefix = prefix;
+	}
+
+	/**
+	 * 获取：号段前缀
+	 */
+	public String getPrefix() {
+		return prefix;
+	}
+
+	/**
+	 * 设置：最小号段
+	 */
+	public void setMinNo(Integer minNo) {
+		this.minNo = minNo;
+	}
+
+	/**
+	 * 获取：最小号段
+	 */
+	public Integer getMinNo() {
+		return minNo;
+	}
+
+	/**
+	 * 设置：最大号段
+	 */
+	public void setMaxNo(Integer maxNo) {
+		this.maxNo = maxNo;
+	}
+
+	/**
+	 * 获取：最大号段
+	 */
+	public Integer getMaxNo() {
+		return maxNo;
+	}
+
+	/**
+	 * 设置：已使用数量
+	 */
+	public void setUsedNum(Integer usedNum) {
+		this.usedNum = usedNum;
+	}
+
+	/**
+	 * 获取：已使用数量
+	 */
+	public Integer getUsedNum() {
+		return usedNum;
+	}
+
+	/**
+	 * 设置：预警数量
+	 */
+	public void setWarningNum(Integer warningNum) {
+		this.warningNum = warningNum;
+	}
+
+	/**
+	 * 获取：预警数量
+	 */
+	public Integer getWarningNum() {
+		return warningNum;
+	}
+}

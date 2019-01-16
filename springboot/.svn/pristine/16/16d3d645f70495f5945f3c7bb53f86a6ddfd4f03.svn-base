@@ -1,0 +1,151 @@
+$().ready(function() {
+	validateRule();
+});
+
+$.validator.setDefaults({
+	submitHandler : function() {
+		save();
+	}
+});
+function save() {
+	$.ajax({
+		cache : true,
+		type : "POST",
+		url : ctx+"/stationinfo/stations/save",
+		data : $('#signupForm').serialize(),// 你的formid
+		async : false,
+		error : function(request) {
+			parent.layer.alert("Connection error");
+		},
+		success : function(data) {
+			if (data.code == 0) {
+				parent.layer.msg("操作成功");
+				parent.reLoad();
+				var index = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+				parent.layer.close(index);
+
+			} else {
+				parent.layer.alert(data.msg)
+			}
+
+		}
+	});
+
+}
+function validateRule() {
+	var icon = "<i class='fa fa-times-circle'></i> ";
+	$("#signupForm").validate({
+		rules : {
+			name : {
+				required : true,
+				maxlength: 20,
+				remote : {
+					url : ctx+"/stationinfo/stations/exit", // 后台处理程序
+					type : "post", // 数据发送方式
+					dataType : "json", // 接受数据格式
+					data : { // 要传递的数据
+						name : function() {
+							return $("#name").val();
+						}
+					}
+				}
+			},
+			creditCode : {
+				required : true,
+				maxlength: 30,
+				remote : {
+					url : ctx+"/stationinfo/stations/exit", // 后台处理程序
+					type : "post", // 数据发送方式
+					dataType : "json", // 接受数据格式
+					data : { // 要传递的数据
+						creditCode : function() {
+							return $("#creditCode").val();
+						}
+					}
+				}
+			},
+			address:{
+				required:true,
+				maxlength:50
+			},
+			deptName:{
+				required:true
+			},
+			chargePerson:{
+				required:true,
+				maxlength:20
+			},
+			cellPhone:{
+				required:true,
+				maxlength:20
+			},
+			steelSealCode:{
+				required:true,
+				maxlength:20
+			},
+			licenceCode:{
+				required:true,
+				maxlength:20
+			},
+			licenceExpireDate:{
+				required:true
+			},
+			picUrls:{
+				required:true
+			}
+		},
+		messages : {
+			name : {
+				required : icon + "请输入姓名",
+				maxlength: icon + "最长不能超过20位",
+				remote : icon + "站点名称已经存在"
+			},
+			creditCode : {
+				required : icon + "请输入姓名",
+				maxlength: icon + "最长不能超过30位",
+				remote : icon + "社会统一信用代码已经存在"
+			},
+			address : {
+				required : icon + "请输入站点地址",
+				maxlength: icon + "最长不能超过50位"
+			},
+			deptName : {
+				required : icon + "请选择所属机构"
+			},
+			chargePerson : {
+				required : icon + "请输入负责人",
+				maxlength: icon + "最长不能超过20位"
+			},
+			cellPhone : {
+				required : icon + "请输入联系电话",
+				maxlength: icon + "最长不能超过20位"
+			},
+			steelSealCode : {
+				required : icon + "请输入充装钢印号",
+				maxlength: icon + "最长不能超过20位"
+			},
+			licenceCode : {
+				required : icon + "请输入许可证号",
+				maxlength: icon + "最长不能超过20位"
+			},
+			licenceExpireDate : {
+				required : icon + "请选择许可证有效期"
+			},
+			picUrls : {
+				required : icon + "请上传充装许可证"
+			}
+		}
+	})
+}
+var openDept = function(){
+	layer.open({
+		type:2,
+		title:"选择机构",
+		area : [ '300px', '450px' ],
+		content:ctx+"/system/sysDept/treeView"
+	})
+}
+function loadDept( deptId,deptName){
+	$("#deptId").val(deptId);
+	$("#deptName").val(deptName);
+}

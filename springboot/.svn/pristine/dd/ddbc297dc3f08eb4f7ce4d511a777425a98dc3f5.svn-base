@@ -1,0 +1,125 @@
+.layui-layout-admin .layui-header{
+		color:white;
+		background-image:url(../img/pagebg.png);
+		box-shadow:2px 2px 10px #999;
+}
+
+.layui-nav>.layui-nav-item>a {
+    display: block;
+    padding: 0 20px;
+    color: #fff;
+    color: rgba(255,255,255,1);
+    transition: all .3s;
+    -webkit-transition: all .3s;
+}
+
+.layui-layout-left>.layui-nav-item>a:hover,.layui-layout-left .layui-this a{
+	background-color:#e5f1ff;
+	color:#4e8cee !important ;
+} 
+.layui-nav>.layui-nav-item>a {
+    transition: none;
+    -webkit-transition: none;
+    -moz-transition: none;
+    -o-transition: none;
+}
+.layui-nav .layui-nav-child dd.layui-this a, .layui-nav-child dd.layui-this {
+    background-color: white;
+    color: #000;
+}
+
+
+.layui-layout-admin .layui-logo{
+	left:20px;
+	color:white;
+	font-weight:700;
+	word-space:10px;
+	letter-spacing:3px;
+	width:auto;
+	font-size:20px;
+	text-shadow:0px 1px 2px #000000;
+}
+.top-nav{
+	left:500px;
+	
+}
+.layui-layout-right .layui-nav-item .layui-nav-child a:hover,.kit-item:hover{
+	background-color:#e5f1ff !important;
+	color:#4e8cee !important ;
+}
+
+/* 左侧菜单栏 */
+.kit-layout-admin .kit-side,.kit-layout-admin .layui-body{ /* 左侧菜单栏  右侧body*/
+	top:60px;
+}
+
+.layui-nav-tree .layui-nav-item a:hover{
+	background-color:#e5f1ff !important;
+	color:#4e8cee !important ;
+}
+.layui-nav,.kit-side .layui-side-scroll .kit-side-fold{
+	background-color:transparent;
+}
+.layui-bg-black{
+	background-image:url(../img/bgleft.png)
+}
+.kit-side .layui-side-scroll .kit-side-fold{
+	color:white;
+}
+.layui-nav-tree{
+	padding-left:10px;
+}
+.layui-nav-itemed .layui-nav-child,.layui-nav-itemed .layui-nav-child a{
+	background-color: rgba(0,0,0,0)!important;
+	color:rgba(255,255,255,1)
+}
+.layui-nav-tree .layui-this>a:hover{
+	background-color:#e5f1ff;
+	color:#4e8cee!important;
+}
+.layui-nav-tree .layui-nav-child dd.layui-this, 
+.layui-nav-tree .layui-nav-child dd.layui-this a,
+.layui-nav-tree .layui-this,
+.layui-nav-tree .layui-this>a, .layui-nav-tree .layui-this>a:hover{
+	background-color:#e5f1ff;
+	color:#4e8cee!important;
+	border-top-left-radius:20px;
+	border-bottom-left-radius:20px;
+}
+.layui-nav-tree .layui-nav-item a,.layui-nav-tree .layui-nav-item .layui-nav-child dd a{
+	border-top-left-radius:20px;
+	border-bottom-left-radius:20px;
+}
+.layui-nav-tree .layui-nav-child dd{
+	margin-bottom:10px;
+}
+.layui-nav-bar{
+	display:none;
+}
+/* .layui-nav-itemed{
+	height:100%;
+} */
+
+
+/* body */
+.kit-layout-admin .layui-body{
+	top:60px;
+}
+.layui-nav-tree{
+	height:90%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,44 @@
+package com.cptech.checkInfo.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+import com.cptech.checkInfo.dao.CheckRecordDao;
+import com.cptech.checkInfo.domain.CheckRecordDO;
+import com.cptech.checkInfo.service.CheckRecordService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
+
+
+@Service
+public class CheckRecordServiceImpl implements CheckRecordService {
+	@Autowired
+	private CheckRecordDao checkRecordDao;
+	
+	@Override
+	public CheckRecordDO get(String id){
+		return checkRecordDao.get(id);
+	}
+	
+	@Override
+	public Page<CheckRecordDO> findByPage(CheckRecordDO checkRecord){
+		PageHelper.startPage(checkRecord.getOffset(), checkRecord.getLimit());
+		return checkRecordDao.findByPage(checkRecord);
+	}
+	
+	@Override
+	public int save(CheckRecordDO checkRecord){
+		checkRecord.preInsert();
+		return checkRecordDao.save(checkRecord);
+	}
+	
+	@Override
+	public int update(CheckRecordDO checkRecord){
+		checkRecord.preUpdate();
+		return checkRecordDao.update(checkRecord);
+	}
+	
+}

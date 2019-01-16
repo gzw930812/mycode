@@ -1,0 +1,142 @@
+package com.cptech.fillingInfo.service.impl;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+
+import com.cptech.common.utils.DateUtils;
+import com.cptech.common.utils.ReflectHelper;
+import com.cptech.fillingInfo.domain.FillingRecordDO;
+import com.cptech.fillingInfo.service.FillingRecordService;
+import com.github.pagehelper.Page;
+
+public class FillingRecordDownloadService implements Runnable{
+	private final static String[] HEADER = {"充装站名称","气瓶编号","二维码编号","所属区域","充装时间","充装重量","枪号","充装前压力","充装后压力","作业人员名字","充装前检查","充装后检查","不合格原因"};
+	private final static String[] TYPES = {"stationName","bottleNo","qrcodeNo","fillingTime","fillingWeight","gunNo","beforeFillingPressure","afterFillingPressure","workerName","beforeFillingCheck","afterFillingCheck","reason"};
+	private FillingRecordDO fillingRecordDO;
+	private String fileName;
+	private FillingRecordService fillingRecordService;
+	public FillingRecordDownloadService(FillingRecordService fillingRecordService,FillingRecordDO fillingRecordDO,String fileName,HttpServletRequest request) {
+		this.fillingRecordService = fillingRecordService;
+		this.fillingRecordDO = fillingRecordDO;
+		this.fileName = request.getSession().getServletContext().getRealPath("/") + fileName;
+	}
+	@Override
+	public void run() {
+		fillingRecordDO.setOffset(0);
+		fillingRecordDO.setLimit(1000);
+		Page<FillingRecordDO> page = fillingRecordService.findByPage(fillingRecordDO);
+		try {
+			SXSSFWorkbook wb = new  SXSSFWorkbook(100);
+			Sheet sheet = wb.createSheet("充装记录列表");
+			Row row = sheet.createRow(0);
+			Cell createCell = row.createCell(0);
+			createCell.setCellValue("充装记录列表");
+			sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 14));
+			row = sheet.createRow(1);
+			setTitle(row, null);
+			int rownum  = 0;
+			int pageNo = page.getPages();
+			for (int i = 1; i <= pageNo; i++) {
+				System.out.println(DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss") + "正在导出第" + i + "页数据,每页" + page.getPageSize() + "条.");
+				rownum = (i - 1) * page.getPageSize() + 3;
+				for (int j = 0; j < page.getResult().size(); j++) {
+					setExcelData(sheet,null,rownum + j, page.getResult().get(j));
+				}	
+				if(i < pageNo + 1){					
+					fillingRecordDO.setOffset(i+1);
+					page = fillingRecordService.findByPage(fillingRecordDO);
+				}
+			} 
+			File file = new File(fileName);
+			if(!file.exists()){
+				file.createNewFile();
+			}
+			System.out.println(fileName);
+			OutputStream os = new FileOutputStream(file);
+			wb.write(os);  
+			os.close();  
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}  
+	}
+	/**
+	 * 设置excel表格title
+	 * @param row
+	 */
+	private void setTitle(Row row, CellStyle style) {
+		int len = HEADER.length;
+		for (int i = 0; i < len; i++) {
+			addCell(row,style,i,HEADER[i]);
+		}
+	}
+
+	/**
+	 * 设置excel表格行数据
+	 * @param sheet
+	 * @param style
+	 * @param rowNum
+	 * @param data
+	 */
+	private void setExcelData(Sheet sheet, CellStyle style, int rowNum, FillingRecordDO data) {
+		Row row = sheet.createRow(rowNum);
+		int len = TYPES.length;
+		for (int i = 0; i < len; i++) {
+			Object val = "";
+			try {
+				val = ReflectHelper.getValueByFieldName(data,TYPES[i]);
+				if("beforeFillingCheck".equals(TYPES[i])) {
+					val = "1".equals(val)?"合格":"不合格";
+				}
+				if("afterFillingCheck".equals(TYPES[i])) {
+					val = "1".equals(val)?"合格":"不合格";
+				}
+			} catch (SecurityException | NoSuchFieldException
+					| IllegalArgumentException | IllegalAccessException e) {
+			}
+			addCell(row,style,i,val);
+		}
+	}
+	
+	/**
+	 * 给列赋值
+	 * @param row
+	 * @param style
+	 * @param number
+	 * @param val
+	 */
+	private void addCell(Row row,CellStyle style, int number,Object val) {
+		Cell cell = row.createCell(number);
+		cell.setCellStyle(style);
+		if (val == null) {
+			cell.setCellValue("");
+		} else if (val instanceof String) {
+			cell.setCellValue((String) val);
+		} else if (val instanceof Integer) {
+			cell.setCellValue((Integer) val);
+		} else if (val instanceof Long) {
+			cell.setCellValue((Long) val);
+		} else if (val instanceof Double) {
+			cell.setCellValue((Double) val);
+		} else if (val instanceof Float) {
+			cell.setCellValue((Float) val);
+		} else if (val instanceof Date) {
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			cell.setCellValue(df.format(val));
+		} 
+	}
+}

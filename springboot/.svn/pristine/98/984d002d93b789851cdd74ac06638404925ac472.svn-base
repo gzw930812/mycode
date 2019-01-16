@@ -1,0 +1,181 @@
+package com.cptech.oa.controller;
+
+import java.util.Date;
+import java.util.List;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.cptech.common.annotation.Log;
+import com.cptech.common.config.Constant;
+import com.cptech.common.controller.BaseController;
+import com.cptech.common.domain.DictDO;
+import com.cptech.common.service.DictService;
+import com.cptech.common.utils.PageUtils;
+import com.cptech.common.utils.R;
+import com.cptech.oa.domain.NotifyDO;
+import com.cptech.oa.domain.NotifyDTO;
+import com.cptech.oa.domain.NotifyRecordDO;
+import com.cptech.oa.service.NotifyRecordService;
+import com.cptech.oa.service.NotifyService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
+
+@Controller
+@RequestMapping("/oa/notify")
+public class NotifyController extends BaseController {
+	@Autowired
+	private NotifyService notifyService;
+	@Autowired
+	private NotifyRecordService notifyRecordService;
+	@Autowired
+	private DictService dictService;
+
+	@GetMapping()
+	@RequiresPermissions("oa:notify:notify")
+	String oaNotify() {
+		return "oa/notify/notify";
+	}
+
+	@Log("查询通知列表")
+	@ResponseBody
+	@GetMapping("/list")
+	@RequiresPermissions("oa:notify:notify")
+	public PageUtils list(NotifyDO notifyDO) {
+		// 查询列表数据
+		Page<NotifyDO> findByPage = notifyService.findByPage(notifyDO);
+		PageInfo<NotifyDO> pageInfo = new PageInfo<>(findByPage);
+		PageUtils pageUtil = new PageUtils(pageInfo.getList(), (int)pageInfo.getTotal());
+		return pageUtil;
+	}
+
+	@GetMapping("/add")
+	@RequiresPermissions("oa:notify:add")
+	String add() {
+		return "oa/notify/add";
+	}
+
+	@GetMapping("/edit/{id}")
+	@RequiresPermissions("oa:notify:edit")
+	String edit(@PathVariable("id") String id, Model model) {
+		NotifyDO notify = notifyService.get(id);
+		List<DictDO> dictDOS = dictService.listByType("oa_notify_type");
+		String type = notify.getType();
+		for (DictDO dictDO:dictDOS){
+			if(type.equals(dictDO.getValue())){
+				dictDO.setRemarks("checked");
+			}
+		}
+		model.addAttribute("oaNotifyTypes",dictDOS);
+		model.addAttribute("notify", notify);
+		return "oa/notify/edit";
+	}
+
+	/**
+	 * 保存
+	 */
+	@Log("保存通知")
+	@ResponseBody
+	@PostMapping("/save")
+	@RequiresPermissions("oa:notify:add")
+	public R save(NotifyDO notify) {
+		notify.setCreateBy(getUserId());
+		if (notifyService.save(notify) > 0) {
+			return R.ok();
+		}
+		return R.error();
+	}
+
+	/**
+	 * 修改
+	 */
+	@Log("修改通知")
+	@ResponseBody
+	@RequestMapping("/update")
+	@RequiresPermissions("oa:notify:edit")
+	public R update(NotifyDO notify) {
+		notifyService.update(notify);
+		return R.ok();
+	}
+
+	/**
+	 * 删除
+	 */
+	@Log("删除通知")
+	@PostMapping("/remove")
+	@ResponseBody
+	@RequiresPermissions("oa:notify:remove")
+	public R remove(String id) {
+		if (notifyService.remove(id) > 0) {
+			return R.ok();
+		}
+		return R.error();
+	}
+
+	/**
+	 * 删除
+	 */
+	@Log("批量删除通知")
+	@PostMapping("/batchRemove")
+	@ResponseBody
+	@RequiresPermissions("oa:notify:batchRemove")
+	public R remove(@RequestParam("ids[]") String[] ids) {
+		notifyService.batchRemove(ids);
+		return R.ok();
+	}
+
+	@ResponseBody
+	@GetMapping("/message")
+	PageUtils message() {
+        NotifyDTO nd=new NotifyDTO();
+        nd.setOffset(0);
+        nd.setLimit(3);
+        nd.setIsRead(Constant.OA_NOTIFY_READ_NO);
+        nd.setUserId(getUserId());
+        Page<NotifyDTO> findByPage = notifyService.selfList(nd);
+		PageInfo<NotifyDTO> pageInfo = new PageInfo<>(findByPage);
+		PageUtils pageUtil = new PageUtils(pageInfo.getList(), (int)pageInfo.getTotal());
+		return pageUtil;
+	}
+
+	@GetMapping("/selfNotify")
+	String selefNotify() {
+		return "oa/notify/selfNotify";
+	}
+
+	@ResponseBody
+	@GetMapping("/selfList")
+	PageUtils selfList(NotifyDTO notifyDTO) {
+		notifyDTO.setUserId(getUserId());
+		Page<NotifyDTO> findByPage = notifyService.selfList(notifyDTO);
+		PageInfo<NotifyDTO> pageInfo = new PageInfo<>(findByPage);
+		PageUtils pageUtil = new PageUtils(pageInfo.getList(), (int)pageInfo.getTotal());
+		return pageUtil;
+	}
+
+	@GetMapping("/read/{id}")
+	@RequiresPermissions("oa:notify:edit")
+	String read(@PathVariable("id") String id, Model model) {
+		NotifyDO notify = notifyService.get(id);
+		//更改阅读状态
+		NotifyRecordDO notifyRecordDO = new NotifyRecordDO();
+		notifyRecordDO.setNotifyId(id);
+		notifyRecordDO.setUserId(getUserId());
+		notifyRecordDO.setReadDate(new Date());
+		notifyRecordDO.setIsRead(Constant.OA_NOTIFY_READ_YES);
+		notifyRecordService.changeRead(notifyRecordDO);
+		model.addAttribute("notify", notify);
+		return "oa/notify/read";
+	}
+
+
+
+}

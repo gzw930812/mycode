@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+																															<div class="form-group">	
+								<label class="col-sm-3 control-label">充装站id：</label>
+								<div class="col-sm-8">
+									<input id="stationId" name="stationId" class="form-control" type="text">
+								</div>
+							</div>
+																									<div class="form-group">	
+								<label class="col-sm-3 control-label">充装站名称：</label>
+								<div class="col-sm-8">
+									<input id="stationName" name="stationName" class="form-control" type="text">
+								</div>
+							</div>
+																									<div class="form-group">	
+								<label class="col-sm-3 control-label">钢瓶编号：</label>
+								<div class="col-sm-8">
+									<input id="bottleNo" name="bottleNo" class="form-control" type="text">
+								</div>
+							</div>
+																									<div class="form-group">	
+								<label class="col-sm-3 control-label">二维码编号：</label>
+								<div class="col-sm-8">
+									<input id="qrcodeNo" name="qrcodeNo" class="form-control" type="text">
+								</div>
+							</div>
+																									<div class="form-group">	
+								<label class="col-sm-3 control-label">所属区域id：</label>
+								<div class="col-sm-8">
+									<input id="areaId" name="areaId" class="form-control" type="text">
+								</div>
+							</div>
+																									<div class="form-group">	
+								<label class="col-sm-3 control-label">所属区域名称：</label>
+								<div class="col-sm-8">
+									<input id="areaName" name="areaName" class="form-control" type="text">
+								</div>
+							</div>
+																									<div class="form-group">	
+								<label class="col-sm-3 control-label">充装时间：</label>
+								<div class="col-sm-8">
+									<input id="fillingTime" name="fillingTime" class="form-control" type="text">
+								</div>
+							</div>
+																									<div class="form-group">	
+								<label class="col-sm-3 control-label">充装重量：</label>
+								<div class="col-sm-8">
+									<input id="fillingWeight" name="fillingWeight" class="form-control" type="text">
+								</div>
+							</div>
+																									<div class="form-group">	
+								<label class="col-sm-3 control-label">枪号：</label>
+								<div class="col-sm-8">
+									<input id="gunNo" name="gunNo" class="form-control" type="text">
+								</div>
+							</div>
+																									<div class="form-group">	
+								<label class="col-sm-3 control-label">充装前压力：</label>
+								<div class="col-sm-8">
+									<input id="beforeFillingPressure" name="beforeFillingPressure" class="form-control" type="text">
+								</div>
+							</div>
+																									<div class="form-group">	
+								<label class="col-sm-3 control-label">充装后压力：</label>
+								<div class="col-sm-8">
+									<input id="afterFillingPressure" name="afterFillingPressure" class="form-control" type="text">
+								</div>
+							</div>
+																									<div class="form-group">	
+								<label class="col-sm-3 control-label">作业人员id：</label>
+								<div class="col-sm-8">
+									<input id="workerId" name="workerId" class="form-control" type="text">
+								</div>
+							</div>
+																									<div class="form-group">	
+								<label class="col-sm-3 control-label">作业人员名字：</label>
+								<div class="col-sm-8">
+									<input id="workerName" name="workerName" class="form-control" type="text">
+								</div>
+							</div>
+																									<div class="form-group">	
+								<label class="col-sm-3 control-label">充装前检查是否合格（1：合格；2：不合格）：</label>
+								<div class="col-sm-8">
+									<input id="beforeFillingCheck" name="beforeFillingCheck" class="form-control" type="text">
+								</div>
+							</div>
+																									<div class="form-group">	
+								<label class="col-sm-3 control-label">充装后检查是否合格（1：合格；2：不合格）：</label>
+								<div class="col-sm-8">
+									<input id="afterFillingCheck" name="afterFillingCheck" class="form-control" type="text">
+								</div>
+							</div>
+																									<div class="form-group">	
+								<label class="col-sm-3 control-label">不合格原因：</label>
+								<div class="col-sm-8">
+									<input id="reason" name="reason" class="form-control" type="text">
+								</div>
+							</div>
+																																																																																											<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" th:src="@{/js/appjs/fillingInfo/fillingRecord/add.js}">
+	</script>
+</body>
+</html>

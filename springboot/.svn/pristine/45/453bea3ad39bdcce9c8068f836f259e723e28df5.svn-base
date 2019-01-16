@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content" align="center">
+						<form class="form-horizontal m-t" id="signupForm" >
+							<input id="id" name="id" th:value="${qrcodeSectionNumber.id}"
+								type="hidden">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">低于</label>
+								<div class="col-sm-5">
+									<select id="warningNum" name="warningNum" class="form-control ">
+										<option value="5" th:selected="${qrcodeSectionNumber.warningNum == 5}">5%预警</option>
+										<option value="10" th:selected="${qrcodeSectionNumber.warningNum == 10} ">10%预警</option>
+										<option value="15" th:selected="${qrcodeSectionNumber.warningNum == 15} ">15%预警</option>
+										<option value="20" th:selected="${qrcodeSectionNumber.warningNum == 20} ">20%预警</option>
+									</select>
+								</div>
+								<div class="col-sm-2 ">
+									<button type="submit" class="btn btn-primary">确定</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" th:src="@{/js/appjs/qrc/qrcodeSectionNumber/edit.js}">
+	</script>
+</body>
+</html>

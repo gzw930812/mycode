@@ -1,0 +1,27 @@
+package com.cptech.settings.dao;
+
+import com.cptech.settings.domain.RechargeTimeIntervalDO;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+import com.github.pagehelper.Page;
+
+/**
+ * 充装时间间隔表
+ * @author pjy
+ * @email 1595418464@qq.com
+ * @date 2018-06-27 15:30:33
+ */
+@Mapper
+public interface RechargeTimeIntervalDao {
+
+	RechargeTimeIntervalDO get(String id);
+	
+	List<RechargeTimeIntervalDO> findAll(RechargeTimeIntervalDO rechargeTimeInterval);
+	Page<RechargeTimeIntervalDO> findByPage(RechargeTimeIntervalDO rechargeTimeInterval);
+	
+	int save(RechargeTimeIntervalDO rechargeTimeInterval);
+	
+	int update(RechargeTimeIntervalDO rechargeTimeInterval);
+}

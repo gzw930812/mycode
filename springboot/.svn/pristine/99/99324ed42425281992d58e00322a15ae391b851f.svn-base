@@ -1,0 +1,119 @@
+var prefix = ctx + "/settings/rechargeTimeInterval"
+$(function() {
+	validateRule();
+	load();
+});
+$.validator.setDefaults({
+	submitHandler : function() {
+		edit();
+	}
+});
+function load() {
+	$('#exampleTable')
+			.bootstrapTable(
+					{
+						method : 'get', // 服务器数据的请求方式 get or post
+						url : prefix + "/list", // 服务器数据的加载地址
+						iconSize : 'outline',
+						toolbar : '#exampleToolbar',
+						striped : true, // 设置为true会有隔行变色效果
+						dataType : "json", // 服务器返回的数据类型
+						pagination : true, // 设置为true会在底部显示分页条
+						singleSelect : false, // 设置为true将禁止多选
+						pageSize : 10, // 如果设置了分页，每页数据条数
+						pageNumber : 1, // 如果设置了分布，首页页码
+						rowStyle : function(row) {
+							 if(row.status == '2')              
+								 return {css:{'color':'red'}};
+							 else 
+								 return "";
+						},
+						showColumns : false, // 是否显示内容下拉框（选择显示的列）
+						sidePagination : "server", // 设置在哪里进行分页，可选值为"client" 或者
+													// "server"
+						queryParams : function(params) {
+							var pageSize = params.offset;
+							pageSize = pageSize / 10;
+							return {
+								limit : params.limit,
+								offset : Number(pageSize) + 1
+							};
+						},
+						columns : [
+								{
+									field : 'index',
+									title : '序号',
+									formatter : function(value, row, index) {
+										var table = $('#exampleTable').bootstrapTable('getOptions');
+										var pageNumber = table.pageNumber;
+										var pageSize = table.pageSize;
+										return (Number(pageNumber)-1)*pageSize+index+1;
+									}
+								},
+								{
+									field : 'bottleType',
+									title : '钢瓶规格'
+								},
+								{
+									field : 'hour',
+									title : '时间(h)'
+								},
+								{
+									field : 'createDate',
+									title : '设置日期'
+								},
+								{
+									field : 'status',
+									title : '状态',
+									formatter : function(value, row, index) {
+										return row.status == '1'?'未过期':'已过期';
+									}
+								},
+								{
+									field : 'earlyWarningTime',
+									title : '预警排除隐患次数'
+								}]
+					});
+}
+function reLoad() {
+	$('#exampleTable').bootstrapTable('refresh');
+}
+function edit() {
+	$.ajax({
+		cache : true,
+		type : "POST",
+		url : ctx+"/settings/rechargeTimeInterval/update",
+		data : $('#signupForm').serialize(),// 你的formid
+		async : false,
+		error : function(request) {
+			layer.alert("Connection error");
+		},
+		success : function(data) {
+			if (data.code == 0) {
+				layer.msg("操作成功");
+				reLoad();
+				var index = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+				layer.close(index);
+
+			} else {
+				layer.alert(data.msg)
+			}
+
+		}
+	});
+}
+function validateRule() {
+	var icon = "<i class='fa fa-times-circle'></i> ";
+	$("#signupForm").validate({
+		rules : {
+			hour : {
+				digits:true
+			}
+		},
+		messages : {
+			hour : {
+				digits : icon + "请输入整数"
+			}
+		}
+	})
+}

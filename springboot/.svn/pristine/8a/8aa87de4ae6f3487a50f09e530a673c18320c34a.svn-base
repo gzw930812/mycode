@@ -1,0 +1,188 @@
+package com.cptech.worker.domain;
+
+import java.io.Serializable;
+import java.util.Date;
+import com.cptech.common.domain.BaseDo;
+
+/**
+ * 作业人员表
+ * 
+ * @author fb
+ * @email 1595418464@qq.com
+ * @date 2018-06-22 14:54:34
+ */
+public class WorkersDO extends BaseDo implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	// 姓名
+	private String name;
+	// 密码（默认证件编号后6位）
+	private String password;
+	// 证书代码id
+	private String certificateCodeId;
+	private String certificateCodeName;
+	// 证件编号
+	private String idCard;
+	// 证件有效期
+	private Date idCardExpireDate;
+	// 颁发地
+	private String publishArea;
+	private String publishAreaId;
+	// 颁发机构
+	private String publishDeptName;
+	// 颁发日期
+	private Date grantDate;
+	// 工作单位，即站点id
+	private String stationId;
+	private String stationName;
+
+	/**
+	 * 设置：姓名
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * 获取：姓名
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * 设置：密码（默认证件编号后6位）
+	 */
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	/**
+	 * 获取：密码（默认证件编号后6位）
+	 */
+	public String getPassword() {
+		return password;
+	}
+
+	/**
+	 * 设置：证书代码id
+	 */
+	public void setCertificateCodeId(String certificateCodeId) {
+		this.certificateCodeId = certificateCodeId;
+	}
+
+	/**
+	 * 获取：证书代码id
+	 */
+	public String getCertificateCodeId() {
+		return certificateCodeId;
+	}
+
+	/**
+	 * 设置：证件编号
+	 */
+	public void setIdCard(String idCard) {
+		this.idCard = idCard;
+	}
+
+	/**
+	 * 获取：证件编号
+	 */
+	public String getIdCard() {
+		return idCard;
+	}
+
+	/**
+	 * 设置：证件有效期
+	 */
+	public void setIdCardExpireDate(Date idCardExpireDate) {
+		this.idCardExpireDate = idCardExpireDate;
+	}
+
+	/**
+	 * 获取：证件有效期
+	 */
+	public Date getIdCardExpireDate() {
+		return idCardExpireDate;
+	}
+
+	/**
+	 * 设置：颁发地
+	 */
+	public void setPublishArea(String publishArea) {
+		this.publishArea = publishArea;
+	}
+
+	/**
+	 * 获取：颁发地
+	 */
+	public String getPublishArea() {
+		return publishArea;
+	}
+
+	/**
+	 * 设置：颁发机构
+	 */
+	public void setPublishDeptName(String publishDeptName) {
+		this.publishDeptName = publishDeptName;
+	}
+
+	/**
+	 * 获取：颁发机构
+	 */
+	public String getPublishDeptName() {
+		return publishDeptName;
+	}
+
+	/**
+	 * 设置：颁发日期
+	 */
+	public void setGrantDate(Date grantDate) {
+		this.grantDate = grantDate;
+	}
+
+	/**
+	 * 获取：颁发日期
+	 */
+	public Date getGrantDate() {
+		return grantDate;
+	}
+
+	/**
+	 * 设置：工作单位，即站点id
+	 */
+	public void setStationId(String stationId) {
+		this.stationId = stationId;
+	}
+
+	/**
+	 * 获取：工作单位，即站点id
+	 */
+	public String getStationId() {
+		return stationId;
+	}
+
+	public String getStationName() {
+		return stationName;
+	}
+
+	public void setStationName(String stationName) {
+		this.stationName = stationName;
+	}
+
+	public String getCertificateCodeName() {
+		return certificateCodeName;
+	}
+
+	public void setCertificateCodeName(String certificateCodeName) {
+		this.certificateCodeName = certificateCodeName;
+	}
+
+	public String getPublishAreaId() {
+		return publishAreaId;
+	}
+
+	public void setPublishAreaId(String publishAreaId) {
+		this.publishAreaId = publishAreaId;
+	}
+}

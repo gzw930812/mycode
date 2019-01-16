@@ -1,0 +1,89 @@
+package com.cptech.settings.controller;
+
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.cptech.common.annotation.Log;
+import com.cptech.common.domain.DictDO;
+import com.cptech.common.service.DictService;
+import com.cptech.common.utils.PageUtils;
+import com.cptech.common.utils.R;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
+import com.cptech.settings.domain.RechargeTimeIntervalDO;
+import com.cptech.settings.service.RechargeTimeIntervalService;
+
+/**
+ * 充装时间间隔表
+ * 
+ * @author pjy
+ * @email 1595418464@qq.com
+ * @date 2018-06-27 15:30:33
+ */
+ 
+@Controller
+@RequestMapping("/settings/rechargeTimeInterval")
+public class RechargeTimeIntervalController {
+	@Autowired
+	private RechargeTimeIntervalService rechargeTimeIntervalService;
+	@Autowired
+	private DictService dictService;
+	
+	@GetMapping()
+	@RequiresPermissions("settings:rechargeTimeInterval:rechargeTimeInterval")
+	String RechargeTimeInterval(Model model){
+		DictDO dict = new DictDO();
+		dict.setType("bottle_type");
+		model.addAttribute("types", dictService.findAll(dict));
+	    return "settings/rechargeTimeInterval/rechargeTimeInterval";
+	}
+	
+	@Log("充装时间间隔表-查询列表")
+	@ResponseBody
+	@GetMapping("/list")
+	@RequiresPermissions("settings:rechargeTimeInterval:rechargeTimeInterval")
+	public PageUtils list(RechargeTimeIntervalDO rechargeTimeInterval){
+		//查询列表数据
+		Page<RechargeTimeIntervalDO> findByPage = rechargeTimeIntervalService.findByPage(rechargeTimeInterval);
+		PageInfo<RechargeTimeIntervalDO> pageInfo = new PageInfo<>(findByPage);
+		PageUtils pageUtil = new PageUtils(pageInfo.getList(), (int)pageInfo.getTotal());
+		return pageUtil;
+	}
+	
+	@GetMapping("/edit/{id}")
+	@RequiresPermissions("settings:rechargeTimeInterval:edit")
+	String edit(@PathVariable("id") String id,Model model){
+		RechargeTimeIntervalDO rechargeTimeInterval = rechargeTimeIntervalService.get(id);
+		model.addAttribute("rechargeTimeInterval", rechargeTimeInterval);
+	    return "settings/rechargeTimeInterval/edit";
+	}
+	
+	/**
+	 * 设置
+	 */
+	@Log("充装时间间隔表-设置")
+	@ResponseBody
+	@RequestMapping("/update")
+	@RequiresPermissions("settings:rechargeTimeInterval:edit")
+	public R update( RechargeTimeIntervalDO rechargeTimeInterval){
+		if(StringUtils.isBlank(rechargeTimeInterval.getBottleTypeId())) {
+			return R.error("请选择气瓶规格");
+		}
+		rechargeTimeIntervalService.set(rechargeTimeInterval);
+		return R.ok();
+	}
+	
+	
+}

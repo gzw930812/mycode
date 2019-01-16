@@ -1,0 +1,26 @@
+package com.cptech.bottle.dao;
+
+import com.cptech.bottle.domain.SteelBottlesDO;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+import com.github.pagehelper.Page;
+
+/**
+ * 钢瓶表
+ * @author pjy
+ * @email 1595418464@qq.com
+ * @date 2018-06-20 15:22:01
+ */
+@Mapper
+public interface SteelBottlesDao {
+
+	SteelBottlesDO get(String id);
+	
+	Page<SteelBottlesDO> findByPage(SteelBottlesDO steelBottles);
+	
+	int save(SteelBottlesDO steelBottles);
+	
+	int update(SteelBottlesDO steelBottles);
+}

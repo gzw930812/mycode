@@ -1,0 +1,27 @@
+package com.cptech.oa.service;
+
+import java.util.List;
+
+import com.cptech.oa.domain.NotifyDO;
+import com.cptech.oa.domain.NotifyDTO;
+import com.github.pagehelper.Page;
+
+public interface NotifyService {
+
+	NotifyDO get(String id);
+
+	List<NotifyDO> findAll(NotifyDO notifyDO);
+	Page<NotifyDO> findByPage(NotifyDO notifyDO);
+
+	int count(NotifyDO notifyDO);
+
+	int save(NotifyDO notify);
+
+	int update(NotifyDO notify);
+
+	int remove(String id);
+
+	int batchRemove(String[] ids);
+
+	Page<NotifyDTO> selfList(NotifyDO notifyDO);
+}

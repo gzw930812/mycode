@@ -1,0 +1,32 @@
+package com.cptech.stationinfo.service;
+
+import com.cptech.stationinfo.domain.DeviceRepairsDO;
+
+import java.util.List;
+
+import com.github.pagehelper.Page;
+
+/**
+ * 设备保修表
+ * 
+ * @author fb
+ * @email 1595418464@qq.com
+ * @date 2018-06-25 09:46:28
+ */
+public interface DeviceRepairsService {
+	
+	DeviceRepairsDO get(String id);
+	
+	List<DeviceRepairsDO> findAll(DeviceRepairsDO deviceRepairs);
+	Page<DeviceRepairsDO> findByPage(DeviceRepairsDO deviceRepairs);
+	
+	int save(DeviceRepairsDO deviceRepairs);
+	
+	int update(DeviceRepairsDO deviceRepairs);
+	
+	int remove(String id);
+	
+	int batchRemove(String[] ids);
+
+	int repair(String id, String repairOk);
+}

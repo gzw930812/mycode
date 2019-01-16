@@ -1,0 +1,29 @@
+package com.cptech.qrc.service;
+
+import com.cptech.qrc.domain.QrcodeSectionNumberDO;
+
+import java.util.List;
+import com.github.pagehelper.Page;
+
+/**
+ * 二维码号段设置表
+ * 
+ * @author fb
+ * @email 1595418464@qq.com
+ * @date 2018-06-20 16:35:19
+ */
+public interface QrcodeSectionNumberService {
+	
+	QrcodeSectionNumberDO get(String id);
+	
+	List<QrcodeSectionNumberDO> findAll(QrcodeSectionNumberDO qrcodeSectionNumber);
+	Page<QrcodeSectionNumberDO> findByPage(QrcodeSectionNumberDO qrcodeSectionNumber);
+	
+	int save(QrcodeSectionNumberDO qrcodeSectionNumber);
+	
+	int update(QrcodeSectionNumberDO qrcodeSectionNumber);
+	
+	int remove(String id);
+	
+	int batchRemove(String[] ids);
+}

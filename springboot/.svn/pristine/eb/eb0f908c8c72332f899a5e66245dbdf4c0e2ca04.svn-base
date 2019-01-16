@@ -1,0 +1,68 @@
+package com.cptech.stationinfo.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.List;
+
+import com.cptech.stationinfo.dao.DeviceRepairsDao;
+import com.cptech.stationinfo.domain.DeviceRepairsDO;
+import com.cptech.stationinfo.service.DeviceRepairsService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
+
+
+@Service
+public class DeviceRepairsServiceImpl implements DeviceRepairsService {
+	@Autowired
+	private DeviceRepairsDao deviceRepairsDao;
+	
+	@Override
+	public DeviceRepairsDO get(String id){
+		return deviceRepairsDao.get(id);
+	}
+	
+	@Override
+	public List<DeviceRepairsDO> findAll(DeviceRepairsDO deviceRepairs){
+		return deviceRepairsDao.findAll(deviceRepairs);
+	}
+	@Override
+	public Page<DeviceRepairsDO> findByPage(DeviceRepairsDO deviceRepairs){
+		PageHelper.startPage(deviceRepairs.getOffset(), deviceRepairs.getLimit());
+		return deviceRepairsDao.findByPage(deviceRepairs);
+	}
+	
+	@Override
+	public int save(DeviceRepairsDO deviceRepairs){
+		deviceRepairs.preInsert();
+		deviceRepairs.setRepairDate(new Date());
+		return deviceRepairsDao.save(deviceRepairs);
+	}
+	
+	@Override
+	public int update(DeviceRepairsDO deviceRepairs){
+		deviceRepairs.preUpdate();
+		return deviceRepairsDao.update(deviceRepairs);
+	}
+	
+	@Override
+	public int remove(String id){
+		return deviceRepairsDao.remove(id);
+	}
+	
+	@Override
+	public int batchRemove(String[] ids){
+		return deviceRepairsDao.batchRemove(ids);
+	}
+
+	@Override
+	public int repair(String id,String repairResult) {
+		DeviceRepairsDO deviceRepairsDO = new DeviceRepairsDO();
+		deviceRepairsDO.setId(id);
+		deviceRepairsDO.setRepairResult(repairResult);
+		return deviceRepairsDao.repair(deviceRepairsDO);
+	}
+	
+}

@@ -1,0 +1,58 @@
+package com.cptech.stationinfo.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+import com.cptech.stationinfo.dao.DevicesDao;
+import com.cptech.stationinfo.domain.DevicesDO;
+import com.cptech.stationinfo.service.DevicesService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
+
+
+@Service
+public class DevicesServiceImpl implements DevicesService {
+	@Autowired
+	private DevicesDao devicesDao;
+	
+	@Override
+	public DevicesDO get(String id){
+		return devicesDao.get(id);
+	}
+	
+	@Override
+	public List<DevicesDO> findAll(DevicesDO devices){
+		return devicesDao.findAll(devices);
+	}
+	@Override
+	public Page<DevicesDO> findByPage(DevicesDO devices){
+		PageHelper.startPage(devices.getOffset(), devices.getLimit());
+		return devicesDao.findByPage(devices);
+	}
+	
+	@Override
+	public int save(DevicesDO devices){
+		devices.preInsert();
+		return devicesDao.save(devices);
+	}
+	
+	@Override
+	public int update(DevicesDO devices){
+		devices.preUpdate();
+		return devicesDao.update(devices);
+	}
+	
+	@Override
+	public int remove(String id){
+		return devicesDao.remove(id);
+	}
+	
+	@Override
+	public int batchRemove(String[] ids){
+		return devicesDao.batchRemove(ids);
+	}
+	
+}

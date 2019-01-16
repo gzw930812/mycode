@@ -1,0 +1,48 @@
+package com.cptech.basicInfo.domain;
+
+import java.io.Serializable;
+import java.util.Date;
+import com.cptech.common.domain.BaseDo;
+
+
+
+/**
+ * 报废方式、不通过原因、二维码补发原因表
+ * 
+ * @author pjy
+ * @email 1595418464@qq.com
+ * @date 2018-06-19 09:27:12
+ */
+public class SimpleFieldDO extends BaseDo implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
+			//名称
+	private String name;
+			//菜单类型（1：报废方式；2：不通过原因；3：二维码补发原因）
+	private String type;
+							
+			/**
+	 * 设置：名称
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+	/**
+	 * 获取：名称
+	 */
+	public String getName() {
+		return name;
+	}
+			/**
+	 * 设置：菜单类型（1：报废方式；2：不通过原因；3：二维码补发原因）
+	 */
+	public void setType(String type) {
+		this.type = type;
+	}
+	/**
+	 * 获取：菜单类型（1：报废方式；2：不通过原因；3：二维码补发原因）
+	 */
+	public String getType() {
+		return type;
+	}
+							}

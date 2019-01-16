@@ -1,0 +1,31 @@
+package com.cptech.basicInfo.service;
+
+import com.cptech.basicInfo.domain.SimpleFieldDO;
+
+import java.util.List;
+import com.github.pagehelper.Page;
+
+/**
+ * 报废方式、不通过原因、二维码补发原因表
+ * 
+ * @author pjy
+ * @email 1595418464@qq.com
+ * @date 2018-06-19 09:27:12
+ */
+public interface SimpleFieldService {
+	
+	SimpleFieldDO get(String id);
+	
+	List<SimpleFieldDO> findAll(SimpleFieldDO simpleField);
+	Page<SimpleFieldDO> findByPage(SimpleFieldDO simpleField);
+	
+	int save(SimpleFieldDO simpleField);
+	
+	int update(SimpleFieldDO simpleField);
+	
+	int remove(String id);
+	
+	int batchRemove(String[] ids);
+	
+	int isExist(String type, String name);
+}

@@ -1,0 +1,120 @@
+package com.cptech.basicInfo.controller;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.cptech.common.annotation.Log;
+import com.cptech.common.utils.PageUtils;
+import com.cptech.common.utils.R;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
+import com.cptech.basicInfo.domain.BottleMaterialDO;
+import com.cptech.basicInfo.service.BottleMaterialService;
+
+/**
+ * 钢瓶材质表
+ * 
+ * @author pjy
+ * @email 1595418464@qq.com
+ * @date 2018-06-20 15:24:26
+ */
+ 
+@Controller
+@RequestMapping("/basicInfo/bottleMaterial")
+public class BottleMaterialController {
+	@Autowired
+	private BottleMaterialService bottleMaterialService;
+	
+	@GetMapping()
+	@RequiresPermissions("basicInfo:bottleMaterial:bottleMaterial")
+	String BottleMaterial(){
+	    return "basicInfo/bottleMaterial/bottleMaterial";
+	}
+	
+	@Log("钢瓶材质表-查询列表")
+	@ResponseBody
+	@GetMapping("/list")
+	@RequiresPermissions("basicInfo:bottleMaterial:bottleMaterial")
+	public PageUtils list(BottleMaterialDO bottleMaterial){
+		//查询列表数据
+		Page<BottleMaterialDO> findByPage = bottleMaterialService.findByPage(bottleMaterial);
+		PageInfo<BottleMaterialDO> pageInfo = new PageInfo<>(findByPage);
+		PageUtils pageUtil = new PageUtils(pageInfo.getList(), (int)pageInfo.getTotal());
+		return pageUtil;
+	}
+	
+	@GetMapping("/add")
+	@RequiresPermissions("basicInfo:bottleMaterial:add")
+	String add(){
+	    return "basicInfo/bottleMaterial/add";
+	}
+
+	@GetMapping("/edit/{id}")
+	@RequiresPermissions("basicInfo:bottleMaterial:edit")
+	String edit(@PathVariable("id") String id,Model model){
+		BottleMaterialDO bottleMaterial = bottleMaterialService.get(id);
+		model.addAttribute("bottleMaterial", bottleMaterial);
+	    return "basicInfo/bottleMaterial/edit";
+	}
+	
+	/**
+	 * 保存
+	 */
+	@Log("钢瓶材质表-保存")
+	@ResponseBody
+	@PostMapping("/save")
+	@RequiresPermissions("basicInfo:bottleMaterial:add")
+	public R save( BottleMaterialDO bottleMaterial){
+		if(bottleMaterialService.save(bottleMaterial)>0){
+			return R.ok();
+		}
+		return R.error();
+	}
+	/**
+	 * 修改
+	 */
+	@Log("钢瓶材质表-修改")
+	@ResponseBody
+	@RequestMapping("/update")
+	@RequiresPermissions("basicInfo:bottleMaterial:edit")
+	public R update( BottleMaterialDO bottleMaterial){
+		bottleMaterialService.update(bottleMaterial);
+		return R.ok();
+	}
+	
+	/**
+	 * 删除
+	 */
+	@Log("钢瓶材质表-删除")
+	@PostMapping( "/remove")
+	@ResponseBody
+	@RequiresPermissions("basicInfo:bottleMaterial:remove")
+	public R remove( String id){
+		if(bottleMaterialService.remove(id)>0){
+		return R.ok();
+		}
+		return R.error();
+	}
+	
+	/**
+	 * 删除
+	 */
+	@Log("钢瓶材质表-批量删除")
+	@PostMapping( "/batchRemove")
+	@ResponseBody
+	@RequiresPermissions("basicInfo:bottleMaterial:batchRemove")
+	public R remove(@RequestParam("ids[]") String[] ids){
+		bottleMaterialService.batchRemove(ids);
+		return R.ok();
+	}
+	
+}

@@ -1,0 +1,23 @@
+package com.cptech.settings.service;
+
+import com.cptech.settings.domain.WokTimeIntervalDO;
+
+import java.util.List;
+import com.github.pagehelper.Page;
+
+/**
+ * 作业人员工作时间设置表
+ * 
+ * @author pjy
+ * @email 1595418464@qq.com
+ * @date 2018-06-27 15:29:52
+ */
+public interface WokTimeIntervalService {
+	
+	WokTimeIntervalDO get(String id);
+	
+	List<WokTimeIntervalDO> findAll(WokTimeIntervalDO wokTimeInterval);
+	Page<WokTimeIntervalDO> findByPage(WokTimeIntervalDO wokTimeInterval);
+	
+	int set(WokTimeIntervalDO wokTimeInterval);
+}

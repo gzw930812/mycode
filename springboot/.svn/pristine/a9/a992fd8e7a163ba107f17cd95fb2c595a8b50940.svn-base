@@ -1,0 +1,74 @@
+package com.cptech.settings.controller;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.cptech.common.annotation.Log;
+import com.cptech.common.utils.PageUtils;
+import com.cptech.common.utils.R;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
+import com.cptech.settings.domain.WokTimeIntervalDO;
+import com.cptech.settings.service.WokTimeIntervalService;
+
+/**
+ * 作业人员工作时间设置表
+ * 
+ * @author pjy
+ * @email 1595418464@qq.com
+ * @date 2018-06-27 15:29:52
+ */
+ 
+@Controller
+@RequestMapping("/settings/wokTimeInterval")
+public class WokTimeIntervalController {
+	@Autowired
+	private WokTimeIntervalService wokTimeIntervalService;
+	
+	@GetMapping()
+	@RequiresPermissions("settings:wokTimeInterval:wokTimeInterval")
+	String WokTimeInterval(){
+	    return "settings/wokTimeInterval/wokTimeInterval";
+	}
+	
+	@Log("作业人员工作时间设置表-查询列表")
+	@ResponseBody
+	@GetMapping("/list")
+	@RequiresPermissions("settings:wokTimeInterval:wokTimeInterval")
+	public PageUtils list(WokTimeIntervalDO wokTimeInterval){
+		//查询列表数据
+		Page<WokTimeIntervalDO> findByPage = wokTimeIntervalService.findByPage(wokTimeInterval);
+		PageInfo<WokTimeIntervalDO> pageInfo = new PageInfo<>(findByPage);
+		PageUtils pageUtil = new PageUtils(pageInfo.getList(), (int)pageInfo.getTotal());
+		return pageUtil;
+	}
+	
+	@GetMapping("/edit/{id}")
+	@RequiresPermissions("settings:wokTimeInterval:edit")
+	String edit(@PathVariable("id") String id,Model model){
+		WokTimeIntervalDO wokTimeInterval = wokTimeIntervalService.get(id);
+		model.addAttribute("wokTimeInterval", wokTimeInterval);
+	    return "settings/wokTimeInterval/edit";
+	}
+	/**
+	 * 修改
+	 */
+	@Log("作业人员工作时间设置表-修改")
+	@ResponseBody
+	@RequestMapping("/update")
+	@RequiresPermissions("settings:wokTimeInterval:edit")
+	public R update( WokTimeIntervalDO wokTimeInterval){
+		wokTimeIntervalService.set(wokTimeInterval);
+		return R.ok();
+	}
+	
+}

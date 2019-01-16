@@ -1,0 +1,103 @@
+package com.cptech.basicInfo.service.impl;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.cptech.basicInfo.dao.AreaDao;
+import com.cptech.basicInfo.domain.AreaDO;
+import com.cptech.basicInfo.service.AreaService;
+import com.cptech.common.domain.Tree;
+import com.cptech.common.utils.BuildTree;
+import com.cptech.system.domain.DeptDO;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
+
+
+@Service
+public class AreaServiceImpl implements AreaService {
+	@Autowired
+	private AreaDao areaDao;
+	
+	@Override
+	public AreaDO get(String id){
+		return areaDao.get(id);
+	}
+	
+	@Override
+	public List<AreaDO> findAll(AreaDO area){
+		List<AreaDO> areas = areaDao.findAll(area);
+		return areas;
+	}
+	@Override
+	public Page<AreaDO> findByPage(AreaDO area){
+		PageHelper.startPage(area.getOffset(), area.getLimit());
+		return areaDao.findByPage(area);
+	}
+	
+	@Override
+	public int save(AreaDO area){
+		area.preInsert();
+		return areaDao.save(area);
+	}
+	
+	@Override
+	public int update(AreaDO area){
+		area.preUpdate();
+		return areaDao.update(area);
+	}
+	
+	@Override
+	public int remove(String id){
+		return areaDao.remove(id);
+	}
+	
+	@Override
+	public int batchRemove(String[] ids){
+		return areaDao.batchRemove(ids);
+	}
+
+	@Override
+	public Tree<AreaDO> getTree(AreaDO areaDO) {
+		List<Tree<AreaDO>> trees = new ArrayList<Tree<AreaDO>>();
+		List<AreaDO> areas = areaDao.findAll(areaDO);
+		for (AreaDO area : areas) {
+			Tree<AreaDO> tree = new Tree<AreaDO>();
+			tree.setId(area.getId());
+			if(area.getId().equals(areaDO.getParentIds())) {
+				tree.setParentId("0");
+			} else {
+				tree.setParentId(area.getParentId().toString());
+			}
+			tree.setText(area.getName());
+			Map<String, Object> state = new HashMap<>(16);
+			state.put("opened", true);
+			tree.setState(state);
+			Map<String, Object> attrs = new HashMap<String, Object>(5);
+			attrs.put("type", area.getType());
+			tree.setAttributes(attrs);
+			trees.add(tree);
+		}
+		// 默认顶级菜单为０，根据数据库实际情况调整
+		Tree<AreaDO> t = BuildTree.build(trees,"全国");
+		return t;
+	}
+
+	@Override
+	public Long countChildren(String id) {
+		return areaDao.countChildren(id);
+	}
+
+	@Override
+	public AreaDO getByCode(String code) {
+		return areaDao.getByCode(code);
+	}
+	
+}

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cptech.stationinfo.dao.DevicesDao">
+	<sql id="DevicesColumns">
+		id,name,meid,outer_code,status,station_id,create_by,create_date,update_by,update_date,remarks,del_flag
+	</sql>
+
+	<select id="get" resultType="com.cptech.stationinfo.domain.DevicesDO">
+		select
+		<include refid="DevicesColumns" />
+		from t_devices where id = #{id}
+	</select>
+	
+	<select id="getByOutCode" resultType="com.cptech.stationinfo.domain.DevicesDO" parameterType="java.lang.String">
+		select
+		<include refid="DevicesColumns" />
+		from t_devices where outer_code = #{outerNumber}
+	</select>
+
+	<select id="findAll" resultType="com.cptech.stationinfo.domain.DevicesDO">
+		select
+		<include refid="DevicesColumns" />
+		from t_devices
+		<where>
+			<if test="name != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and name like '%${ name}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and name like concat('%',#{name},'%')
+				</if>
+			</if>
+			<if test="meid != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and meid like '%${ meid}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and meid like concat('%',#{meid},'%')
+				</if>
+			</if>
+			<if test="outerCode != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and outer_code like '%${ outerCode}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and outer_code like concat('%',#{outerCode},'%')
+				</if>
+			</if>
+			<if test="status != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and status like '%${ status}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and status like concat('%',#{status},'%')
+				</if>
+			</if>
+			<if test="stationId != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and station_id like '%${ stationId}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and station_id like concat('%',#{stationId},'%')
+				</if>
+			</if>
+		</where>
+	</select>
+
+	<select id="findByPage" resultType="com.cptech.stationinfo.domain.DevicesDO">
+		select
+		a.id as id,
+		a.name as name,
+		a.meid as meid,
+		a.outer_code as outerCode,
+		a.status as status,
+		a.station_id as stationId, 
+		a.create_by as createBy,
+		a.create_date as createDate,
+		a.update_by as updateBy,
+		a.update_date as updateDate,
+		a.remarks as remarks,
+		a.del_flag as delFlag,
+		s.name as stationName
+		from t_devices a
+		left join t_stations s on a.station_id = s.id 
+		<where>a.del_flag = '0'
+			<if test="name != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.name like '%${ name}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.name like concat('%',#{name},'%')
+				</if>
+			</if>
+			<if test="meid != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.meid like '%${ meid}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.meid like concat('%',#{meid},'%')
+				</if>
+			</if>
+			<if test="outerCode != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.outer_code like '%${ outerCode}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.outer_code like concat('%',#{outerCode},'%')
+				</if>
+			</if>
+			<if test="status != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.status like '%${ status}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.status like concat('%',#{status},'%')
+				</if>
+			</if>
+			<if test="stationId != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.station_id like '%${ stationId}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.station_id like concat('%',#{stationId},'%')
+				</if>
+			</if>
+			<if test="deptId != null">
+				and FIND_IN_SET(s.dept_id, #{filterDeptIds})
+			</if>
+		</where>
+		order by a.update_date
+	</select>
+
+	<insert id="save" parameterType="com.cptech.stationinfo.domain.DevicesDO">
+		insert into t_devices
+		(
+		<if test="id != null">
+			id,
+		</if>
+		<if test="name != null">
+			name,
+		</if>
+		<if test="meid != null">
+			meid,
+		</if>
+		<if test="outerCode != null">
+			outer_code,
+		</if>
+		<if test="status != null">
+			status,
+		</if>
+		<if test="stationId != null">
+			station_id,
+		</if>
+		<if test="createBy != null">
+			create_by,
+		</if>
+		<if test="createDate != null">
+			create_date,
+		</if>
+		<if test="updateBy != null">
+			update_by,
+		</if>
+		<if test="updateDate != null">
+			update_date,
+		</if>
+		<if test="remarks != null">
+			remarks,
+		</if>
+		<if test="delFlag != null">
+			del_flag
+		</if>
+		)
+		values
+		(
+		<if test="id != null">
+			#{id},
+		</if>
+		<if test="name != null">
+			#{name},
+		</if>
+		<if test="meid != null">
+			#{meid},
+		</if>
+		<if test="outerCode != null">
+			#{outerCode},
+		</if>
+		<if test="status != null">
+			#{status},
+		</if>
+		<if test="stationId != null">
+			#{stationId},
+		</if>
+		<if test="createBy != null">
+			#{createBy},
+		</if>
+		<if test="createDate != null">
+			#{createDate},
+		</if>
+		<if test="updateBy != null">
+			#{updateBy},
+		</if>
+		<if test="updateDate != null">
+			#{updateDate},
+		</if>
+		<if test="remarks != null">
+			#{remarks},
+		</if>
+		<if test="delFlag != null">
+			#{delFlag}
+		</if>
+		)
+	</insert>
+
+	<update id="update" parameterType="com.cptech.stationinfo.domain.DevicesDO">
+		update t_devices
+		<set>
+			<if test="name != null">name = #{name}, </if>
+			<if test="meid != null">meid = #{meid}, </if>
+			<if test="outerCode != null">outer_code = #{outerCode}, </if>
+			<if test="status != null">status = #{status}, </if>
+			<if test="stationId != null">station_id = #{stationId}, </if>
+			<if test="createBy != null">create_by = #{createBy}, </if>
+			<if test="createDate != null">create_date = #{createDate}, </if>
+			<if test="updateBy != null">update_by = #{updateBy}, </if>
+			<if test="updateDate != null">update_date = #{updateDate}, </if>
+			<if test="remarks != null">remarks = #{remarks}, </if>
+			<if test="delFlag != null">del_flag = #{delFlag}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="remove">
+		delete from t_devices where id = #{value}
+	</delete>
+
+	<delete id="batchRemove">
+		delete from t_devices where id in
+		<foreach item="id" collection="array" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

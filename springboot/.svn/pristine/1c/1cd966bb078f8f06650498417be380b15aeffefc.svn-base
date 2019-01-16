@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cptech.stationinfo.dao.StationsDao">
+	<sql id="StationsColumns">
+		id,type,name,status,dept_id,charge_person,cell_phone,credit_code,steel_seal_code,licence_code,licence_expire_date,address,pic_urls,create_by,create_date,update_by,update_date,remarks,del_flag
+	</sql>
+
+	<select id="get" resultType="com.cptech.stationinfo.domain.StationsDO">
+		select
+			t.id,type,t.name,t.status,dept_id,d.name deptName,charge_person,cell_phone,credit_code,steel_seal_code,licence_code,licence_expire_date,address,pic_urls
+			from t_stations t
+		left join sys_dept d on dept_id=d.id
+		where t.id = #{id}
+	</select>
+
+	<select id="getStations" parameterType="java.util.Map" resultType="com.cptech.stationinfo.domain.StationsDO">
+		select 
+		<include refid="StationsColumns" />
+		from t_stations
+		<where> del_flag='0'
+			<if test="type != null and type != '0'.toString()">
+				and type=#{type} 
+			</if>
+			<if test="deptId != null">
+				and FIND_IN_SET(dept_id, fun_get_sys_dept_children(#{deptId}))
+			</if>	
+		</where>
+	</select>
+
+	<select id="findByPage" resultType="com.cptech.stationinfo.domain.StationsDO">
+		select
+		t.id,type,t.name,t.status,dept_id,d.name deptName,charge_person,cell_phone,credit_code,steel_seal_code,licence_code,licence_expire_date,address,pic_urls
+		from t_stations t
+		left join sys_dept d on dept_id=d.id
+		<if test="MEID != null and MEID != '' ">
+			left join t_devices de on de.station_id=t.id
+		</if>
+		<where>
+			<if test="id != null and id != '' ">
+				and t.id =#{id}
+			</if>
+			<if test="type != null and type != '' ">
+				and type =#{type}
+			</if>
+			<if test="status != null and status != '' ">
+				and t.status =#{status}
+			</if>
+			<if test="MEID != null and MEID != '' ">
+				and de.meid like concat('%',#{MEID},'%')
+			</if>
+			<if test="deptId != null and deptId != '' ">
+				and FIND_IN_SET(dept_id, fun_get_sys_dept_children(#{deptId})) 
+			</if>
+		</where>
+		order by t.update_date
+	</select>
+
+	<insert id="save" parameterType="com.cptech.stationinfo.domain.StationsDO">
+		insert into t_stations
+		(
+		<if test="id != null">
+			id,
+		</if>
+		<if test="type != null">
+			type,
+		</if>
+		<if test="name != null">
+			name,
+		</if>
+		<if test="status != null">
+			status,
+		</if>
+		<if test="deptId != null">
+			dept_id,
+		</if>
+		<if test="chargePerson != null">
+			charge_person,
+		</if>
+		<if test="cellPhone != null">
+			cell_phone,
+		</if>
+		<if test="creditCode != null">
+			credit_code,
+		</if>
+		<if test="steelSealCode != null">
+			steel_seal_code,
+		</if>
+		<if test="licenceCode != null">
+			licence_code,
+		</if>
+		<if test="licenceExpireDate != null">
+			licence_expire_date,
+		</if>
+		<if test="address != null">
+			address,
+		</if>
+		<if test="picUrls != null">
+			pic_urls,
+		</if>
+		<if test="createBy != null">
+			create_by,
+		</if>
+		<if test="createDate != null">
+			create_date,
+		</if>
+		<if test="updateBy != null">
+			update_by,
+		</if>
+		<if test="updateDate != null">
+			update_date,
+		</if>
+		<if test="remarks != null">
+			remarks,
+		</if>
+		<if test="delFlag != null">
+			del_flag
+		</if>
+		)
+		values
+		(
+		<if test="id != null">
+			#{id},
+		</if>
+		<if test="type != null">
+			#{type},
+		</if>
+		<if test="name != null">
+			#{name},
+		</if>
+		<if test="status != null">
+			#{status},
+		</if>
+		<if test="deptId != null">
+			#{deptId},
+		</if>
+		<if test="chargePerson != null">
+			#{chargePerson},
+		</if>
+		<if test="cellPhone != null">
+			#{cellPhone},
+		</if>
+		<if test="creditCode != null">
+			#{creditCode},
+		</if>
+		<if test="steelSealCode != null">
+			#{steelSealCode},
+		</if>
+		<if test="licenceCode != null">
+			#{licenceCode},
+		</if>
+		<if test="licenceExpireDate != null">
+			#{licenceExpireDate},
+		</if>
+		<if test="address != null">
+			#{address},
+		</if>
+		<if test="picUrls != null">
+			#{picUrls},
+		</if>
+		<if test="createBy != null">
+			#{createBy},
+		</if>
+		<if test="createDate != null">
+			#{createDate},
+		</if>
+		<if test="updateBy != null">
+			#{updateBy},
+		</if>
+		<if test="updateDate != null">
+			#{updateDate},
+		</if>
+		<if test="remarks != null">
+			#{remarks},
+		</if>
+		<if test="delFlag != null">
+			#{delFlag}
+		</if>
+		)
+	</insert>
+
+	<update id="update" parameterType="com.cptech.stationinfo.domain.StationsDO">
+		update t_stations
+		<set>
+			<if test="type != null">type = #{type}, </if>
+			<if test="name != null">name = #{name}, </if>
+			<if test="status != null">status = #{status}, </if>
+			<if test="deptId != null">dept_id = #{deptId}, </if>
+			<if test="chargePerson != null">charge_person = #{chargePerson}, </if>
+			<if test="cellPhone != null">cell_phone = #{cellPhone}, </if>
+			<if test="creditCode != null">credit_code = #{creditCode}, </if>
+			<if test="steelSealCode != null">steel_seal_code = #{steelSealCode}, </if>
+			<if test="licenceCode != null">licence_code = #{licenceCode}, </if>
+			<if test="licenceExpireDate != null">licence_expire_date = #{licenceExpireDate}, </if>
+			<if test="address != null">address = #{address}, </if>
+			<if test="picUrls != null">pic_urls = #{picUrls}, </if>
+			<if test="createBy != null">create_by = #{createBy}, </if>
+			<if test="createDate != null">create_date = #{createDate}, </if>
+			<if test="updateBy != null">update_by = #{updateBy}, </if>
+			<if test="updateDate != null">update_date = #{updateDate}, </if>
+			<if test="remarks != null">remarks = #{remarks}, </if>
+			<if test="delFlag != null">del_flag = #{delFlag}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="remove">
+		delete from t_stations where id = #{value}
+	</delete>
+
+	<delete id="batchRemove">
+		delete from t_stations where id in
+		<foreach item="id" collection="array" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+	</delete>
+	<select id="exit" resultType="int" parameterType="com.cptech.stationinfo.domain.StationsDO">
+		select count(1)
+		from t_stations
+		<where>
+			<if test="type != null">
+				and type =#{type}
+			</if>
+			<if test="name != null">
+				and name=#{name}
+			</if>
+			<if test="creditCode != null">
+				and credit_code =#{creditCode}
+			</if>
+			<if test="id != null">
+				and id !=#{id}
+			</if>
+		</where>
+	</select>
+</mapper>

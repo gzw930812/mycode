@@ -1,0 +1,162 @@
+package com.cptech.qrc.domain;
+
+import java.io.Serializable;
+import java.util.Date;
+
+import com.cptech.common.domain.BaseDo;
+
+/**
+ * 二维码表
+ * 
+ * @author fb
+ * @email 1595418464@qq.com
+ * @date 2018-06-20 16:35:19
+ */
+public class QrcodeDO extends BaseDo implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	// 二维码编号
+	private String qrcodeNo;
+	// 归属钢瓶id
+	private String bottleId;
+	// 状态（1：正常；2：报废）
+	private String status;
+	// 报废原因id
+	private String scrapReason;
+	// 报废原因
+	private String scrapReasonName;
+	// 报废日期
+	private Date scrapDate;
+
+	private String bottleNo;// 钢瓶编号
+
+	private String stationName; // 所属站点（产权单位）
+	
+	private String stationId; //站点id
+
+	private Date nextCheckDate;// 下次检验日期
+	
+	private String deptId;//机构id
+	
+	public String getDeptId() {
+		return deptId;
+	}
+
+	public void setDeptId(String deptId) {
+		this.deptId = deptId;
+	}
+
+	public String getScrapReasonName() {
+		return scrapReasonName;
+	}
+
+	public void setScrapReasonName(String scrapReasonName) {
+		this.scrapReasonName = scrapReasonName;
+	}
+
+	public String getStationId() {
+		return stationId;
+	}
+
+	public void setStationId(String stationId) {
+		this.stationId = stationId;
+	}
+
+	public String getBottleNo() {
+		return bottleNo;
+	}
+
+	public void setBottleNo(String bottleNo) {
+		this.bottleNo = bottleNo;
+	}
+
+	public String getStationName() {
+		return stationName;
+	}
+
+	public void setStationName(String stationName) {
+		this.stationName = stationName;
+	}
+
+	public Date getNextCheckDate() {
+		return nextCheckDate;
+	}
+
+	public void setNextCheckDate(Date nextCheckDate) {
+		this.nextCheckDate = nextCheckDate;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	/**
+	 * 设置：二维码编号
+	 */
+	public void setQrcodeNo(String qrcodeNo) {
+		this.qrcodeNo = qrcodeNo;
+	}
+
+	/**
+	 * 获取：二维码编号
+	 */
+	public String getQrcodeNo() {
+		return qrcodeNo;
+	}
+
+	/**
+	 * 设置：归属气瓶id
+	 */
+	public void setBottleId(String bottleId) {
+		this.bottleId = bottleId;
+	}
+
+	/**
+	 * 获取：归属气瓶id
+	 */
+	public String getBottleId() {
+		return bottleId;
+	}
+
+	/**
+	 * 设置：状态（1：正常；2：报废）
+	 */
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	/**
+	 * 获取：状态（1：正常；2：报废）
+	 */
+	public String getStatus() {
+		return status;
+	}
+
+	/**
+	 * 设置：报废原因
+	 */
+	public void setScrapReason(String scrapReason) {
+		this.scrapReason = scrapReason;
+	}
+
+	/**
+	 * 获取：报废原因
+	 */
+	public String getScrapReason() {
+		return scrapReason;
+	}
+
+	/**
+	 * 设置：报废日期
+	 */
+	public void setScrapDate(Date scrapDate) {
+		this.scrapDate = scrapDate;
+	}
+
+	/**
+	 * 获取：报废日期
+	 */
+	public Date getScrapDate() {
+		return scrapDate;
+	}
+}

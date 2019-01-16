@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cptech.common.dao.LogDao">
+	<sql id="logColumns">
+		id,user_id,username,operation,time,method,params,ip,create_by,create_date,update_by,update_date,remarks,del_flag
+	</sql>
+	<select id="get" resultType="com.cptech.common.domain.LogDO">
+		select <include refid="logColumns"/> from sys_log where id = #{id}
+	</select>
+
+	<select id="findAll" resultType="com.cptech.common.domain.LogDO">
+		select <include refid="logColumns"/> from sys_log
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+		  		  <if test="username != null and username != ''"> and username = #{username} </if>
+		  		  <if test="operation != null and operation != ''"> and operation = #{operation} </if>
+		  		  <if test="time != null and time != ''"> and time = #{time} </if>
+		  		  <if test="method != null and method != ''"> and method = #{method} </if>
+		  		  <if test="params != null and params != ''"> and params = #{params} </if>
+		  		  <if test="ip != null and ip != ''"> and ip = #{ip} </if>
+		  		</where>
+	</select>
+	<select id="findByPage" resultType="com.cptech.common.domain.LogDO">
+		select <include refid="logColumns"/> from sys_log
+        <where>  
+  		  <if test="id != null and id != ''"> and id = #{id} </if>
+  		  <if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+  		  <if test="username != null and username != ''"> and username = #{username} </if>
+  		  <if test="operation != null and operation != ''"> and operation = #{operation} </if>
+  		  <if test="time != null and time != ''"> and time = #{time} </if>
+  		  <if test="method != null and method != ''"> and method = #{method} </if>
+  		  <if test="params != null and params != ''"> and params = #{params} </if>
+  		  <if test="ip != null and ip != ''"> and ip = #{ip} </if>
+  		</where>
+         order by update_date desc
+	</select>
+	
+	<insert id="save" parameterType="com.cptech.common.domain.LogDO" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_log
+		(
+			id,
+			<if test="userId != null and userId != ''"> 
+			user_id, 
+			</if>
+			<if test="username != null and username != ''"> 
+			username, 
+			</if>
+			<if test="operation != null and operation != ''"> 
+			operation, 
+			</if>
+			<if test="time != null and time != ''"> 
+			time, 
+			</if>
+			<if test="method != null and method != ''"> 
+			method, 
+			</if>
+			<if test="params != null and params != ''"> 
+			params, 
+			</if>
+			<if test="ip != null and ip != ''"> 
+			ip, 
+			</if>
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		)
+		values
+		(
+			#{id},
+			<if test="userId != null and userId != ''"> 
+			#{userId}, 
+			</if>
+			<if test="username != null and username != ''"> 
+			#{username}, 
+			</if>
+			<if test="operation != null and operation != ''"> 
+			#{operation}, 
+			</if>
+			<if test="time != null and time != ''"> 
+			#{time}, 
+			</if>
+			<if test="method != null and method != ''"> 
+			#{method}, 
+			</if>
+			<if test="params != null and params != ''"> 
+			#{params}, 
+			</if>
+			<if test="ip != null and ip != ''"> 
+			#{ip}, 
+			</if>
+			#{createBy},
+			#{createDate},
+			#{updateBy},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.cptech.common.domain.LogDO">
+		update sys_log 
+		<set>
+			<if test="userId != null">user_id = #{userId}, </if>
+			<if test="username != null">username = #{username}, </if>
+			<if test="operation != null">operation = #{operation}, </if>
+			<if test="time != null">time = #{time}, </if>
+			<if test="method != null">method = #{method}, </if>
+			<if test="params != null">params = #{params}, </if>
+			<if test="ip != null">ip = #{ip}, </if>
+			<if test="createBy != null">create_by = #{createBy}, </if>
+			<if test="createDate != null">create_date = #{createDate}, </if>
+			<if test="updateBy != null">update_by = #{updateBy}, </if>
+			<if test="updateDate != null">update_date = #{updateDate}, </if>
+			<if test="remarks != null">remarks = #{remarks}, </if>
+			<if test="delFlag != null">del_flag = #{delFlag} </if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from sys_log where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from sys_log where id in 
+		<foreach item="ids" collection="array" open="(" separator="," close=")">
+			#{ids}
+		</foreach>
+	</delete>
+
+</mapper>

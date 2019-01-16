@@ -1,0 +1,53 @@
+package com.cptech.common.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+
+import com.cptech.common.utils.ShiroUtils;
+import com.cptech.stationinfo.domain.StationsDO;
+import com.cptech.stationinfo.service.StationsService;
+import com.cptech.system.domain.UserDO;
+
+@Controller
+public class BaseController {
+	
+	@Value("${server.context-path}")
+	private String contexPath;//系统上下文路径
+	@Autowired
+	private StationsService stationsService;
+	
+	/**
+	 * 获取系统上下文路径（即项目名称）
+	 * @return
+	 */
+	public String getContexPath() {
+		return contexPath;
+	}
+	
+	public UserDO getUser() {
+		return ShiroUtils.getUser();
+	}
+
+	public String getUserId() {
+		return getUser().getId();
+	}
+
+	public String getUsername() {
+		return getUser().getUsername();
+	}
+	/**
+	 * 获取登录用户所在机构及其下属机构的所有站点
+	 * @param type 站点类型（1：充装站；2：检验站）
+	 * @return
+	 */
+	public List<StationsDO> getUserStations(String type){
+		StationsDO station=new StationsDO();
+		station.setDeptId(getUser().getDeptId());
+		station.setType(type);
+		List<StationsDO> stations = stationsService.getFillingStations(station);
+		return stations;
+	}
+}

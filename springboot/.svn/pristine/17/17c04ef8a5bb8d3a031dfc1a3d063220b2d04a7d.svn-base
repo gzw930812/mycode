@@ -1,0 +1,147 @@
+package com.cptech.system.controller;
+
+import java.util.List;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.cptech.common.annotation.Log;
+import com.cptech.common.config.GlobleConfig;
+import com.cptech.common.controller.BaseController;
+import com.cptech.common.domain.FileDO;
+import com.cptech.common.domain.Tree;
+import com.cptech.common.redis.shiro.RedisCache;
+import com.cptech.common.redis.shiro.RedisManager;
+import com.cptech.common.service.FileService;
+import com.cptech.common.utils.MD5Utils;
+import com.cptech.common.utils.R;
+import com.cptech.common.utils.ShiroUtils;
+import com.cptech.system.domain.MenuDO;
+import com.cptech.system.domain.UserDO;
+import com.cptech.system.domain.UserOnline;
+import com.cptech.system.service.DeptService;
+import com.cptech.system.service.MenuService;
+import com.cptech.system.service.SessionService;
+
+@Controller
+public class LoginController extends BaseController {
+	//private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+	@Autowired
+	RedisManager redisManager;
+	@Autowired
+	MenuService menuService;
+	@Autowired
+	FileService fileService;
+	@Autowired
+	private GlobleConfig globleConfig;
+	@Autowired
+	private DeptService deptService;
+	@Autowired
+	private SessionService sessionService;
+	@Autowired
+    private SimpMessagingTemplate template;
+	
+	@GetMapping({ "/", "" })
+	String welcome(Model model) {
+		return "redirect:/login";
+	}
+
+	@Log("请求访问主页")
+	@GetMapping({ "/index" })
+	String index(Model model) {
+		List<Tree<MenuDO>> menus = menuService.getLeftMenuByUserId(getUserId());
+		List<MenuDO> topMenus = menuService.getTopMenuByUserId(getUserId());
+		model.addAttribute("menus", menus);
+		model.addAttribute("topMenus", topMenus);
+		model.addAttribute("name", getUser().getName());
+		FileDO fileDO = fileService.get(getUser().getPicId());
+		if(fileDO!=null&&fileDO.getUrl()!=null){
+			if(fileService.isExist(fileDO.getUrl())){
+				model.addAttribute("picUrl",this.getContexPath()+fileDO.getUrl());
+			}else {
+				model.addAttribute("picUrl",this.getContexPath()+"/img/photo_s.jpg");
+			}
+		}else {
+			model.addAttribute("picUrl",this.getContexPath()+"/img/photo_s.jpg");
+		}
+		model.addAttribute("username", getUser().getUsername());
+		String systemName = globleConfig.getSystemName();
+		model.addAttribute("systemName", systemName);
+		return "index";
+	}
+
+	@GetMapping("/login")
+	String login(Model model) {
+		String systemName = globleConfig.getSystemName();
+		model.addAttribute("systemName", systemName);
+		return "login";
+	}
+
+	@Log("登录")
+	@PostMapping("/login")
+	@ResponseBody
+	R ajaxLogin(String username, String password) {
+		password = MD5Utils.encrypt(username, password);
+		UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+		Subject subject = SecurityUtils.getSubject();
+		try {
+			subject.login(token);
+			UserDO user = getUser();
+			//下线当前账户已登录用户
+			Session currSession = subject.getSession();
+			List<UserOnline> listOnlineUser = sessionService.list();
+			//找到当前账号非浏览器登录的登录信息
+			for (UserOnline userOnline : listOnlineUser) {
+				if(user.getUsername().equals(userOnline.getUsername())
+						&&!currSession.getId().equals(userOnline.getId())
+						) {
+					UserDO u = sessionService.getBySessionId(userOnline.getId());
+					sessionService.forceLogout(userOnline.getId());
+					//用户被强制下线通知
+					if(u!=null) {
+				        ThreadPoolExecutor executor = new ThreadPoolExecutor(1,1,0, TimeUnit.MILLISECONDS,new LinkedBlockingDeque<>());
+				        executor.execute(new Runnable() {
+				            @Override
+				            public void run() {
+				            	template.convertAndSendToUser(u.toString(), "/queue/remoteLogin", "你的账号已在异地登录，若不是你本人登录，请及时重新登录后修改密码！" );
+				            }
+				        });
+				        executor.shutdown();
+					}
+				}
+			}
+			//缓存用户所在机构及其下属机构id
+			String deptIds=deptService.getUserDeptIds(user.getDeptId());
+			RedisCache<String, Object> redisCache=new RedisCache<>(redisManager);
+			redisCache.put("deptIds_"+user.getId(), deptIds);
+			return R.ok();
+		} catch (AuthenticationException e) {
+			return R.error(e.getMessage());
+		}
+	}
+
+	@GetMapping("/logout")
+	String logout() {
+		ShiroUtils.logout();
+		return "redirect:/login";
+	}
+
+	@GetMapping("/main")
+	String main() {
+		return "main";
+	}
+}

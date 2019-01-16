@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<head>
+	<style type="text/css">
+		.tdStyle{
+			background-color: #a8dad0;
+			color:white;
+			width:20%;
+		}
+	</style>
+</head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<table data-mobile-responsive="true" class="table table-hover table-striped table-bordered">
+			<tbody>
+				<tr>
+					<td align="center" class="tdStyle"><label>检验站名称</label></td>
+					<td align="center"><label th:text="${stationInfo.name}" class=""></label></td>
+					<td align="center" class="tdStyle"><label>社会统一信用代码</label></td>
+					<td align="center"><label th:text="${stationInfo.creditCode}" class=""></label></td>
+				</tr>
+				<tr>
+					<td align="center" class="tdStyle"><label>所属机构</label></td>
+					<td align="center"><label th:text="${stationInfo.deptName}" class=""></label></td>
+					<td align="center" class="tdStyle"><label>地址</label></td>
+					<td align="center"><label th:text="${stationInfo.address}" class=""></label></td>
+				</tr>
+				<tr>
+					<td align="center" class="tdStyle"><label>负责人</label></td>
+					<td align="center"><label th:text="${stationInfo.chargePerson}" class=""></label></td>
+					<td align="center" class="tdStyle"><label>联系电话</label></td>
+					<td align="center"><label th:text="${stationInfo.cellPhone}" class=""></label></td>
+				</tr>
+				<tr>
+					<td align="center" class="tdStyle"><label>核准证号有效期</label></td>
+					<td align="center"><label th:text="${#dates.format(stationInfo.licenceExpireDate,'yyyy-MM-dd')}" class=""></label></td>
+					<td align="center" class="tdStyle"><label>核准证号</label></td>
+					<td align="center"><label th:text="${stationInfo.licenceCode}" class=""></label></td>
+					<!-- <td align="center" th:switch="${stationInfo.status}">
+						<label th:case="1" class="">营业中</label>
+						<label th:case="2" class="">停业中</label>
+					</td> -->
+				</tr>
+			</tbody>
+		</table>
+		<div class="col-sm-12">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="fixed-table-toolbar">
+						<div class="columns pull-left">
+							<button shiro:hasPermission="stationinfo:devices:add" type="button" class="btn  btn-primary" onclick="add()">
+								<i class="fa fa-plus" aria-hidden="true"></i>添加
+							</button>
+							<button shiro:hasPermission="stationinfo:devices:batchRemove" type="button" class="btn  btn-danger"
+								onclick="batchRemove()">
+								<i class="fa fa-trash" aria-hidden="true"></i>删除
+							</button>
+						</div>
+					</div>
+					<table id="exampleTable" data-mobile-responsive="true">
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--shiro控制bootstraptable行内按钮看见性 来自bootdo的创新方案 -->
+		<div>
+			<script type="text/javascript">
+				var s_edit_h = 'hidden';
+				var s_remove_h = 'hidden';
+			</script>
+		</div>
+		<div shiro:hasPermission="stationinfo:devices:edit">
+			<script type="text/javascript">
+				s_edit_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="stationinfo:devices:remove">
+			<script type="text/javascript">
+				var s_remove_h = '';
+			</script>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script th:inline="javascript"> 
+		var stationId = [[${stationInfo.id}]] ; 
+	</script>
+	<script type="text/javascript" th:src="@{/js/appjs/stationinfo/stations/devices.js}"></script>
+</body>
+</html>

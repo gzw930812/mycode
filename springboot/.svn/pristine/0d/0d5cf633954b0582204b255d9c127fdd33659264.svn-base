@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cptech.oa.dao.NotifyDao">
+	<sql id="notifyColumns">
+		id,type,title,
+		<if test="databaseType == 'oracle'.toString()">
+			to_char(content) content,
+			to_char(files) files,
+		</if>
+		<if test="databaseType == 'mysql'.toString()">
+			char(content) content,
+			char(files) files,
+		</if>
+		status,create_by,create_date,update_by,update_date,remarks,del_flag
+	</sql>
+	
+	<select id="get" resultType="com.cptech.oa.domain.NotifyDO">
+		select
+			<include refid="notifyColumns"/>
+		from oa_notify where id = #{id}
+	</select>
+
+	<select id="findAll" resultType="com.cptech.oa.domain.NotifyDO">
+		select
+			<include refid="notifyColumns"/>
+		from oa_notify
+		<where> del_flag='0'
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="type != null and type != ''"> and type = #{type} </if>
+			<if test="title != null and title != ''"> and title = #{title} </if>
+			<if test="content != null and content != ''"> and content = #{content} </if>
+			<if test="files != null and files != ''"> and files = #{files} </if>
+			<if test="status != null and status != ''"> and status = #{status} </if>
+		</where>
+		order by update_date desc
+	</select>
+	<select id="findByPage" resultType="com.cptech.oa.domain.NotifyDO">
+		select
+			o.id,
+	       dic.name type,
+	       title,
+	       <if test="databaseType == 'oracle'.toString()">
+				to_char(content) content,
+				to_char(files) files,
+			</if>
+			<if test="databaseType == 'mysql'.toString()">
+				char(content) content,
+				char(files) files,
+			</if>
+	       status,
+	       o.create_by,
+	       o.create_date,
+	       o.update_by,
+	       o.update_date,
+	       o.remarks,
+	       o.del_flag
+		from oa_notify o
+		left join sys_dict dic on dic.type='oa_notify_type' and o.type=dic.value
+		<where> o.del_flag='0'
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="type != null and type != ''"> and type = #{type} </if>
+			<if test="title != null and title != ''"> 
+				<if test="databaseType == 'oracle'.toString()">
+					and title like '%${title}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+						and title like concat('%',#{title},'%')
+				</if>
+			</if>
+			<if test="content != null and content != ''"> and content = #{content} </if>
+			<if test="files != null and files != ''"> and files = #{files} </if>
+			<if test="status != null and status != ''"> and status = #{status} </if>
+		</where>
+		order by o.update_date desc
+	</select>
+
+	<insert id="save" parameterType="com.cptech.oa.domain.NotifyDO"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into oa_notify
+		(
+		id,
+		<if test="type != null and type != ''">
+			type,
+		</if>
+		<if test="title != null and title != ''">
+			title,
+		</if>
+		<if test="content != null and content != ''">
+			content,
+		</if>
+		<if test="files != null and files != ''">
+			files,
+		</if>
+		<if test="status != null and status != ''">
+			status,
+		</if>
+		create_by,
+		create_date,
+		update_by,
+		update_date,
+		remarks,
+		del_flag
+		)
+		values
+		(
+		#{id},
+		<if test="type != null and type != ''">
+			#{type},
+		</if>
+		<if test="title != null and title != ''">
+			#{title},
+		</if>
+		<if test="content != null and content != ''">
+			#{content},
+		</if>
+		<if test="files != null and files != ''">
+			#{files},
+		</if>
+		<if test="status != null and status != ''">
+			#{status},
+		</if>
+		#{createBy},
+		#{createDate},
+		#{updateBy},
+		#{updateDate},
+		#{remarks},
+		#{delFlag}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.cptech.oa.domain.NotifyDO">
+		update oa_notify
+		<set>
+			<if test="type != null">type = #{type}, </if>
+			<if test="title != null">title = #{title}, </if>
+			<if test="content != null">content = #{content}, </if>
+			<if test="files != null">files = #{files}, </if>
+			<if test="status != null">status = #{status}, </if>
+			<if test="createBy != null">create_by = #{createBy}, </if>
+			<if test="createDate != null">create_date = #{createDate}, </if>
+			<if test="updateBy != null">update_by = #{updateBy}, </if>
+			<if test="updateDate != null">update_date = #{updateDate}, </if>
+			<if test="remarks != null">remarks = #{remarks}, </if>
+			<if test="delFlag != null">del_flag = #{delFlag}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="remove">
+		update oa_notify set del_flag='1' where id = #{id}
+	</delete>
+
+	<delete id="batchRemove">
+		update oa_notify set del_flag='1' where id in
+		<foreach item="ids" collection="array" open="(" separator=","
+			close=")">
+			#{ids}
+		</foreach>
+	</delete>
+
+	<select id="listByIds" resultType="com.cptech.oa.domain.NotifyDO">
+		select
+		<include refid="notifyColumns"/>
+		from oa_notify where del_flag='0' and id in
+		<foreach item="ids" collection="array" open="(" separator=","
+			close=")">
+			#{ids}
+		</foreach>
+	</select>
+
+
+	<select id="countDTO" resultType="int">
+		select count(*)
+		from
+		oa_notify_record r right JOIN oa_notify n on r.notify_id
+		= n.id where r.del_flag='0' and n.del_flag='0' and
+		r.user_id =#{userId} and
+		r.is_read = #{isRead}
+	</select>
+
+	<select id="listDTOByPage" resultType="com.cptech.oa.domain.NotifyDTO">
+		select DISTINCT
+		n.id ,type,title,
+		<if test="databaseType == 'oracle'.toString()">
+			to_char(content) content,
+			to_char(files) files,
+		</if>
+		<if test="databaseType == 'mysql'.toString()">
+			char(content) content,
+			char(files) files,
+		</if>
+		r.is_read,status,r.create_by,r.create_date,r.update_by,r.update_date,r.remarks,r.del_flag
+		from oa_notify_record r right JOIN oa_notify n on r.notify_id = n.id
+		<where>
+			<if test="id != null and id != ''"> and r.id = #{id} </if>
+			<if test="isRead != null and isRead != ''"> and r.is_read = #{isRead} </if>
+			<if test="title != null and title != ''"> 
+				<if test="databaseType == 'oracle'.toString()">
+					and title like '%${title}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+						and title like concat('%',#{title},'%')
+				</if>
+			</if>
+			<if test="userId != null and userId != ''"> and r.user_id = #{userId} </if>
+		</where>
+		order by is_read ASC, update_date DESC
+	</select>
+
+</mapper>

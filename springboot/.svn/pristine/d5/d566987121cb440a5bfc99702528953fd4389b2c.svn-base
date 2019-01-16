@@ -1,0 +1,52 @@
+package com.cptech.worker.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.cptech.worker.dao.WorkersDao;
+import com.cptech.worker.domain.WorkersDO;
+import com.cptech.worker.service.WorkersService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
+
+
+@Service
+public class WorkersServiceImpl implements WorkersService {
+	@Autowired
+	private WorkersDao workersDao;
+	
+	@Override
+	public WorkersDO get(String id){
+		return workersDao.get(id);
+	}
+	
+	@Override
+	public Page<WorkersDO> findByPage(WorkersDO workers){
+		PageHelper.startPage(workers.getOffset(), workers.getLimit());
+		return workersDao.findByPage(workers);
+	}
+	
+	@Override
+	public int save(WorkersDO workers){
+		workers.preInsert();
+		return workersDao.save(workers);
+	}
+	
+	@Override
+	public int update(WorkersDO workers){
+		workers.preUpdate();
+		return workersDao.update(workers);
+	}
+	
+	@Override
+	public int remove(String id){
+		return workersDao.remove(id);
+	}
+	
+	@Override
+	public int batchRemove(String[] ids){
+		return workersDao.batchRemove(ids);
+	}
+	
+}

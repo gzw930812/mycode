@@ -1,0 +1,58 @@
+package com.cptech.bottle.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+import com.cptech.bottle.dao.SteelBottlesDao;
+import com.cptech.bottle.domain.SteelBottlesDO;
+import com.cptech.bottle.service.SteelBottlesService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
+
+
+@Service
+public class SteelBottlesServiceImpl implements SteelBottlesService {
+	@Autowired
+	private SteelBottlesDao steelBottlesDao;
+	
+	@Override
+	public SteelBottlesDO get(String id){
+		return steelBottlesDao.get(id);
+	}
+	
+	@Override
+	public List<SteelBottlesDO> findAll(SteelBottlesDO steelBottles){
+		return steelBottlesDao.findAll(steelBottles);
+	}
+	@Override
+	public Page<SteelBottlesDO> findByPage(SteelBottlesDO steelBottles){
+		PageHelper.startPage(steelBottles.getOffset(), steelBottles.getLimit());
+		return steelBottlesDao.findByPage(steelBottles);
+	}
+	
+	@Override
+	public int save(SteelBottlesDO steelBottles){
+		steelBottles.preInsert();
+		return steelBottlesDao.save(steelBottles);
+	}
+	
+	@Override
+	public int update(SteelBottlesDO steelBottles){
+		steelBottles.preUpdate();
+		return steelBottlesDao.update(steelBottles);
+	}
+	
+	@Override
+	public int remove(String id){
+		return steelBottlesDao.remove(id);
+	}
+	
+	@Override
+	public int batchRemove(String[] ids){
+		return steelBottlesDao.batchRemove(ids);
+	}
+	
+}

@@ -1,0 +1,142 @@
+package com.cptech.oa.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.cptech.common.service.DictService;
+import com.cptech.common.utils.DateUtils;
+import com.cptech.oa.dao.NotifyDao;
+import com.cptech.oa.dao.NotifyRecordDao;
+import com.cptech.oa.domain.NotifyDO;
+import com.cptech.oa.domain.NotifyDTO;
+import com.cptech.oa.domain.NotifyRecordDO;
+import com.cptech.oa.service.NotifyService;
+import com.cptech.system.dao.UserDao;
+import com.cptech.system.domain.UserDO;
+import com.cptech.system.service.SessionService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
+@Service
+public class NotifyServiceImpl implements NotifyService {
+    @Autowired
+    private NotifyDao notifyDao;
+    @Autowired
+    private NotifyRecordDao recordDao;
+    @Autowired
+    private UserDao userDao;
+    @Autowired
+    private DictService dictService;
+    @Autowired
+    private SessionService sessionService;
+    @Autowired
+    private SimpMessagingTemplate template;
+
+    @Override
+    public NotifyDO get(String id) {
+    	NotifyDO notifyDO = new NotifyDO();
+    	notifyDO.setId(id);
+        NotifyDO rDO = notifyDao.get(notifyDO);
+        rDO.setType(dictService.getName("oa_notify_type", rDO.getType()));
+        return rDO;
+    }
+
+    @Override
+    public List<NotifyDO> findAll(NotifyDO nd) {
+        List<NotifyDO> notifys = notifyDao.findAll(nd);
+        for (NotifyDO notifyDO : notifys) {
+            notifyDO.setType(dictService.getName("oa_notify_type", notifyDO.getType()));
+        }
+        return notifys;
+    }
+    @Override
+    public Page<NotifyDO> findByPage(NotifyDO notifyDO) {
+    	PageHelper.startPage(notifyDO.getOffset(), notifyDO.getLimit());
+    	return notifyDao.findByPage(notifyDO);
+    }
+
+    @Override
+    public int count(NotifyDO notifyDO) {
+        return notifyDao.count(notifyDO);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public int save(NotifyDO notify) {
+    	notify.preInsert();
+    	String notifyId = notify.getId();
+        int r = notifyDao.save(notify);
+        // 保存到接受者列表中
+        String[] userIds = notify.getUserIds();
+        List<NotifyRecordDO> records = new ArrayList<>();
+        for (String userId : userIds) {
+            NotifyRecordDO record = new NotifyRecordDO();
+            record.setNotifyId(notifyId);
+            record.setUserId(userId);
+            record.setIsRead(0);
+            record.preInsert();
+            records.add(record);
+        }
+        if("mysql".equals(notify.getDatabaseType()))
+        	recordDao.batchSaveForMysql(records);
+        else
+        	recordDao.batchSaveForOracle(records);
+        //给在线用户发送通知
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(1,1,0, TimeUnit.MILLISECONDS,new LinkedBlockingDeque<>());
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                for (UserDO userDO : sessionService.listOnlineUser()) {
+                    for (String userId : userIds) {
+                        if (userId.equals(userDO.getId())) {
+                            template.convertAndSendToUser(userDO.toString(), "/queue/notifications", "新消息：" + notify.getTitle());
+                        }
+                    }
+                }
+            }
+        });
+        executor.shutdown();
+        return r;
+    }
+
+    @Override
+    public int update(NotifyDO notify) {
+    	notify.preUpdate();
+        return notifyDao.update(notify);
+    }
+
+    @Transactional
+    @Override
+    public int remove(String id) {
+        recordDao.removeByNotifbyId(id);
+        return notifyDao.remove(id);
+    }
+
+    @Transactional
+    @Override
+    public int batchRemove(String[] ids) {
+        recordDao.batchRemoveByNotifbyId(ids);
+        return notifyDao.batchRemove(ids);
+    }
+
+
+    @Override
+    public Page<NotifyDTO> selfList(NotifyDO notifyDO) {
+    	PageHelper.startPage(notifyDO.getOffset(), notifyDO.getLimit());
+        Page<NotifyDTO> rows = notifyDao.listDTOByPage(notifyDO);
+        for (NotifyDTO notifyDTO : rows) {
+            notifyDTO.setBefore(DateUtils.getTimeBefore(notifyDTO.getUpdateDate()));
+            notifyDTO.setSender(userDao.get(notifyDTO.getCreateBy()).getName());
+        }
+        return rows;
+    }
+
+}

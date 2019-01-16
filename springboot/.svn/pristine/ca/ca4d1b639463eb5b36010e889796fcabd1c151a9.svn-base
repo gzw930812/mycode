@@ -1,0 +1,116 @@
+package com.cptech.stationinfo.domain;
+
+import java.io.Serializable;
+import com.cptech.common.domain.BaseDo;
+
+/**
+ * 设备表
+ * 
+ * @author fb
+ * @email 1595418464@qq.com
+ * @date 2018-06-22 11:17:48
+ */
+public class DevicesDO extends BaseDo implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	// 设备名称
+	private String name;
+	// 移动设备识别码
+	private String meid;
+	// 设备外编号
+	private String outerCode;
+	// 状态（1：正常；2：维修；3：报废）
+	private String status;
+	// 所属站点id
+	private String stationId;
+	//所属站点名称
+	private String stationName;
+	//站点所属机构id
+	private String deptId;
+	
+	public String getDeptId() {
+		return deptId;
+	}
+
+	public void setDeptId(String deptId) {
+		this.deptId = deptId;
+	}
+
+	public String getStationName() {
+		return stationName;
+	}
+
+	public void setStationName(String stationName) {
+		this.stationName = stationName;
+	}
+
+	/**
+	 * 设置：设备名称
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * 获取：设备名称
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * 设置：移动设备识别码
+	 */
+	public void setMeid(String meid) {
+		this.meid = meid;
+	}
+
+	/**
+	 * 获取：移动设备识别码
+	 */
+	public String getMeid() {
+		return meid;
+	}
+
+	/**
+	 * 设置：设备外编号
+	 */
+	public void setOuterCode(String outerCode) {
+		this.outerCode = outerCode;
+	}
+
+	/**
+	 * 获取：设备外编号
+	 */
+	public String getOuterCode() {
+		return outerCode;
+	}
+
+	/**
+	 * 设置：状态（1：正常；2：维修；3：报废）
+	 */
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	/**
+	 * 获取：状态（1：正常；2：维修；3：报废）
+	 */
+	public String getStatus() {
+		return status;
+	}
+
+	/**
+	 * 设置：所属站点id
+	 */
+	public void setStationId(String stationId) {
+		this.stationId = stationId;
+	}
+
+	/**
+	 * 获取：所属站点id
+	 */
+	public String getStationId() {
+		return stationId;
+	}
+}

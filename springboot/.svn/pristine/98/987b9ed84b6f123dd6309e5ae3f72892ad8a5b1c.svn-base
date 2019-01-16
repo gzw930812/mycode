@@ -1,0 +1,169 @@
+package com.cptech.common.domain;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
+import java.util.Properties;
+import java.util.UUID;
+
+import org.apache.velocity.texen.util.PropertiesUtil;
+
+import com.cptech.common.utils.ShiroUtils;
+import com.cptech.common.utils.StringUtils;
+import com.cptech.system.domain.UserDO;
+
+/**
+ * 共同属性
+ * @author fub
+ *
+ */
+public class BaseDo{
+	//当前页
+	private Integer offset;
+	//页大小
+	private Integer limit;
+	
+	private String id;
+	// 创建者
+	private String createBy;
+	// 创建时间
+	private Date createDate;
+	// 更新者
+	private String updateBy;
+	// 更新时间
+	private Date updateDate;
+	// 备注信息
+	private String remarks;
+	// 删除标记
+	private String delFlag;
+	//数据库类型（mysql、oracle）
+	private String databaseType;
+	private static String helperDialect;
+	
+	static {
+		Properties prop = new Properties();
+		//装载配置文件
+		InputStream in = new PropertiesUtil().getClass().getResourceAsStream("/application.yml");
+		try {
+			prop.load(in);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		//获取配置的数据库方言
+		helperDialect=prop.getProperty("helperDialect").trim();
+	}
+	
+	public BaseDo() {
+		databaseType=helperDialect;
+	}
+	
+	public void preInsert(){
+		if(StringUtils.isEmpty(this.id)){
+			this.id=UUID.randomUUID().toString().replaceAll("-", "");
+	        UserDO currUser = ShiroUtils.getUser();
+	        if(currUser==null){
+	        	this.updateBy = "xt";
+				this.createBy = "xt";
+	        }else{
+				if (StringUtils.isNotBlank(currUser.getId())){
+					this.updateBy = currUser.getId();
+					this.createBy = currUser.getId();
+				}
+	        }
+			this.updateDate = new Date();
+			this.createDate = this.updateDate;
+			this.delFlag="0";
+			if(StringUtils.isEmpty(this.remarks)){
+				this.remarks="";
+			}
+		}
+	}
+	
+	public void preUpdate(){
+		UserDO currUser = ShiroUtils.getUser();
+		if(currUser==null){
+        	this.updateBy = "xt";
+        }else{
+			if (StringUtils.isNotBlank(currUser.getId())){
+				this.updateBy = currUser.getId();
+			}
+        }
+		this.updateDate = new Date();
+	}
+	public String getCreateBy() {
+		return createBy;
+	}
+	public void setCreateBy(String createBy) {
+		this.createBy = createBy;
+	}
+	public Date getCreateDate() {
+		return createDate;
+	}
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+	public String getUpdateBy() {
+		return updateBy;
+	}
+	public void setUpdateBy(String updateBy) {
+		this.updateBy = updateBy;
+	}
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
+	}
+	public String getRemarks() {
+		return remarks;
+	}
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+	public String getDelFlag() {
+		return delFlag;
+	}
+	public void setDelFlag(String delFlag) {
+		this.delFlag = delFlag;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getDatabaseType() {
+		return databaseType;
+	}
+
+	public Integer getOffset() {
+		return offset;
+	}
+
+	public void setOffset(Integer offset) {
+		this.offset = offset;
+	}
+
+	public Integer getLimit() {
+		return limit;
+	}
+
+	public void setLimit(Integer limit) {
+		this.limit = limit;
+	}
+
+	@Override
+	public String toString() {
+		return "BaseDo [offset=" + offset + ", limit=" + limit + ", id=" + id
+				+ ", createBy=" + createBy + ", createDate=" + createDate
+				+ ", updateBy=" + updateBy + ", updateDate=" + updateDate
+				+ ", remarks=" + remarks + ", delFlag=" + delFlag
+				+ ", databaseType=" + databaseType + "]";
+	}
+}

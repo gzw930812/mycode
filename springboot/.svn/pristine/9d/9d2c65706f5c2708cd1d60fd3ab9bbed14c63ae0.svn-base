@@ -1,0 +1,48 @@
+package com.cptech.settings.domain;
+
+import java.io.Serializable;
+import java.util.Date;
+import com.cptech.common.domain.BaseDo;
+
+
+
+/**
+ * 作业人员工作时间设置表
+ * 
+ * @author pjy
+ * @email 1595418464@qq.com
+ * @date 2018-06-27 15:29:52
+ */
+public class WokTimeIntervalDO extends BaseDo implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
+			//时间间隔
+	private Integer hour;
+			//状态（1：正常；2：过期）
+	private String status;
+							
+			/**
+	 * 设置：时间间隔
+	 */
+	public void setHour(Integer hour) {
+		this.hour = hour;
+	}
+	/**
+	 * 获取：时间间隔
+	 */
+	public Integer getHour() {
+		return hour;
+	}
+			/**
+	 * 设置：状态（1：正常；2：过期）
+	 */
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	/**
+	 * 获取：状态（1：正常；2：过期）
+	 */
+	public String getStatus() {
+		return status;
+	}
+							}

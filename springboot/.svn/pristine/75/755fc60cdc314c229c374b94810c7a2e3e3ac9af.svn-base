@@ -1,0 +1,23 @@
+package com.cptech.settings.service;
+
+import com.cptech.settings.domain.RechargeTimeIntervalDO;
+
+import java.util.List;
+import com.github.pagehelper.Page;
+
+/**
+ * 充装时间间隔表
+ * 
+ * @author pjy
+ * @email 1595418464@qq.com
+ * @date 2018-06-27 15:30:33
+ */
+public interface RechargeTimeIntervalService {
+	
+	RechargeTimeIntervalDO get(String id);
+	
+	List<RechargeTimeIntervalDO> findAll(RechargeTimeIntervalDO rechargeTimeInterval);
+	Page<RechargeTimeIntervalDO> findByPage(RechargeTimeIntervalDO rechargeTimeInterval);
+	
+	int set(RechargeTimeIntervalDO rechargeTimeInterval);
+}

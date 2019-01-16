@@ -1,0 +1,689 @@
+package com.cptech.bottle.domain;
+
+import java.io.Serializable;
+import java.util.Date;
+import com.cptech.common.domain.BaseDo;
+
+/**
+ * 钢瓶表
+ * 
+ * @author pjy
+ * @email 1595418464@qq.com
+ * @date 2018-06-20 15:22:01
+ */
+public class SteelBottlesDO extends BaseDo implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	// 编号
+	private String bottleNo;
+	// 二维码编号
+	private String qrcodeNo;
+	// 检验日期
+	private Date checkDate;
+	// 上次检验单位id
+	private String checkDeptId;
+	// 上次检验单位名称
+	private String checkDeptName;
+	// 下次检验日期
+	private Date nextCheckDate;
+	// 上次充装时间
+	private Date preFillingTime;
+	// 钢瓶规格id(对应字典表中的钢瓶类型value)
+	private String bottleTypeId;
+	// 钢瓶规格名称(对应字典表中的钢瓶类型name)
+	private String bottleTypeName;
+	// 钢瓶型号名称
+	private String bottleStandardName;
+	// 钢瓶型号id
+	private String bottleStandardId;
+	// 所属单位id
+	private String deptId;
+	// 所属单位名称
+	private String deptName;
+	// 充装钢印号
+	private String steelSealCode;
+	// 生产日期
+	private Date produceDate;
+	// 生产厂家id
+	private String produceFactoryId;
+	// 生产厂家代码
+	private String produceFactoryCode;
+	// 生产厂家名称
+	private String produceFactoryName;
+	// 生产厂家许可证号
+	private String produceFactoryLicense;
+	// 使用年限
+	private Integer useAge;
+	// 水压试验压力(MPa)
+	private Float hydPresTestPres;
+	// 公称工作压力(MPa)
+	private Float nominalWorkPres;
+	// 气瓶净重W
+	private Float bottleNetWeight;
+	// 实际容积（L）
+	private Float inFactVolume;
+	// 气瓶壁厚
+	private Float bottleWallThickness;
+	// 气瓶材质id
+	private String bottleMaterialId;
+	// 气瓶材质名称
+	private String bottleMaterialName;
+	// 产品标准号
+	private String productStandardNo;
+	// 监督检验标记
+	private String checkSuperviseMark;
+	// 工作人员id
+	private String workerId;
+	// 工作人员名称
+	private String workerName;
+	// 新增气瓶还是二维码补办（1：新增；2：二维码补办）
+	private String newAddOrNot;
+	// 审核状态（0：待审核；1：通过；2：不通过）
+	private String auditStatus;
+	// 审核未通过原因
+	private String notPassReason;
+	// 图片，以json格式传入
+	private String picUrls;
+	// 钢瓶状态（1:正常；2：报废；3：异常；）
+	private String status;
+	// 报废原因
+	private String scrapReason;
+	// 异常原因
+	private String abnormalReason;
+	// 预留字段1
+	private String reserve1;
+	// 预留字段2
+	private String reserve2;
+	// 预留字段3
+	private String reserve3;
+	// 预留字段4
+	private String reserve4;
+
+	/**
+	 * 设置：编号
+	 */
+	public void setBottleNo(String bottleNo) {
+		this.bottleNo = bottleNo;
+	}
+
+	/**
+	 * 获取：编号
+	 */
+	public String getBottleNo() {
+		return bottleNo;
+	}
+	
+	/**
+	 * 获取: 二维码编号
+	 */
+	public String getQrcodeNo() {
+		return qrcodeNo;
+	}
+
+	/**
+	 * 设置: 二维码编号
+	 */
+	public void setQrcodeNo(String qrcodeNo) {
+		this.qrcodeNo = qrcodeNo;
+	}
+
+	/**
+	 * 设置：检验日期
+	 */
+	public void setCheckDate(Date checkDate) {
+		this.checkDate = checkDate;
+	}
+
+	/**
+	 * 获取：检验日期
+	 */
+	public Date getCheckDate() {
+		return checkDate;
+	}
+
+	/**
+	 * 设置：上次检验单位id
+	 */
+	public void setCheckDeptId(String checkDeptId) {
+		this.checkDeptId = checkDeptId;
+	}
+
+	/**
+	 * 获取：上次检验单位id
+	 */
+	public String getCheckDeptId() {
+		return checkDeptId;
+	}
+
+	/**
+	 * 设置：上次检验单位名称
+	 */
+	public void setCheckDeptName(String checkDeptName) {
+		this.checkDeptName = checkDeptName;
+	}
+
+	/**
+	 * 获取：上次检验单位名称
+	 */
+	public String getCheckDeptName() {
+		return checkDeptName;
+	}
+
+	/**
+	 * 设置：下次检验日期
+	 */
+	public void setNextCheckDate(Date nextCheckDate) {
+		this.nextCheckDate = nextCheckDate;
+	}
+
+	/**
+	 * 获取：下次检验日期
+	 */
+	public Date getNextCheckDate() {
+		return nextCheckDate;
+	}
+
+	/**
+	 * 设置：上次充装时间
+	 */
+	public void setPreFillingTime(Date preFillingTime) {
+		this.preFillingTime = preFillingTime;
+	}
+
+	/**
+	 * 获取：上次充装时间
+	 */
+	public Date getPreFillingTime() {
+		return preFillingTime;
+	}
+
+	/**
+	 * 设置：钢瓶规格id(对应字典表中的钢瓶类型value)
+	 */
+	public void setBottleTypeId(String bottleTypeId) {
+		this.bottleTypeId = bottleTypeId;
+	}
+
+	/**
+	 * 获取：钢瓶规格id(对应字典表中的钢瓶类型value)
+	 */
+	public String getBottleTypeId() {
+		return bottleTypeId;
+	}
+
+	/**
+	 * 设置：钢瓶规格名称(对应字典表中的钢瓶类型name)
+	 */
+	public void setBottleTypeName(String bottleTypeName) {
+		this.bottleTypeName = bottleTypeName;
+	}
+
+	/**
+	 * 获取：钢瓶规格名称(对应字典表中的钢瓶类型name)
+	 */
+	public String getBottleTypeName() {
+		return bottleTypeName;
+	}
+
+	/**
+	 * 设置：钢瓶型号名称
+	 */
+	public void setBottleStandardName(String bottleStandardName) {
+		this.bottleStandardName = bottleStandardName;
+	}
+
+	/**
+	 * 获取：钢瓶型号名称
+	 */
+	public String getBottleStandardName() {
+		return bottleStandardName;
+	}
+
+	/**
+	 * 设置：钢瓶型号id
+	 */
+	public void setBottleStandardId(String bottleStandardId) {
+		this.bottleStandardId = bottleStandardId;
+	}
+
+	/**
+	 * 获取：钢瓶型号id
+	 */
+	public String getBottleStandardId() {
+		return bottleStandardId;
+	}
+
+	/**
+	 * 设置：所属单位id
+	 */
+	public void setDeptId(String deptId) {
+		this.deptId = deptId;
+	}
+
+	/**
+	 * 获取：所属单位id
+	 */
+	public String getDeptId() {
+		return deptId;
+	}
+
+	/**
+	 * 设置：所属单位名称
+	 */
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
+
+	/**
+	 * 获取：所属单位名称
+	 */
+	public String getDeptName() {
+		return deptName;
+	}
+
+	/**
+	 * 设置：充装钢印号
+	 */
+	public void setSteelSealCode(String steelSealCode) {
+		this.steelSealCode = steelSealCode;
+	}
+
+	/**
+	 * 获取：充装钢印号
+	 */
+	public String getSteelSealCode() {
+		return steelSealCode;
+	}
+
+	/**
+	 * 设置：生产日期
+	 */
+	public void setProduceDate(Date produceDate) {
+		this.produceDate = produceDate;
+	}
+
+	/**
+	 * 获取：生产日期
+	 */
+	public Date getProduceDate() {
+		return produceDate;
+	}
+
+	/**
+	 * 设置：生产厂家id
+	 */
+	public void setProduceFactoryId(String produceFactoryId) {
+		this.produceFactoryId = produceFactoryId;
+	}
+
+	/**
+	 * 获取：生产厂家id
+	 */
+	public String getProduceFactoryId() {
+		return produceFactoryId;
+	}
+
+	/**
+	 * 设置：生产厂家代码
+	 */
+	public void setProduceFactoryCode(String produceFactoryCode) {
+		this.produceFactoryCode = produceFactoryCode;
+	}
+
+	/**
+	 * 获取：生产厂家代码
+	 */
+	public String getProduceFactoryCode() {
+		return produceFactoryCode;
+	}
+
+	/**
+	 * 设置：生产厂家名称
+	 */
+	public void setProduceFactoryName(String produceFactoryName) {
+		this.produceFactoryName = produceFactoryName;
+	}
+
+	/**
+	 * 获取：生产厂家名称
+	 */
+	public String getProduceFactoryName() {
+		return produceFactoryName;
+	}
+
+	/**
+	 * 设置：生产厂家许可证号
+	 */
+	public void setProduceFactoryLicense(String produceFactoryLicense) {
+		this.produceFactoryLicense = produceFactoryLicense;
+	}
+
+	/**
+	 * 获取：生产厂家许可证号
+	 */
+	public String getProduceFactoryLicense() {
+		return produceFactoryLicense;
+	}
+
+	/**
+	 * 设置：使用年限
+	 */
+	public void setUseAge(Integer useAge) {
+		this.useAge = useAge;
+	}
+
+	/**
+	 * 获取：使用年限
+	 */
+	public Integer getUseAge() {
+		return useAge;
+	}
+
+	/**
+	 * 设置：水压试验压力(MPa)
+	 */
+	public void setHydPresTestPres(Float hydPresTestPres) {
+		this.hydPresTestPres = hydPresTestPres;
+	}
+
+	/**
+	 * 获取：水压试验压力(MPa)
+	 */
+	public Float getHydPresTestPres() {
+		return hydPresTestPres;
+	}
+
+	/**
+	 * 设置：公称工作压力(MPa)
+	 */
+	public void setNominalWorkPres(Float nominalWorkPres) {
+		this.nominalWorkPres = nominalWorkPres;
+	}
+
+	/**
+	 * 获取：公称工作压力(MPa)
+	 */
+	public Float getNominalWorkPres() {
+		return nominalWorkPres;
+	}
+
+	/**
+	 * 设置：气瓶净重W
+	 */
+	public void setBottleNetWeight(Float bottleNetWeight) {
+		this.bottleNetWeight = bottleNetWeight;
+	}
+
+	/**
+	 * 获取：气瓶净重W
+	 */
+	public Float getBottleNetWeight() {
+		return bottleNetWeight;
+	}
+
+	/**
+	 * 设置：实际容积（L）
+	 */
+	public void setInFactVolume(Float inFactVolume) {
+		this.inFactVolume = inFactVolume;
+	}
+
+	/**
+	 * 获取：实际容积（L）
+	 */
+	public Float getInFactVolume() {
+		return inFactVolume;
+	}
+
+	/**
+	 * 设置：气瓶壁厚
+	 */
+	public void setBottleWallThickness(Float bottleWallThickness) {
+		this.bottleWallThickness = bottleWallThickness;
+	}
+
+	/**
+	 * 获取：气瓶壁厚
+	 */
+	public Float getBottleWallThickness() {
+		return bottleWallThickness;
+	}
+
+	/**
+	 * 设置：气瓶材质id
+	 */
+	public void setBottleMaterialId(String bottleMaterialId) {
+		this.bottleMaterialId = bottleMaterialId;
+	}
+
+	/**
+	 * 获取：气瓶材质id
+	 */
+	public String getBottleMaterialId() {
+		return bottleMaterialId;
+	}
+
+	/**
+	 * 设置：气瓶材质名称
+	 */
+	public void setBottleMaterialName(String bottleMaterialName) {
+		this.bottleMaterialName = bottleMaterialName;
+	}
+
+	/**
+	 * 获取：气瓶材质名称
+	 */
+	public String getBottleMaterialName() {
+		return bottleMaterialName;
+	}
+
+	/**
+	 * 设置：产品标准号
+	 */
+	public void setProductStandardNo(String productStandardNo) {
+		this.productStandardNo = productStandardNo;
+	}
+
+	/**
+	 * 获取：产品标准号
+	 */
+	public String getProductStandardNo() {
+		return productStandardNo;
+	}
+
+	/**
+	 * 设置：监督检验标记
+	 */
+	public void setCheckSuperviseMark(String checkSuperviseMark) {
+		this.checkSuperviseMark = checkSuperviseMark;
+	}
+
+	/**
+	 * 获取：监督检验标记
+	 */
+	public String getCheckSuperviseMark() {
+		return checkSuperviseMark;
+	}
+
+	/**
+	 * 设置：工作人员id
+	 */
+	public void setWorkerId(String workerId) {
+		this.workerId = workerId;
+	}
+
+	/**
+	 * 获取：工作人员id
+	 */
+	public String getWorkerId() {
+		return workerId;
+	}
+
+	/**
+	 * 设置：工作人员名称
+	 */
+	public void setWorkerName(String workerName) {
+		this.workerName = workerName;
+	}
+
+	/**
+	 * 获取：工作人员名称
+	 */
+	public String getWorkerName() {
+		return workerName;
+	}
+
+	/**
+	 * 设置：新增气瓶还是二维码补办（1：新增；2：二维码补办）
+	 */
+	public void setNewAddOrNot(String newAddOrNot) {
+		this.newAddOrNot = newAddOrNot;
+	}
+
+	/**
+	 * 获取：新增气瓶还是二维码补办（1：新增；2：二维码补办）
+	 */
+	public String getNewAddOrNot() {
+		return newAddOrNot;
+	}
+
+	/**
+	 * 设置：审核状态（0：待审核；1：通过；2：不通过）
+	 */
+	public void setAuditStatus(String auditStatus) {
+		this.auditStatus = auditStatus;
+	}
+
+	/**
+	 * 获取：审核状态（0：待审核；1：通过；2：不通过）
+	 */
+	public String getAuditStatus() {
+		return auditStatus;
+	}
+
+	/**
+	 * 设置：审核未通过原因
+	 */
+	public void setNotPassReason(String notPassReason) {
+		this.notPassReason = notPassReason;
+	}
+
+	/**
+	 * 获取：审核未通过原因
+	 */
+	public String getNotPassReason() {
+		return notPassReason;
+	}
+
+	/**
+	 * 设置：图片，以json格式传入
+	 */
+	public void setPicUrls(String picUrls) {
+		this.picUrls = picUrls;
+	}
+
+	/**
+	 * 获取：图片，以json格式传入
+	 */
+	public String getPicUrls() {
+		return picUrls;
+	}
+
+	/**
+	 * 设置：钢瓶状态（1:正常；2：报废；3：异常；）
+	 */
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	/**
+	 * 获取：钢瓶状态（1:正常；2：报废；3：异常；）
+	 */
+	public String getStatus() {
+		return status;
+	}
+
+	/**
+	 * 设置：报废原因
+	 */
+	public void setScrapReason(String scrapReason) {
+		this.scrapReason = scrapReason;
+	}
+
+	/**
+	 * 获取：报废原因
+	 */
+	public String getScrapReason() {
+		return scrapReason;
+	}
+
+	/**
+	 * 设置：异常原因
+	 */
+	public void setAbnormalReason(String abnormalReason) {
+		this.abnormalReason = abnormalReason;
+	}
+
+	/**
+	 * 获取：异常原因
+	 */
+	public String getAbnormalReason() {
+		return abnormalReason;
+	}
+
+	/**
+	 * 设置：预留字段1
+	 */
+	public void setReserve1(String reserve1) {
+		this.reserve1 = reserve1;
+	}
+
+	/**
+	 * 获取：预留字段1
+	 */
+	public String getReserve1() {
+		return reserve1;
+	}
+
+	/**
+	 * 设置：预留字段2
+	 */
+	public void setReserve2(String reserve2) {
+		this.reserve2 = reserve2;
+	}
+
+	/**
+	 * 获取：预留字段2
+	 */
+	public String getReserve2() {
+		return reserve2;
+	}
+
+	/**
+	 * 设置：预留字段3
+	 */
+	public void setReserve3(String reserve3) {
+		this.reserve3 = reserve3;
+	}
+
+	/**
+	 * 获取：预留字段3
+	 */
+	public String getReserve3() {
+		return reserve3;
+	}
+
+	/**
+	 * 设置：预留字段4
+	 */
+	public void setReserve4(String reserve4) {
+		this.reserve4 = reserve4;
+	}
+
+	/**
+	 * 获取：预留字段4
+	 */
+	public String getReserve4() {
+		return reserve4;
+	}
+}

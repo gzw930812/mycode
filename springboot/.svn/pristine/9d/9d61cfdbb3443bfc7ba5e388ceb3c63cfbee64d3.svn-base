@@ -1,0 +1,152 @@
+var prefix = ctx + "/fillingInfo/fillingRecord"
+$(function() {
+	load();
+});
+
+function load() {
+	$('#exampleTable')
+			.bootstrapTable(
+					{
+						method : 'get', // 服务器数据的请求方式 get or post
+						url : prefix + "/list", // 服务器数据的加载地址
+						// showRefresh : true,
+						// showToggle : true,
+						// showColumns : true,
+						iconSize : 'outline',
+						toolbar : '#exampleToolbar',
+						striped : true, // 设置为true会有隔行变色效果
+						dataType : "json", // 服务器返回的数据类型
+						pagination : true, // 设置为true会在底部显示分页条
+						// queryParamsType : "limit",
+						// //设置为limit则会发送符合RESTFull格式的参数
+						singleSelect : false, // 设置为true将禁止多选
+						// contentType : "application/x-www-form-urlencoded",
+						// //发送到服务器的数据编码类型
+						pageSize : 10, // 如果设置了分页，每页数据条数
+						pageNumber : 1, // 如果设置了分布，首页页码
+						// search : true, // 是否显示搜索框
+						showColumns : false, // 是否显示内容下拉框（选择显示的列）
+						sidePagination : "server", // 设置在哪里进行分页，可选值为"client" 或者
+						// "server"
+						queryParams : function(params) {
+							// 处理分页器当前页的问题（当前页都跑到几十了，明明没有那么多页）
+							var pageSize = params.offset;
+							pageSize = pageSize / 10;
+							return {
+								// 说明：传入后台的参数包括offset开始索引，limit步长，sort排序列，order：desc或者,以及所有列的键值对
+								limit : params.limit,
+								offset : Number(pageSize) + 1,
+								fillingStartDate : $("#searchFillingStartDate").val(),
+								fillingEndDate : $("#searchFillingEndDate").val(),
+								bottleNo : $("#searchBottleNo").val(),
+								qrcodeNo : $("#searchQrcodeNo").val(),
+								stationId : $("#searchStationId").val(),
+								areaId : $("#searchAreaId").val()
+							};
+						},
+						columns : [
+								{
+									field : 'index',
+									title : '序号',
+									formatter : function(value, row, index) {
+										var table = $('#exampleTable')
+												.bootstrapTable('getOptions');
+										var pageNumber = table.pageNumber;
+										var pageSize = table.pageSize;
+										return (Number(pageNumber) - 1)
+												* pageSize + index + 1;
+									}
+								},
+								{
+									field : 'stationId',
+									title : '充装站id',
+									visible : false
+								},
+								{
+									field : 'stationName',
+									title : '充装站名称'
+								},
+								{
+									field : 'bottleNo',
+									title : '气瓶编号'
+								},
+								{
+									field : 'qrcodeNo',
+									title : '二维码编号'
+								},
+								{
+									field : 'areaId',
+									title : '所属区域id',
+									visible : false
+								},
+								{
+									field : 'areaName',
+									title : '所属区域'
+								},
+								{
+									field : 'fillingTime',
+									title : '充装时间'
+								},
+								{
+									field : 'fillingWeight',
+									title : '充装重量'
+								},
+								{
+									field : 'gunNo',
+									title : '枪号'
+								},
+								{
+									field : 'beforeFillingPressure',
+									title : '充装前压力'
+								},
+								{
+									field : 'afterFillingPressure',
+									title : '充装后压力'
+								},
+								{
+									field : 'workerId',
+									title : '作业人员id',
+									visible : false
+								},
+								{
+									field : 'workerName',
+									title : '作业人员名字'
+								},
+								{
+									field : 'beforeFillingCheck',
+									title : '充装前检查',
+									formatter : function(value, row, index) {
+										return row.beforeFillingCheck == '1'?'合格':'不合格';
+									}
+								},
+								{
+									field : 'afterFillingCheck',
+									title : '充装后检查',
+									formatter : function(value, row, index) {
+										return row.afterFillingCheck == '1'?'合格':'不合格';
+									}
+								},
+								{
+									field : 'reason',
+									title : '不合格原因'
+								} ]
+					});
+}
+function reLoad() {
+	$('#exampleTable').bootstrapTable('refresh');
+}
+function exportExcel() {
+	layer.alert("Connection error");
+}
+var openArea = function(){
+	layer.open({
+		type:2,
+		title:"选择区域",
+		area : [ '300px', '450px' ],
+		content:ctx+"/basicInfo/area/treeView"
+	});
+};
+function loadArea(areaId,areaName){
+	$("#searchAreaId").val(areaId);
+	$("#searchAreaName").val(areaName);
+};

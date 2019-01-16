@@ -1,0 +1,155 @@
+package com.cptech.qrc.controller;
+
+import java.util.List;
+import java.util.Map;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.cptech.basicInfo.domain.SimpleFieldDO;
+import com.cptech.basicInfo.service.SimpleFieldService;
+import com.cptech.common.annotation.Log;
+import com.cptech.common.controller.BaseController;
+import com.cptech.common.utils.PageUtils;
+import com.cptech.common.utils.R;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
+import com.cptech.qrc.domain.QrcodeDO;
+import com.cptech.qrc.service.QrcodeService;
+import com.cptech.stationinfo.domain.StationsDO;
+import com.cptech.stationinfo.service.StationsService;
+import com.cptech.system.service.DeptService;
+
+/**
+ * 二维码表
+ * 
+ * @author fb
+ * @email 1595418464@qq.com
+ * @date 2018-06-20 16:35:19
+ */
+ 
+@Controller
+@RequestMapping("/qrc/qrcode")
+public class QrcodeController extends BaseController{
+	@Autowired
+	private QrcodeService qrcodeService;
+	@Autowired
+	private StationsService stationService;
+	@Autowired
+	private DeptService deptService;
+	@Autowired
+	private SimpleFieldService simpleFieldService;
+	
+	@GetMapping("onuse")
+	@RequiresPermissions("qrc:qrcode:qrcodeOnuse")
+	String QrcodeOnuse(Map<String, Object> map){
+		
+		//设置产权单位(充装站)
+		List<StationsDO> stations = getUserStations("1");
+		map.put("stations", stations);
+	    return "qrc/qrcode/qrcodeOnuse";
+	}
+	
+	@GetMapping("onscrap")
+	@RequiresPermissions("qrc:qrcode:qrcodeOnscrap")
+	String QrcodeOnscrap(Map<String, Object> map){
+		//设置产权单位(充装站)
+		List<StationsDO> stations = getUserStations("1");
+		map.put("stations", stations);
+		
+		SimpleFieldDO simpleFieldDO = new SimpleFieldDO();
+		simpleFieldDO.setType("3");
+		 //查询所有二维码补发原因
+		List<SimpleFieldDO> scrapReasons = simpleFieldService.findAll(simpleFieldDO); 
+		map.put("scrapReasons", scrapReasons);
+		
+	    return "qrc/qrcode/qrcodeOnscrap";
+	}
+	
+	@Log("二维码表-查询列表")
+	@ResponseBody
+	@GetMapping("/list")
+	@RequiresPermissions(value={"qrc:qrcode:qrcodeOnuse","qrc:qrcode:qrcodeOnScrap"})
+	public PageUtils list(QrcodeDO qrcode){
+		
+		qrcode.setDeptId(getUser().getDeptId());
+		//查询列表数据
+		Page<QrcodeDO> findByPage = qrcodeService.findByPage(qrcode);
+		PageInfo<QrcodeDO> pageInfo = new PageInfo<>(findByPage);
+		PageUtils pageUtil = new PageUtils(pageInfo.getList(), (int)pageInfo.getTotal());
+		return pageUtil;
+	}
+	
+	@GetMapping("/add")
+	@RequiresPermissions("qrc:qrcode:add")
+	String add(){
+	    return "qrc/qrcode/add";
+	}
+
+	@GetMapping("/edit/{id}")
+	@RequiresPermissions("qrc:qrcode:edit")
+	String edit(@PathVariable("id") String id,Model model){
+		QrcodeDO qrcode = qrcodeService.get(id);
+		model.addAttribute("qrcode", qrcode);
+	    return "qrc/qrcode/edit";
+	}
+	
+	/**
+	 * 保存
+	 */
+	@Log("二维码表-保存")
+	@ResponseBody
+	@PostMapping("/save")
+	@RequiresPermissions("qrc:qrcode:add")
+	public R save( QrcodeDO qrcode){
+		if(qrcodeService.save(qrcode)>0){
+			return R.ok();
+		}
+		return R.error();
+	}
+	/**
+	 * 修改
+	 */
+	@Log("二维码表-修改")
+	@ResponseBody
+	@RequestMapping("/update")
+	@RequiresPermissions("qrc:qrcode:edit")
+	public R update( QrcodeDO qrcode){
+		qrcodeService.update(qrcode);
+		return R.ok();
+	}
+	
+	/**
+	 * 删除
+	 */
+	@Log("二维码表-删除")
+	@PostMapping( "/remove")
+	@ResponseBody
+	@RequiresPermissions("qrc:qrcode:remove")
+	public R remove( String id){
+		if(qrcodeService.remove(id)>0){
+		return R.ok();
+		}
+		return R.error();
+	}
+	
+	/**
+	 * 删除
+	 */
+	@Log("二维码表-批量删除")
+	@PostMapping( "/batchRemove")
+	@ResponseBody
+	@RequiresPermissions("qrc:qrcode:batchRemove")
+	public R remove(@RequestParam("ids[]") String[] ids){
+		qrcodeService.batchRemove(ids);
+		return R.ok();
+	}
+}

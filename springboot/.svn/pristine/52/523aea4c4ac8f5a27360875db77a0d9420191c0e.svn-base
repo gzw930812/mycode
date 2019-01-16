@@ -1,0 +1,58 @@
+package com.cptech.qrc.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+import com.cptech.qrc.dao.QrcodeSectionNumberDao;
+import com.cptech.qrc.domain.QrcodeSectionNumberDO;
+import com.cptech.qrc.service.QrcodeSectionNumberService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
+
+
+@Service
+public class QrcodeSectionNumberServiceImpl implements QrcodeSectionNumberService {
+	@Autowired
+	private QrcodeSectionNumberDao qrcodeSectionNumberDao;
+	
+	@Override
+	public QrcodeSectionNumberDO get(String id){
+		return qrcodeSectionNumberDao.get(id);
+	}
+	
+	@Override
+	public List<QrcodeSectionNumberDO> findAll(QrcodeSectionNumberDO qrcodeSectionNumber){
+		return qrcodeSectionNumberDao.findAll(qrcodeSectionNumber);
+	}
+	@Override
+	public Page<QrcodeSectionNumberDO> findByPage(QrcodeSectionNumberDO qrcodeSectionNumber){
+		PageHelper.startPage(qrcodeSectionNumber.getOffset(), qrcodeSectionNumber.getLimit());
+		return qrcodeSectionNumberDao.findByPage(qrcodeSectionNumber);
+	}
+	
+	@Override
+	public int save(QrcodeSectionNumberDO qrcodeSectionNumber){
+		qrcodeSectionNumber.preInsert();
+		return qrcodeSectionNumberDao.save(qrcodeSectionNumber);
+	}
+	
+	@Override
+	public int update(QrcodeSectionNumberDO qrcodeSectionNumber){
+		qrcodeSectionNumber.preUpdate();
+		return qrcodeSectionNumberDao.update(qrcodeSectionNumber);
+	}
+	
+	@Override
+	public int remove(String id){
+		return qrcodeSectionNumberDao.remove(id);
+	}
+	
+	@Override
+	public int batchRemove(String[] ids){
+		return qrcodeSectionNumberDao.batchRemove(ids);
+	}
+	
+}

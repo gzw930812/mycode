@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cptech.worker.dao.WorkersDao">
+	<sql id="WorkersColumns">
+		id,name,password,certificate_code_id,id_card,id_card_expire_date,publish_area,publish_dept_name,grant_date,station_id,create_by,create_date,update_by,update_date,remarks,del_flag
+	</sql>
+
+	<select id="get" resultType="com.cptech.worker.domain.WorkersDO">
+		select
+		<include refid="WorkersColumns" />
+		from t_workers where id = #{id}
+	</select>
+
+	<select id="findByPage" resultType="com.cptech.worker.domain.WorkersDO">
+		select
+		w.id,w.name,password,certificate_code_id,c.code certificateCodeName,id_card,id_card_expire_date,publish_area,publish_dept_name,grant_date,station_id,s.name stationName
+		from t_workers w
+		left join t_stations s on w.station_id=s.id
+		left join t_license_code c on w.certificate_code_id=c.id
+		<where>
+			<if test="name != null">
+				and w.name like concat('%',#{name},'%')
+			</if>
+			<if test="idCard != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and id_card like '%${ idCard}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and id_card like concat('%',#{idCard},'%')
+				</if>
+			</if>
+			<if test="stationId != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and station_id like '%${ stationId}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and station_id like concat('%',#{stationId},'%')
+				</if>
+			</if>
+		</where>
+		order by w.update_date
+	</select>
+
+	<insert id="save" parameterType="com.cptech.worker.domain.WorkersDO">
+		insert into t_workers
+		(
+		<if test="id != null">
+			id,
+		</if>
+		<if test="name != null">
+			name,
+		</if>
+		<if test="password != null">
+			password,
+		</if>
+		<if test="certificateCodeId != null">
+			certificate_code_id,
+		</if>
+		<if test="idCard != null">
+			id_card,
+		</if>
+		<if test="idCardExpireDate != null">
+			id_card_expire_date,
+		</if>
+		<if test="publishArea != null">
+			publish_area,
+		</if>
+		<if test="publishDeptName != null">
+			publish_dept_name,
+		</if>
+		<if test="grantDate != null">
+			grant_date,
+		</if>
+		<if test="stationId != null">
+			station_id,
+		</if>
+		<if test="createBy != null">
+			create_by,
+		</if>
+		<if test="createDate != null">
+			create_date,
+		</if>
+		<if test="updateBy != null">
+			update_by,
+		</if>
+		<if test="updateDate != null">
+			update_date,
+		</if>
+		<if test="remarks != null">
+			remarks,
+		</if>
+		<if test="delFlag != null">
+			del_flag
+		</if>
+		)
+		values
+		(
+		<if test="id != null">
+			#{id},
+		</if>
+		<if test="name != null">
+			#{name},
+		</if>
+		<if test="password != null">
+			#{password},
+		</if>
+		<if test="certificateCodeId != null">
+			#{certificateCodeId},
+		</if>
+		<if test="idCard != null">
+			#{idCard},
+		</if>
+		<if test="idCardExpireDate != null">
+			#{idCardExpireDate},
+		</if>
+		<if test="publishArea != null">
+			#{publishArea},
+		</if>
+		<if test="publishDeptName != null">
+			#{publishDeptName},
+		</if>
+		<if test="grantDate != null">
+			#{grantDate},
+		</if>
+		<if test="stationId != null">
+			#{stationId},
+		</if>
+		<if test="createBy != null">
+			#{createBy},
+		</if>
+		<if test="createDate != null">
+			#{createDate},
+		</if>
+		<if test="updateBy != null">
+			#{updateBy},
+		</if>
+		<if test="updateDate != null">
+			#{updateDate},
+		</if>
+		<if test="remarks != null">
+			#{remarks},
+		</if>
+		<if test="delFlag != null">
+			#{delFlag}
+		</if>
+		)
+	</insert>
+
+	<update id="update" parameterType="com.cptech.worker.domain.WorkersDO">
+		update t_workers
+		<set>
+			<if test="name != null">name = #{name}, </if>
+			<if test="password != null">password = #{password}, </if>
+			<if test="certificateCodeId != null">certificate_code_id = #{certificateCodeId}, </if>
+			<if test="idCard != null">id_card = #{idCard}, </if>
+			<if test="idCardExpireDate != null">id_card_expire_date = #{idCardExpireDate}, </if>
+			<if test="publishArea != null">publish_area = #{publishArea}, </if>
+			<if test="publishDeptName != null">publish_dept_name = #{publishDeptName}, </if>
+			<if test="grantDate != null">grant_date = #{grantDate}, </if>
+			<if test="stationId != null">station_id = #{stationId}, </if>
+			<if test="createBy != null">create_by = #{createBy}, </if>
+			<if test="createDate != null">create_date = #{createDate}, </if>
+			<if test="updateBy != null">update_by = #{updateBy}, </if>
+			<if test="updateDate != null">update_date = #{updateDate}, </if>
+			<if test="remarks != null">remarks = #{remarks}, </if>
+			<if test="delFlag != null">del_flag = #{delFlag}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="remove">
+		delete from t_workers where id = #{value}
+	</delete>
+
+	<delete id="batchRemove">
+		delete from t_workers where id in
+		<foreach item="id" collection="array" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

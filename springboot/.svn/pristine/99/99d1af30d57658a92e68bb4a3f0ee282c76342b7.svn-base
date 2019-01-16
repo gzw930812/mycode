@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cptech.system.dao.MenuDao">
+	<sql id="menuColumns">
+		id,parent_id,name,url,perms,type,icon,order_num,create_by,create_date,update_by,update_date,remarks,del_flag
+	</sql>
+	<select id="get" resultType="com.cptech.system.domain.MenuDO">
+		select
+			<include refid="menuColumns"/>
+		from sys_menu where id = #{id}
+	</select>
+
+	<select id="findAll" resultType="com.cptech.system.domain.MenuDO">
+		select
+			<include refid="menuColumns"/>
+		from sys_menu
+		<where> del_flag='0'
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="parentId != null and parentId != ''"> and parent_id = #{parentId} </if>
+			<if test="name != null and name != ''"> and name = #{name} </if>
+			<if test="url != null and url != ''"> and url = #{url} </if>
+			<if test="perms != null and perms != ''"> and perms = #{perms} </if>
+			<if test="type != null and type != ''"> and type = #{type} </if>
+			<if test="icon != null and icon != ''"> and icon = #{icon} </if>
+			<if test="orderNum != null and orderNum != ''"> and order_num = #{orderNum} </if>
+		</where>
+		order by order_num
+	</select>
+	
+	<select id="findByPage" resultType="com.cptech.system.domain.MenuDO">
+		select
+			<include refid="menuColumns"/>
+		from sys_menu
+		<where> del_flag='0'
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="parentId != null and parentId != ''"> and parent_id = #{parentId} </if>
+			<if test="name != null and name != ''"> and name = #{name} </if>
+			<if test="url != null and url != ''"> and url = #{url} </if>
+			<if test="perms != null and perms != ''"> and perms = #{perms} </if>
+			<if test="type != null and type != ''"> and type = #{type} </if>
+			<if test="icon != null and icon != ''"> and icon = #{icon} </if>
+			<if test="orderNum != null and orderNum != ''"> and order_num = #{orderNum} </if>
+		</where>
+		order by order_num
+	</select>
+
+	<insert id="save" parameterType="com.cptech.system.domain.MenuDO"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into sys_menu
+		(
+		<if test="parentId != null and parentId != ''">
+			parent_id,
+		</if>
+		<if test="name != null and name != ''">
+			name,
+		</if>
+		<if test="url != null and url != ''">
+			url,
+		</if>
+		<if test="perms != null and perms != ''">
+			perms,
+		</if>
+		<if test="type != null and type != ''">
+			type,
+		</if>
+		<if test="icon != null and icon != ''">
+			icon,
+		</if>
+		<if test="orderNum != null and orderNum != ''">
+			order_num,
+		</if>
+		id,
+		create_by,
+		create_date,
+		update_by,
+		update_date,
+		remarks,
+		del_flag
+		)
+		values
+		(
+		<if test="parentId != null and parentId != ''">
+			#{parentId},
+		</if>
+		<if test="name != null and name != ''">
+			#{name},
+		</if>
+		<if test="url != null and url != ''">
+			#{url},
+		</if>
+		<if test="perms != null and perms != ''">
+			#{perms},
+		</if>
+		<if test="type != null and type != ''">
+			#{type},
+		</if>
+		<if test="icon != null and icon != ''">
+			#{icon},
+		</if>
+		<if test="orderNum != null and orderNum != ''">
+			#{orderNum},
+		</if>
+		#{id},
+		#{createBy},
+		#{createDate},
+		#{updateBy},
+		#{updateDate},
+		#{remarks},
+		#{delFlag}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.cptech.system.domain.MenuDO">
+		update sys_menu
+		<set>
+			<if test="parentId != null">parent_id = #{parentId}, </if>
+			<if test="name != null">name = #{name}, </if>
+			<if test="url != null">url = #{url}, </if>
+			<if test="perms != null">perms = #{perms}, </if>
+			<if test="type != null">type = #{type}, </if>
+			<if test="icon != null">icon = #{icon}, </if>
+			<if test="orderNum != null">order_num = #{orderNum}, </if>
+			<if test="createBy != null">create_by = #{createBy}, </if>
+			<if test="createDate != null">create_date = #{createDate}, </if>
+			<if test="updateBy != null">update_by = #{updateBy}, </if>
+			<if test="updateDate != null">update_date = #{updateDate}, </if>
+			<if test="remarks != null">remarks = #{remarks}, </if>
+			<if test="delFlag != null">del_flag = #{delFlag} </if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="remove">
+		update sys_menu set del_flag='1' where id = #{id}
+	</delete>
+
+	<delete id="batchRemove">
+		update sys_menu set del_flag='1 where id in
+		<foreach item="ids" collection="array" open="(" separator=","
+			close=")">
+			#{ids}
+		</foreach>
+	</delete>
+
+	<select id="listMenuByUserId" resultType="com.cptech.system.domain.MenuDO">
+		select distinct
+		m.id , parent_id, name, url,
+		perms,type,icon,order_num
+		from sys_menu m
+		left
+		join sys_role_menu rm on m.id = rm.menu_id left join
+		sys_user_role ur
+		on rm.role_id =ur.role_id where ur.user_id = #{id}
+		and
+		m.type in(0,1)
+		order by
+		m.order_num
+	</select>
+
+	<select id="listUserPerms" resultType="string">
+		select distinct m.perms
+		from sys_menu m left join
+		sys_role_menu rm on m.id = rm.menu_id
+		left join sys_user_role ur
+		on rm.role_id = ur.role_id where ur.user_id
+		= #{id}
+	</select>
+	
+	<select id="listTopMenuByUserId" resultType="com.cptech.system.domain.MenuDO">
+		select distinct
+		m.id , parent_id, name, url,
+		perms,type,icon,order_num
+		from sys_menu m
+		left
+		join sys_role_menu rm on m.id = rm.menu_id left join
+		sys_user_role ur
+		on rm.role_id =ur.role_id where ur.user_id = #{id}
+		and
+		m.type ='0' and parent_id='0'
+		order by m.order_num
+	</select>
+	<select id="listLeftMenuByUserId" resultType="com.cptech.system.domain.MenuDO">
+		select distinct
+		m.id , parent_id, name, url,
+		perms,type,icon,order_num
+		from sys_menu m
+		left
+		join sys_role_menu rm on m.id = rm.menu_id left join
+		sys_user_role ur
+		on rm.role_id =ur.role_id where ur.user_id = #{id}
+		and
+		m.type in(0,1) and parent_id !='0'
+		order by
+		parent_id,m.order_num
+	</select>
+</mapper>

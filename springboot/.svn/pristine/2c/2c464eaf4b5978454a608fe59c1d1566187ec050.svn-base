@@ -1,0 +1,416 @@
+package com.cptech.checkInfo.domain;
+
+import java.io.Serializable;
+import java.util.Date;
+import com.cptech.common.domain.BaseDo;
+
+/**
+ * 检验记录表
+ * 
+ * @author pjy
+ * @email 1595418464@qq.com
+ * @date 2018-06-22 14:38:21
+ */
+public class CheckRecordDO extends BaseDo implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	// 充装站id
+	private String deptId;
+	// 检验站id
+	private String checkDeptId;
+	// 检验站名称
+	private String checkDeptName;
+	// 充装站名称
+	private String deptName;
+	// 钢瓶编号
+	private String bottleNo;
+	// 二维码编号
+	private String qrcodeNo;
+	// 所属区域id
+	private String areaId;
+	// 所属区域名称
+	private String areaName;
+	// 作业人员id
+	private String workerId;
+	// 作业人员名字
+	private String workerName;
+	// 检验日期
+	private Date checkDate;
+	// 下次检验日期
+	private Date nextCheckDate;
+	// 钢瓶规格id(对应字典表中的钢瓶类型value)
+	private String bottleTypeId;
+	// 钢瓶规格名称(对应字典表中的钢瓶类型name)
+	private String bottleTypeName;
+	// 钢瓶型号名称
+	private String bottleStandardName;
+	// 钢瓶型号id
+	private String bottleStandardId;
+	// 生产日期
+	private Date produceDate;
+	// 生产厂家id
+	private String produceFactoryId;
+	// 生产厂家名称
+	private String produceFactoryName;
+	// 充装钢印号
+	private String steelSealCode;
+	// 检验状态(1：待检；2：检验完成)
+	private String status;
+	// 检验结果（1：合格；2：报废）
+	private String checkResult;
+	// 打印报告编号（打印后需回填）
+	private String reportNo;
+	
+	// 查询字段
+	private Date checkStartDate; // 检验起始时间
+	private Date checkEndDate; // 检验结束时间
+	private String deptFilter; //数据过滤字段
+
+	/**
+	 * 设置：充装站id
+	 */
+	public void setDeptId(String deptId) {
+		this.deptId = deptId;
+	}
+
+	/**
+	 * 获取：充装站id
+	 */
+	public String getDeptId() {
+		return deptId;
+	}
+
+	/**
+	 * 设置：检验站id
+	 */
+	public void setCheckDeptId(String checkDeptId) {
+		this.checkDeptId = checkDeptId;
+	}
+
+	/**
+	 * 获取：检验站id
+	 */
+	public String getCheckDeptId() {
+		return checkDeptId;
+	}
+
+	/**
+	 * 设置：检验站名称
+	 */
+	public void setCheckDeptName(String checkDeptName) {
+		this.checkDeptName = checkDeptName;
+	}
+
+	/**
+	 * 获取：检验站名称
+	 */
+	public String getCheckDeptName() {
+		return checkDeptName;
+	}
+
+	/**
+	 * 设置：充装站名称
+	 */
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
+
+	/**
+	 * 获取：充装站名称
+	 */
+	public String getDeptName() {
+		return deptName;
+	}
+
+	/**
+	 * 设置：钢瓶编号
+	 */
+	public void setBottleNo(String bottleNo) {
+		this.bottleNo = bottleNo;
+	}
+
+	/**
+	 * 获取：钢瓶编号
+	 */
+	public String getBottleNo() {
+		return bottleNo;
+	}
+
+	/**
+	 * 设置：二维码编号
+	 */
+	public void setQrcodeNo(String qrcodeNo) {
+		this.qrcodeNo = qrcodeNo;
+	}
+
+	/**
+	 * 获取：二维码编号
+	 */
+	public String getQrcodeNo() {
+		return qrcodeNo;
+	}
+
+	/**
+	 * 设置：所属区域id
+	 */
+	public void setAreaId(String areaId) {
+		this.areaId = areaId;
+	}
+
+	/**
+	 * 获取：所属区域id
+	 */
+	public String getAreaId() {
+		return areaId;
+	}
+
+	/**
+	 * 设置：所属区域名称
+	 */
+	public void setAreaName(String areaName) {
+		this.areaName = areaName;
+	}
+
+	/**
+	 * 获取：所属区域名称
+	 */
+	public String getAreaName() {
+		return areaName;
+	}
+
+	/**
+	 * 设置：作业人员id
+	 */
+	public void setWorkerId(String workerId) {
+		this.workerId = workerId;
+	}
+
+	/**
+	 * 获取：作业人员id
+	 */
+	public String getWorkerId() {
+		return workerId;
+	}
+
+	/**
+	 * 设置：作业人员名字
+	 */
+	public void setWorkerName(String workerName) {
+		this.workerName = workerName;
+	}
+
+	/**
+	 * 获取：作业人员名字
+	 */
+	public String getWorkerName() {
+		return workerName;
+	}
+
+	/**
+	 * 设置：检验日期
+	 */
+	public void setCheckDate(Date checkDate) {
+		this.checkDate = checkDate;
+	}
+
+	/**
+	 * 获取：检验日期
+	 */
+	public Date getCheckDate() {
+		return checkDate;
+	}
+
+	/**
+	 * 设置：下次检验日期
+	 */
+	public void setNextCheckDate(Date nextCheckDate) {
+		this.nextCheckDate = nextCheckDate;
+	}
+
+	/**
+	 * 获取：下次检验日期
+	 */
+	public Date getNextCheckDate() {
+		return nextCheckDate;
+	}
+
+	/**
+	 * 设置：钢瓶规格id(对应字典表中的钢瓶类型value)
+	 */
+	public void setBottleTypeId(String bottleTypeId) {
+		this.bottleTypeId = bottleTypeId;
+	}
+
+	/**
+	 * 获取：钢瓶规格id(对应字典表中的钢瓶类型value)
+	 */
+	public String getBottleTypeId() {
+		return bottleTypeId;
+	}
+
+	/**
+	 * 设置：钢瓶规格名称(对应字典表中的钢瓶类型name)
+	 */
+	public void setBottleTypeName(String bottleTypeName) {
+		this.bottleTypeName = bottleTypeName;
+	}
+
+	/**
+	 * 获取：钢瓶规格名称(对应字典表中的钢瓶类型name)
+	 */
+	public String getBottleTypeName() {
+		return bottleTypeName;
+	}
+
+	/**
+	 * 设置：钢瓶型号名称
+	 */
+	public void setBottleStandardName(String bottleStandardName) {
+		this.bottleStandardName = bottleStandardName;
+	}
+
+	/**
+	 * 获取：钢瓶型号名称
+	 */
+	public String getBottleStandardName() {
+		return bottleStandardName;
+	}
+
+	/**
+	 * 设置：钢瓶型号id
+	 */
+	public void setBottleStandardId(String bottleStandardId) {
+		this.bottleStandardId = bottleStandardId;
+	}
+
+	/**
+	 * 获取：钢瓶型号id
+	 */
+	public String getBottleStandardId() {
+		return bottleStandardId;
+	}
+
+	/**
+	 * 设置：生产日期
+	 */
+	public void setProduceDate(Date produceDate) {
+		this.produceDate = produceDate;
+	}
+
+	/**
+	 * 获取：生产日期
+	 */
+	public Date getProduceDate() {
+		return produceDate;
+	}
+
+	/**
+	 * 设置：生产厂家id
+	 */
+	public void setProduceFactoryId(String produceFactoryId) {
+		this.produceFactoryId = produceFactoryId;
+	}
+
+	/**
+	 * 获取：生产厂家id
+	 */
+	public String getProduceFactoryId() {
+		return produceFactoryId;
+	}
+
+	/**
+	 * 设置：生产厂家名称
+	 */
+	public void setProduceFactoryName(String produceFactoryName) {
+		this.produceFactoryName = produceFactoryName;
+	}
+
+	/**
+	 * 获取：生产厂家名称
+	 */
+	public String getProduceFactoryName() {
+		return produceFactoryName;
+	}
+
+	/**
+	 * 设置：充装钢印号
+	 */
+	public void setSteelSealCode(String steelSealCode) {
+		this.steelSealCode = steelSealCode;
+	}
+
+	/**
+	 * 获取：充装钢印号
+	 */
+	public String getSteelSealCode() {
+		return steelSealCode;
+	}
+
+	/**
+	 * 设置：检验状态(1：待检；2：检验完成)
+	 */
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	/**
+	 * 获取：检验状态(1：待检；2：检验完成)
+	 */
+	public String getStatus() {
+		return status;
+	}
+
+	/**
+	 * 设置：检验结果（1：合格；2：报废）
+	 */
+	public void setCheckResult(String checkResult) {
+		this.checkResult = checkResult;
+	}
+
+	/**
+	 * 获取：检验结果（1：合格；2：报废）
+	 */
+	public String getCheckResult() {
+		return checkResult;
+	}
+
+	/**
+	 * 设置：打印报告编号（打印后需回填）
+	 */
+	public void setReportNo(String reportNo) {
+		this.reportNo = reportNo;
+	}
+
+	/**
+	 * 获取：打印报告编号（打印后需回填）
+	 */
+	public String getReportNo() {
+		return reportNo;
+	}
+
+	public Date getCheckStartDate() {
+		return checkStartDate;
+	}
+
+	public void setCheckStartDate(Date checkStartDate) {
+		this.checkStartDate = checkStartDate;
+	}
+
+	public Date getCheckEndDate() {
+		return checkEndDate;
+	}
+
+	public void setCheckEndDate(Date checkEndDate) {
+		this.checkEndDate = checkEndDate;
+	}
+
+	public String getDeptFilter() {
+		return deptFilter;
+	}
+
+	public void setDeptFilter(String deptFilter) {
+		this.deptFilter = deptFilter;
+	}
+	
+	
+}

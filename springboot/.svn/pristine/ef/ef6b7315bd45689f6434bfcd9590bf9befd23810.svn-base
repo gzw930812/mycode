@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cptech.stationinfo.dao.DeviceRepairsDao">
+	<sql id="DeviceRepairsColumns">
+		id,device_id,repair_date,repair_reason,concat_person,cell_phone,repair_content,repair_result,create_by,create_date,update_by,update_date,remarks,del_flag,status
+	</sql>
+
+	<select id="get" resultType="com.cptech.stationinfo.domain.DeviceRepairsDO">
+		select
+		<include refid="DeviceRepairsColumns" />
+		from t_device_repairs where id = #{id}
+	</select>
+
+	<select id="findAll" resultType="com.cptech.stationinfo.domain.DeviceRepairsDO">
+		select
+		<include refid="DeviceRepairsColumns" />
+		from t_device_repairs
+		<where>
+			<if test="deviceId != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and device_id like '%${ deviceId}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and device_id like concat('%',#{deviceId},'%')
+				</if>
+			</if>
+			<if test="repairDate != null">
+				and repair_date = #{repairDate}
+			</if>
+			<if test="repairReason != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and repair_reason like '%${ repairReason}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and repair_reason like concat('%',#{repairReason},'%')
+				</if>
+			</if>
+			<if test="concatPerson != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and concat_person like '%${ concatPerson}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and concat_person like concat('%',#{concatPerson},'%')
+				</if>
+			</if>
+			<if test="cellPhone != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and cell_phone like '%${ cellPhone}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and cell_phone like concat('%',#{cellPhone},'%')
+				</if>
+			</if>
+			<if test="repairContent != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and repair_content like '%${ repairContent}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and repair_content like concat('%',#{repairContent},'%')
+				</if>
+			</if>
+			<if test="repairResult != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and repair_result like '%${ repairResult}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and repair_result like concat('%',#{repairResult},'%')
+				</if>
+			</if>
+			<if test="status != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and status like '%${ status}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and status like concat('%',#{status},'%')
+				</if>
+			</if>
+		</where>
+	</select>
+
+	<select id="findByPage" resultType="com.cptech.stationinfo.domain.DeviceRepairsDO">
+		select
+		a.id as id,
+		a.device_id as deviceId,
+		a.repair_date as repairDate,
+		a.repair_reason as repairReason,
+		a.concat_person as concatPerson,
+		a.cell_phone as cellPhone,
+		a.repair_content as repairContent,
+		a.repair_result as repairResult,
+		a.create_by as createBy,
+		a.create_date as createDate,
+		a.update_by as updateBy,
+		a.update_date as updateDate,
+		a.remarks as remarks,
+		a.del_flag as delFlag,
+		a.status as status,
+		d.name as deviceName,
+		d.outer_code as outerNumber,
+		d.status as deviceStatus,
+		s.name as stationName
+		from t_devices d
+		inner join t_device_repairs a on d.id = a.device_id
+		inner join t_stations s on s.id = d.station_id
+		<where>a.del_flag = '0'
+			<if test="deviceId != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.device_id like '%${ deviceId}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.device_id like concat('%',#{deviceId},'%')
+				</if>
+			</if>
+			<if test="repairDate != null">
+				and a.repair_date = #{repairDate}
+			</if>
+			<if test="repairReason != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.repair_reason like '%${ repairReason}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.repair_reason like concat('%',#{repairReason},'%')
+				</if>
+			</if>
+			<if test="concatPerson != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.concat_person like '%${ concatPerson}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.concat_person like concat('%',#{concatPerson},'%')
+				</if>
+			</if>
+			<if test="cellPhone != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.cell_phone like '%${ cellPhone}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.cell_phone like concat('%',#{cellPhone},'%')
+				</if>
+			</if>
+			<if test="repairContent != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.repair_content like '%${ repairContent}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.repair_content like concat('%',#{repairContent},'%')
+				</if>
+			</if>
+			<if test="repairResult != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.repair_result like '%${ repairResult}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.repair_result like concat('%',#{repairResult},'%')
+				</if>
+			</if>
+			<if test="outerNumber != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and d.outer_code like '%${ outerNumber}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and d.outer_code like concat('%',#{outerNumber},'%')
+				</if>
+			</if>
+			<if test="deviceName != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and d.name like '%${ deviceName}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and d.name like concat('%',#{deviceName},'%')
+				</if>
+			</if>
+			<if test="deviceStatus != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and d.status like '%${ deviceStatus}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and d.status like concat('%',#{deviceStatus},'%')
+				</if>
+			</if>
+			<if test="stationId != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and d.station_id like '%${ stationId}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and d.station_id like concat('%',#{stationId},'%')
+				</if>
+			</if>
+			<if test="status != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.status like '%${ status}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.status like concat('%',#{status},'%')
+				</if>
+			</if>
+			<if test="status == null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.status in(1,2)
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.status in(1,2)
+				</if>
+			</if>
+			<if test="deptId != null">
+				and FIND_IN_SET(s.dept_id, #{filterDeptIds})>0
+			</if>
+		</where>
+		order by a.update_date
+	</select>
+
+	<insert id="save" parameterType="com.cptech.stationinfo.domain.DeviceRepairsDO">
+		insert into t_device_repairs
+		(
+		<if test="id != null">
+			id,
+		</if>
+		<if test="deviceId != null">
+			device_id,
+		</if>
+		<if test="repairDate != null">
+			repair_date,
+		</if>
+		<if test="repairReason != null">
+			repair_reason,
+		</if>
+		<if test="concatPerson != null">
+			concat_person,
+		</if>
+		<if test="cellPhone != null">
+			cell_phone,
+		</if>
+		<if test="repairContent != null">
+			repair_content,
+		</if>
+		<if test="repairResult != null">
+			repair_result,
+		</if>
+		<if test="createBy != null">
+			create_by,
+		</if>
+		<if test="createDate != null">
+			create_date,
+		</if>
+		<if test="updateBy != null">
+			update_by,
+		</if>
+		<if test="updateDate != null">
+			update_date,
+		</if>
+		<if test="remarks != null">
+			remarks,
+		</if>
+		<if test="delFlag != null">
+			del_flag,
+		</if>
+		<if test="status != null">
+			status
+		</if>
+		)
+		values
+		(
+		<if test="id != null">
+			#{id},
+		</if>
+		<if test="deviceId != null">
+			#{deviceId},
+		</if>
+		<if test="repairDate != null">
+			#{repairDate},
+		</if>
+		<if test="repairReason != null">
+			#{repairReason},
+		</if>
+		<if test="concatPerson != null">
+			#{concatPerson},
+		</if>
+		<if test="cellPhone != null">
+			#{cellPhone},
+		</if>
+		<if test="repairContent != null">
+			#{repairContent},
+		</if>
+		<if test="repairResult != null">
+			#{repairResult},
+		</if>
+		<if test="createBy != null">
+			#{createBy},
+		</if>
+		<if test="createDate != null">
+			#{createDate},
+		</if>
+		<if test="updateBy != null">
+			#{updateBy},
+		</if>
+		<if test="updateDate != null">
+			#{updateDate},
+		</if>
+		<if test="remarks != null">
+			#{remarks},
+		</if>
+		<if test="delFlag != null">
+			#{delFlag},
+		</if>
+		<if test="status != null">
+			#{status}
+		</if>
+		)
+	</insert>
+
+	<update id="update" parameterType="com.cptech.stationinfo.domain.DeviceRepairsDO">
+		update t_device_repairs
+		<set>
+			<if test="deviceId != null">device_id = #{deviceId}, </if>
+			<if test="repairDate != null">repair_date = #{repairDate}, </if>
+			<if test="repairReason != null">repair_reason = #{repairReason}, </if>
+			<if test="concatPerson != null">concat_person = #{concatPerson}, </if>
+			<if test="cellPhone != null">cell_phone = #{cellPhone}, </if>
+			<if test="repairContent != null">repair_content = #{repairContent}, </if>
+			<if test="repairResult != null">repair_result = #{repairResult}, </if>
+			<if test="createBy != null">create_by = #{createBy}, </if>
+			<if test="createDate != null">create_date = #{createDate}, </if>
+			<if test="updateBy != null">update_by = #{updateBy}, </if>
+			<if test="updateDate != null">update_date = #{updateDate}, </if>
+			<if test="remarks != null">remarks = #{remarks}, </if>
+			<if test="delFlag != null">del_flag = #{delFlag}, </if>
+			<if test="status != null">status = #{status}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="remove">
+		delete from t_device_repairs where id = #{value}
+	</delete>
+
+	<delete id="batchRemove">
+		delete from t_device_repairs where id in
+		<foreach item="id" collection="array" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

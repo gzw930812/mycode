@@ -1,0 +1,67 @@
+package com.cptech.oa.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.cptech.oa.dao.NotifyRecordDao;
+import com.cptech.oa.domain.NotifyRecordDO;
+import com.cptech.oa.service.NotifyRecordService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
+
+
+@Service
+public class NotifyRecordServiceImpl implements NotifyRecordService {
+	@Autowired
+	private NotifyRecordDao notifyRecordDao;
+	
+	@Override
+	public NotifyRecordDO get(String id){
+		return notifyRecordDao.get(id);
+	}
+	
+	@Override
+	public int count(NotifyRecordDO notifyRecord){
+		return notifyRecordDao.count(notifyRecord);
+	}
+	
+	@Override
+	public int save(NotifyRecordDO notifyRecord){
+		return notifyRecordDao.save(notifyRecord);
+	}
+	
+	@Override
+	public int update(NotifyRecordDO notifyRecord){
+		return notifyRecordDao.update(notifyRecord);
+	}
+	
+	@Override
+	public int remove(String id){
+		return notifyRecordDao.remove(id);
+	}
+	
+	@Override
+	public int batchRemove(String[] ids){
+		return notifyRecordDao.batchRemove(ids);
+	}
+
+	@Override
+	public int changeRead(NotifyRecordDO notifyRecord) {
+		return notifyRecordDao.changeRead(notifyRecord);
+	}
+
+	@Override
+	public List<NotifyRecordDO> findAll(NotifyRecordDO notifyRecord) {
+		return notifyRecordDao.findAll(notifyRecord);
+	}
+
+	@Override
+	public Page<NotifyRecordDO> findByPage(NotifyRecordDO notifyRecord) {
+		PageHelper.startPage(notifyRecord.getOffset(), notifyRecord.getLimit());
+		return notifyRecordDao.findByPage(notifyRecord);
+	}
+
+}

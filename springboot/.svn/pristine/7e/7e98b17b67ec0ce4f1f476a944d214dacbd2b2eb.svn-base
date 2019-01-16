@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title th:text="${systemName}"></title>
+    <meta name="keywords" th:content="${systemName}">
+    <meta name="description" th:content="${systemName}">
+	<link rel="shortcut icon" th:href="@{/favicon.ico}">
+    <link href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link href="/css/font-awesome.css?v=4.4.0" th:href="@{/css/font-awesome.css?v=4.4.0}" rel="stylesheet">
+   <!--  <link href="/css/animate.css" th:href="@{/css/animate.css}" rel="stylesheet"> -->
+    <link href="/css/style.css" th:href="@{/css/style.css}" rel="stylesheet">
+    <link href="/css/login.css" th:href="@{/css/login.css}" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html"/>
+    <![endif]-->
+    <script>
+        if (window.top !== window.self) {
+            window.top.location = window.location;
+        }
+    </script>
+    
+    
+
+</head>
+
+<body class="signin">
+<!-- <div class="signinpanel">
+    <div class="row">
+        <div class="col-sm-12">
+            <form id="signupForm">
+                <h3 class="text-center">用户登录</h3>
+                <p class="m-t-md text-center">欢迎登录 <span th:text="${systemName}"></span></p>
+                <input type="text" name="username" class="form-control uname"
+                       value="admin"/>
+                <input type="password" name="password"
+                       class="form-control pword m-b" value="111111"/>
+                <a id="login" class="btn btn-login btn-block">登录</a>
+            </form>
+        </div>
+    </div>
+    <div class="signup-footer">
+        <div class="pull-left">&copy; 2018 All Rights Reserved.
+        </div>
+    </div>
+</div> -->
+
+<div class="signinpanel">
+ 	<p class="sysName"></p>
+ 	<div class="contain">
+ 		<div class="shadow_box b_radius"></div>
+ 		<div class="content_box ">
+ 			 <div class="content_left f_l ">
+ 			 	 <div class="left_top">
+ 			 	 	 <div class="gas_tureorfalse b_radius f_l " th:href="@{index.html}">
+ 			 	 		 <a href="index.html" th:href="@{index.html}" >
+	 			 	 	 	<img src="../static/img/authenticity.png" th:src="@{/img/authenticity.png}">
+	 			 	 	 	<p>气瓶真伪查询</p>
+ 			 	 	 	</a>
+ 			 	 	 </div>	
+ 			 	 	 <div class="gas_info f_r b_radius ">
+ 			 	 	 	<a href="" >
+	 			 	 	 	<img src="../static/img/information.png"  th:src="@{/img/information.png}">
+	 			 	 	 	<p>气瓶真伪查询</p> 
+ 			 	 	 	</a>
+ 			 	 	 </div>
+ 			 	 </div>	
+ 			 	<div class="left_bottom b_radius ">
+ 			 	 	<div class="notice_board_title">
+ 			 	 	    <div class="notice_board">公告</div>
+ 			 	 	    <div class="more"><a href="">更多>></a></div>
+ 			 	 	</div>
+ 			 	 	<div class="notice_board_list" >
+ 			 	 		<div class="notice_board_item">
+ 			 	 			<a href="www.baidu.com">
+	 			 	 			<span class="notice_board_info">关于胡斐晚饭后无法回避 腹黑u哦few分级为哦分附件为佛我分级为哦分分级为哦分我就覅哦我</span>
+	 			 	 			<span class="notice_board_time">2018-06-13</span>
+ 			 	 			</a>
+ 			 	 		</div>
+ 			 	 		<div class="notice_board_item">
+ 			 	 			<a href="www.baidu.com">
+	 			 	 			<span class="notice_board_info">关于胡斐晚饭后无法回避 腹黑u哦few分级为哦分附件为佛我分级为哦分分级为哦分我就覅哦我</span>
+	 			 	 			<span class="notice_board_time">2018-06-13</span>
+ 			 	 			</a>
+ 			 	 		</div>
+ 			 	 		<div class="notice_board_item">
+ 			 	 			<a href="www.baidu.com">
+	 			 	 			<span class="notice_board_info">关于胡斐晚饭后无法回避 腹黑u哦few分级为哦分附件为佛我分级为哦分分级为哦分我就覅哦我</span>
+	 			 	 			<span class="notice_board_time">2018-06-13</span>
+ 			 	 			</a>
+ 			 	 		</div>
+ 			 	 		<div class="notice_board_item">
+ 			 	 			<a href="www.baidu.com">
+	 			 	 			<span class="notice_board_info">关于胡斐晚饭后无法回避 腹黑u哦few分级为哦分附件为佛我分级为哦分分级为哦分我就覅哦我</span>
+	 			 	 			<span class="notice_board_time">2018-06-13</span>
+ 			 	 			</a>
+ 			 	 		</div>
+ 			 	 		<div class="notice_board_item">
+ 			 	 			<a href="www.baidu.com">
+	 			 	 			<span class="notice_board_info">关于胡斐晚饭后无法回避 腹黑u哦few分级为哦分附件为佛我分级为哦分分级为哦分我就覅哦我</span>
+	 			 	 			<span class="notice_board_time">2018-06-13</span>
+ 			 	 			</a>
+ 			 	 		</div>
+ 			 	 		<div class="notice_board_item">
+ 			 	 			<a href="www.baidu.com">
+	 			 	 			<span class="notice_board_info">关于胡斐晚饭后无法回避 腹黑u哦few分级为哦分附件为佛我分级为哦分分级为哦分我就覅哦我</span>
+	 			 	 			<span class="notice_board_time">2018-06-13</span>
+ 			 	 			</a>
+ 			 	 		</div> 
+ 			 	 		 <!-- 没有公告时，显示图片-->
+ 			 	 		 <!--  <div style="text-align:center;padding-top:20px;">
+ 			 	 			<img src="../static/img/nonews.png" th:src="@{/img/nonews.png}" >
+ 			 	 			<p style="line-height:30px;">暂无公告</p>
+ 			 	 		</div>-->
+ 			 	 	</div> 
+ 			 	 </div>
+ 			 </div>
+ 			 <div class="content_right f_r ">
+ 			 		<div class="acount_login">
+ 			 		   <div class="title">
+	 			 		    <div>账号</div>
+	 			 			<div>登陆</div>
+ 			 		   </div>
+ 			 		</div>
+ 			 		<div class="login_box b_radius">
+ 			 				 <form id="signupForm">
+				                <div class="account">
+				                   <i class="icon icon_user f_l" ></i>
+				                   <input class="username f_l" name="username" value="" maxlength="11" placeholder="请输入手机号" type="text">
+				                   <i class="icon delete_text f_r"></i>
+				                </div>
+				                <div class="account">
+				                   <i class="icon icon_key f_l" ></i>
+				                   <input class="username f_l" name="password" value="" maxlength="11" placeholder="请输入密码"  type="password">
+				                   <i class="icon delete_text f_r"></i>
+				                </div>
+				                <a id="login" class="btn btn-login btn-block">登录</a>
+				            </form> 
+ 			 		</div> 
+ 			 		
+ 			 </div>	
+ 		</div> 
+ 	</div>
+</div>
+<script th:inline="javascript"> var ctx = [[@{/}]] ; </script>
+<!-- 全局js -->
+<script src="/js/jquery.min.js?v=2.1.4" th:src="@{/js/jquery.min.js?v=2.1.4}"></script>
+<script src="/js/bootstrap.min.js?v=3.3.6" th:src="@{/js/bootstrap.min.js?v=3.3.6}"></script>
+
+<!-- 自定义js -->
+<script src="/js/content.js?v=1.0.0" th:src="@{/js/content.js?v=1.0.0}"></script>
+
+<!-- jQuery Validation plugin javascript-->
+<script src="/js/ajax-util.js" th:src="@{/js/ajax-util.js}"></script>
+<script src="/js/plugins/validate/jquery.validate.min.js" th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+<script src="/js/plugins/validate/messages_zh.min.js" th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
+<script src="/js/plugins/layer/layer.min.js" th:src="@{/js/plugins/layer/layer.min.js}"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#login").on('click',function(){login()});
+        validateRule(); 
+    });
+
+    $.validator.setDefaults({
+        submitHandler: function () {
+            login();
+        }
+    }); 
+
+    function login() {
+    	if($("input[name=username]").val()==""||$("input[name=password]").val()==""){
+    		layer.msg("用户名和密码不能为空");
+    	}else{
+    		$.ajax({
+                type: "POST",
+                url: ctx+"login",
+                data: $('#signupForm').serialize(),
+                success: function (r) {
+                     if (r.code == 0) {
+                        var index = layer.load(1, {
+                            shade: [0.1,'#fff'] //0.1透明度的白色背景
+                        });
+                        parent.location.href = ctx+'index';
+                    } else {
+                        layer.msg(r.msg);
+                    }
+                },
+            });
+    	}
+    }
+ 
+    function validateRule() {
+        var icon = "<i class='fa fa-times-circle'></i> ";
+        $("#signupForm").validate({
+            rules: {
+                username: {
+                    required: true
+                },
+                password: {
+                    required: true
+                }
+            },
+            messages: {
+                username: {
+                    required: icon ,
+                },
+                password: {
+                    required: icon ,
+                }
+            }
+        })
+    }
+    /* 输入框部位空时，显示删除按钮 */
+    
+    $(".account").delegate('input','keyup',function(){
+    	if($(this).val()!=""){
+    		$(this).siblings(".delete_text").show();
+    	}else{
+    		$(this).siblings(".delete_text").hide();
+    	}
+    })
+    /* 清空输入框 */
+    $(".delete_text").click(function(){
+    	$(this).siblings(".username").val("");
+    	$(this).hide();
+    })
+    
+    
+</script>
+</body>
+</html>

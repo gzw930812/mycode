@@ -1,0 +1,31 @@
+package com.cptech.appInfor.service;
+
+import com.cptech.appInfor.domain.AppVersionDO;
+
+import java.util.List;
+import com.github.pagehelper.Page;
+
+/**
+ * app版本管理表
+ * 
+ * @author fb
+ * @email 1595418464@qq.com
+ * @date 2018-06-19 09:41:15
+ */
+public interface AppVersionService {
+	
+	AppVersionDO get(String id);
+	
+	List<AppVersionDO> findAll(AppVersionDO appVersion);
+	Page<AppVersionDO> findByPage(AppVersionDO appVersion);
+	
+	int save(AppVersionDO appVersion);
+	
+	int update(AppVersionDO appVersion);
+	
+	int remove(String id);
+	
+	int batchRemove(String[] ids);
+
+	List<AppVersionDO> findAllByType(AppVersionDO appVersion);
+}

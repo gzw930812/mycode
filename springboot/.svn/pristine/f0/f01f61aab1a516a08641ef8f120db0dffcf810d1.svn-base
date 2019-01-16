@@ -1,0 +1,153 @@
+package com.cptech.qrc.controller;
+
+import java.util.List;
+import java.util.Map;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.cptech.common.annotation.Log;
+import com.cptech.common.controller.BaseController;
+import com.cptech.common.utils.PageUtils;
+import com.cptech.common.utils.R;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
+import com.cptech.qrc.domain.QrcodeSectionNumberDO;
+import com.cptech.qrc.service.QrcodeSectionNumberService;
+import com.cptech.stationinfo.domain.StationsDO;
+
+/**
+ * 二维码号段设置表
+ * 
+ * @author fb
+ * @email 1595418464@qq.com
+ * @date 2018-06-20 16:35:19
+ */
+ 
+@Controller
+@RequestMapping("/qrc/qrcodeSectionNumber")
+public class QrcodeSectionNumberController extends BaseController{
+	
+	@Autowired
+	private QrcodeSectionNumberService qrcodeSectionNumberService;
+	
+	@GetMapping()
+	@RequiresPermissions("qrc:qrcodeSectionNumber:qrcodeSectionNumber")
+	String QrcodeSectionNumber(Map<String, Object> map){
+		
+		List<StationsDO> stations = getUserStations("1");
+		map.put("stations", stations);
+	    return "qrc/qrcodeSectionNumber/qrcodeSectionNumber";
+	}
+	
+	@Log("二维码号段设置表-查询列表")
+	@ResponseBody
+	@GetMapping("/list")
+	@RequiresPermissions("qrc:qrcodeSectionNumber:qrcodeSectionNumber")
+	public PageUtils list(QrcodeSectionNumberDO qrcodeSectionNumber){
+		qrcodeSectionNumber.setDeptId(getUser().getDeptId());
+		//查询列表数据
+		Page<QrcodeSectionNumberDO> findByPage = qrcodeSectionNumberService.findByPage(qrcodeSectionNumber);
+		PageInfo<QrcodeSectionNumberDO> pageInfo = new PageInfo<>(findByPage);
+		PageUtils pageUtil = new PageUtils(pageInfo.getList(), (int)pageInfo.getTotal());
+		return pageUtil;
+	}
+	
+	@GetMapping("/add")
+	@RequiresPermissions("qrc:qrcodeSectionNumber:add")
+	String add(Map<String, Object> map){
+		List<StationsDO> stations = getUserStations("1");
+		map.put("stations", stations);
+	    return "qrc/qrcodeSectionNumber/add";
+	}
+
+	@GetMapping("/edit/{id}")
+	@RequiresPermissions("qrc:qrcodeSectionNumber:edit")
+	String edit(@PathVariable("id") String id,Model model){
+		QrcodeSectionNumberDO qrcodeSectionNumber = qrcodeSectionNumberService.get(id);
+		model.addAttribute("qrcodeSectionNumber", qrcodeSectionNumber);
+	    return "qrc/qrcodeSectionNumber/edit";
+	}
+	
+	/**
+	 * 保存
+	 */
+	@Log("二维码号段设置表-保存")
+	@ResponseBody
+	@PostMapping("/save")
+	@RequiresPermissions("qrc:qrcodeSectionNumber:add")
+	public R save( QrcodeSectionNumberDO qrcodeSectionNumber){
+		
+		//判断号段
+		int minNo = qrcodeSectionNumber.getMinNo();
+		int maxNo = qrcodeSectionNumber.getMaxNo();
+		if(minNo >= maxNo){
+			return R.error("最大字段号不能小于最小字段号");
+		}
+		
+		//判断号段是否被选择
+		List<QrcodeSectionNumberDO> qrcodeSectionNumbers = qrcodeSectionNumberService.findAll(new QrcodeSectionNumberDO());
+		for (QrcodeSectionNumberDO qrcodeSectionNumberDO : qrcodeSectionNumbers) {
+			
+			if(qrcodeSectionNumber.getPrefix().trim().toLowerCase().equals(qrcodeSectionNumberDO.getPrefix().trim().toLowerCase())
+					&& ((qrcodeSectionNumberDO.getMinNo()<=qrcodeSectionNumber.getMinNo() &&
+							qrcodeSectionNumberDO.getMaxNo() >= qrcodeSectionNumber.getMinNo())
+							|| ((qrcodeSectionNumberDO.getMinNo()<=qrcodeSectionNumber.getMaxNo() &&
+									qrcodeSectionNumberDO.getMaxNo() >= qrcodeSectionNumber.getMaxNo())))){
+				return R.error("该号段已被其他充装站选择，请重新设置");
+			}
+			
+		}
+		
+		if(qrcodeSectionNumberService.save(qrcodeSectionNumber)>0){
+			return R.ok();
+		}
+		return R.error();
+	}
+	/**
+	 * 预警设置
+	 */
+	@Log("二维码号段预警设置")
+	@ResponseBody
+	@RequestMapping("/update")
+	@RequiresPermissions("qrc:qrcodeSectionNumber:edit")
+	public R update( QrcodeSectionNumberDO qrcodeSectionNumber){
+		qrcodeSectionNumberService.update(qrcodeSectionNumber);
+		return R.ok();
+	}
+	
+	/**
+	 * 删除
+	 */
+	@Log("二维码号段设置表-删除")
+	@PostMapping( "/remove")
+	@ResponseBody
+	@RequiresPermissions("qrc:qrcodeSectionNumber:remove")
+	public R remove( String id){
+		if(qrcodeSectionNumberService.remove(id)>0){
+		return R.ok();
+		}
+		return R.error();
+	}
+	
+	/**
+	 * 删除
+	 */
+	@Log("二维码号段设置表-批量删除")
+	@PostMapping( "/batchRemove")
+	@ResponseBody
+	@RequiresPermissions("qrc:qrcodeSectionNumber:batchRemove")
+	public R remove(@RequestParam("ids[]") String[] ids){
+		qrcodeSectionNumberService.batchRemove(ids);
+		return R.ok();
+	}
+	
+}

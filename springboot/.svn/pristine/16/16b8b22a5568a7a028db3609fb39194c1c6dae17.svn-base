@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cptech.basicInfo.dao.AreaDao">
+	<sql id="AreaColumns">
+		id,type,code,name,parent_id,parent_ids,create_by,create_date,update_by,update_date,remarks,del_flag
+	</sql>
+
+	<select id="get" resultType="com.cptech.basicInfo.domain.AreaDO">
+		select
+		<include refid="AreaColumns" />
+		from sys_area where id = #{id}
+	</select>
+	
+	<select id="getByCode" resultType="com.cptech.basicInfo.domain.AreaDO">
+		select
+		<include refid="AreaColumns" />
+		from sys_area where code = #{code}
+	</select>
+	
+	<select id="countChildren" resultType="java.lang.Long">
+		select
+		count(1)
+		from sys_area where parent_id = #{id}
+	</select>
+
+	<select id="findAll" resultType="com.cptech.basicInfo.domain.AreaDO">
+		select
+		<include refid="AreaColumns" />
+		from sys_area
+		<where>
+			<if test="type != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and type like '%${ type}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and type like concat('%',#{type},'%')
+				</if>
+			</if>
+			<if test="code != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and code like '%${ code}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and code like concat('%',#{code},'%')
+				</if>
+			</if>
+			<if test="name != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and name like '%${ name}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and name like concat('%',#{name},'%')
+				</if>
+			</if>
+			<if test="parentId != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and parent_id like '%${ parentId}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and parent_id like concat('%',#{parentId},'%')
+				</if>
+			</if>
+			<if test="parentIds != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and parent_ids like '%${ parentIds}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and (find_in_set(#{parentIds},parent_ids) &gt; 0 or id = #{parentIds})
+				</if>
+			</if>
+		</where>
+	</select>
+
+	<select id="findByPage" resultType="com.cptech.basicInfo.domain.AreaDO">
+		select
+		<include refid="AreaColumns" />
+		from sys_area
+		<where>
+			<if test="type != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and type like '%${ type}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and type like concat('%',#{type},'%')
+				</if>
+			</if>
+			<if test="code != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and code like '%${ code}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and code like concat('%',#{code},'%')
+				</if>
+			</if>
+			<if test="name != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and name like '%${ name}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and name like concat('%',#{name},'%')
+				</if>
+			</if>
+			<if test="parentId != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and parent_id like '%${ parentId}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and parent_id like concat('%',#{parentId},'%')
+				</if>
+			</if>
+			<if test="parentIds != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and parent_ids like '%${ parentIds}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and parent_ids like concat('%',#{parentIds},'%')
+				</if>
+			</if>
+		</where>
+		order by update_date
+	</select>
+
+	<insert id="save" parameterType="com.cptech.basicInfo.domain.AreaDO">
+		insert into sys_area
+		(
+		<if test="id != null">
+			id,
+		</if>
+		<if test="type != null">
+			type,
+		</if>
+		<if test="code != null">
+			code,
+		</if>
+		<if test="name != null">
+			name,
+		</if>
+		<if test="parentId != null">
+			parent_id,
+		</if>
+		<if test="parentIds != null">
+			parent_ids,
+		</if>
+		<if test="createBy != null">
+			create_by,
+		</if>
+		<if test="createDate != null">
+			create_date,
+		</if>
+		<if test="updateBy != null">
+			update_by,
+		</if>
+		<if test="updateDate != null">
+			update_date,
+		</if>
+		<if test="remarks != null">
+			remarks,
+		</if>
+		<if test="delFlag != null">
+			del_flag
+		</if>
+		)
+		values
+		(
+		<if test="id != null">
+			#{id},
+		</if>
+		<if test="type != null">
+			#{type},
+		</if>
+		<if test="code != null">
+			#{code},
+		</if>
+		<if test="name != null">
+			#{name},
+		</if>
+		<if test="parentId != null">
+			#{parentId},
+		</if>
+		<if test="parentIds != null">
+			#{parentIds},
+		</if>
+		<if test="createBy != null">
+			#{createBy},
+		</if>
+		<if test="createDate != null">
+			#{createDate},
+		</if>
+		<if test="updateBy != null">
+			#{updateBy},
+		</if>
+		<if test="updateDate != null">
+			#{updateDate},
+		</if>
+		<if test="remarks != null">
+			#{remarks},
+		</if>
+		<if test="delFlag != null">
+			#{delFlag}
+		</if>
+		)
+	</insert>
+
+	<update id="update" parameterType="com.cptech.basicInfo.domain.AreaDO">
+		update sys_area
+		<set>
+			<if test="type != null">type = #{type}, </if>
+			<if test="code != null">code = #{code}, </if>
+			<if test="name != null">name = #{name}, </if>
+			<if test="parentId != null">parent_id = #{parentId}, </if>
+			<if test="parentIds != null">parent_ids = #{parentIds}, </if>
+			<if test="createBy != null">create_by = #{createBy}, </if>
+			<if test="createDate != null">create_date = #{createDate}, </if>
+			<if test="updateBy != null">update_by = #{updateBy}, </if>
+			<if test="updateDate != null">update_date = #{updateDate}, </if>
+			<if test="remarks != null">remarks = #{remarks}, </if>
+			<if test="delFlag != null">del_flag = #{delFlag}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="remove">
+		delete from sys_area where id = #{value}
+	</delete>
+
+	<delete id="batchRemove">
+		delete from sys_area where id in
+		<foreach item="id" collection="array" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

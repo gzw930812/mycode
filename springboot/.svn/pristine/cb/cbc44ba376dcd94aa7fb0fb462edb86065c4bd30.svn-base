@@ -1,0 +1,90 @@
+package com.cptech.basicInfo.domain;
+
+import java.io.Serializable;
+import java.util.Date;
+import com.cptech.common.domain.BaseDo;
+
+
+
+/**
+ * 区域表
+ * 
+ * @author pjy
+ * @email 1595418464@qq.com
+ * @date 2018-06-19 09:24:05
+ */
+public class AreaDO extends BaseDo implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
+			//区域类型（1：省；2：市；3：区县）
+	private String type;
+			//区域代码
+	private String code;
+			//区域名称
+	private String name;
+			//父级id
+	private String parentId;
+			//多级父级id，以逗号隔开
+	private String parentIds;
+							
+			/**
+	 * 设置：区域类型（1：省；2：市；3：区县）
+	 */
+	public void setType(String type) {
+		this.type = type;
+	}
+	/**
+	 * 获取：区域类型（1：省；2：市；3：区县）
+	 */
+	public String getType() {
+		return type;
+	}
+			/**
+	 * 设置：区域代码
+	 */
+	public void setCode(String code) {
+		this.code = code;
+	}
+	/**
+	 * 获取：区域代码
+	 */
+	public String getCode() {
+		return code;
+	}
+			/**
+	 * 设置：区域名称
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+	/**
+	 * 获取：区域名称
+	 */
+	public String getName() {
+		return name;
+	}
+			/**
+	 * 设置：父级id
+	 */
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
+	}
+	/**
+	 * 获取：父级id
+	 */
+	public String getParentId() {
+		return parentId;
+	}
+			/**
+	 * 设置：多级父级id，以逗号隔开
+	 */
+	public void setParentIds(String parentIds) {
+		this.parentIds = parentIds;
+	}
+	/**
+	 * 获取：多级父级id，以逗号隔开
+	 */
+	public String getParentIds() {
+		return parentIds;
+	}
+							}

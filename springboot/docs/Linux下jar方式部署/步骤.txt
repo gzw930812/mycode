@@ -1,0 +1,16 @@
+   
+   首先要将“start.sh”脚本中的“RESOURCE_NAME”变量值改为具体的项目名，即jar包名称；修改“--spring.profiles.active”变量值：dev或test或pro,具体以配置文件application-的后缀名为准
+   
+1:将项目jar包与启动脚本“start.sh”一同拷贝至服务器；
+
+2:赋予“start.sh”脚本超级管理员权限：chmod +x start.sh
+
+3:安装jar日志监控工具：
+		yum -y install dos2unix  
+	然后：dos2unix start.sh 
+	
+4：执行./start.sh （每次启动不需要停止已启动的端口，脚本会自动查找有没有启动的进程，有则杀掉后重启）
+   看到控制台输出“Start Success!”字样说明已启动成功。（实时日志输出到“nohup.out”，具体文件可见启动成功后有句“# nohup: 把输出追加到"nohup.out"”的提示）
+5：查看日志信息：tail -f nohup.out  
+   每天的日志会在同级目录下的applog文件夹下看到
+	

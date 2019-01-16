@@ -1,0 +1,58 @@
+package com.cptech.basicInfo.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+import com.cptech.basicInfo.dao.BottleStandardDao;
+import com.cptech.basicInfo.domain.BottleStandardDO;
+import com.cptech.basicInfo.service.BottleStandardService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
+
+
+@Service
+public class BottleStandardServiceImpl implements BottleStandardService {
+	@Autowired
+	private BottleStandardDao bottleStandardDao;
+	
+	@Override
+	public BottleStandardDO get(String id){
+		return bottleStandardDao.get(id);
+	}
+	
+	@Override
+	public List<BottleStandardDO> findAll(BottleStandardDO bottleStandard){
+		return bottleStandardDao.findAll(bottleStandard);
+	}
+	@Override
+	public Page<BottleStandardDO> findByPage(BottleStandardDO bottleStandard){
+		PageHelper.startPage(bottleStandard.getOffset(), bottleStandard.getLimit());
+		return bottleStandardDao.findByPage(bottleStandard);
+	}
+	
+	@Override
+	public int save(BottleStandardDO bottleStandard){
+		bottleStandard.preInsert();
+		return bottleStandardDao.save(bottleStandard);
+	}
+	
+	@Override
+	public int update(BottleStandardDO bottleStandard){
+		bottleStandard.preUpdate();
+		return bottleStandardDao.update(bottleStandard);
+	}
+	
+	@Override
+	public int remove(String id){
+		return bottleStandardDao.remove(id);
+	}
+	
+	@Override
+	public int batchRemove(String[] ids){
+		return bottleStandardDao.batchRemove(ids);
+	}
+	
+}

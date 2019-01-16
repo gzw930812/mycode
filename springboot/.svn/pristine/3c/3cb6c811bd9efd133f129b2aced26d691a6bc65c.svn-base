@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cptech.system.dao.DeptDao">
+	<sql id="deptColumns">
+		id,parent_id,area_id,name,order_num,create_by,create_date,update_by,update_date,remarks,del_flag
+	</sql>
+	<select id="get" resultType="com.cptech.system.domain.DeptDO">
+		select
+			<include refid="deptColumns"/>
+		from sys_dept
+		where id = #{id}
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		select 
+			count(1)
+		from sys_dept
+		<where>
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="parentId != null and parentId != ''"> 
+				parent_id=#{parentId}
+			</if>
+			<if test="name != null and name != ''"> 
+				<if test="databaseType == 'oracle'.toString()">
+					and name like '%${name}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and name like concat('%',#{name},'%')
+				</if>
+			</if>
+		</where>
+	</select>
+	<select id="findAll" resultType="com.cptech.system.domain.DeptDO">
+		select 
+			<include refid="deptColumns"/>
+		from sys_dept
+		<where> del_flag='0'
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="parentId != null and parentId != ''"> 
+				and FIND_IN_SET(id, fun_get_sys_dept_children(#{parentId})) 
+			</if>
+			<if test="name != null and name != ''"> 
+				<if test="databaseType == 'oracle'.toString()">
+					and name like '%${name}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and name like concat('%',#{name},'%')
+				</if>
+			</if>
+		</where>
+		order by create_date,order_num
+	</select>
+	
+	<select id="findByPage" resultType="com.cptech.system.domain.DeptDO">
+		select 
+			<include refid="deptColumns"/>
+		from sys_dept
+		<where> del_flag='0'
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="parentId != null and parentId != ''"> 
+				and FIND_IN_SET(id, fun_get_sys_dept_children(#{parentId})) 
+			</if>
+			<if test="name != null and name != ''"> 
+				<if test="databaseType == 'oracle'.toString()">
+					and name like '%${name}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and name like concat('%',#{name},'%')
+				</if>
+			</if>
+			<if test="orderNum != null and orderNum != ''"> and order_num = #{orderNum} </if>
+		</where>
+		order by order_num
+	</select>
+
+	<insert id="save" parameterType="com.cptech.system.domain.DeptDO"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into sys_dept
+		(
+		<if test="parentId != null and parentId != ''">
+			parent_id,
+		</if>
+		<if test="areaId != null and areaId != ''">
+			area_id,
+		</if>
+		<if test="name != null and name != ''">
+			name,
+		</if>
+		<if test="orderNum != null and orderNum != ''">
+			order_num,
+		</if>
+		id,
+		create_by,
+		create_date,
+		update_by,
+		update_date,
+		remarks,
+		del_flag
+		)
+		values
+		(
+		<if test="parentId != null and parentId != ''">
+			#{parentId},
+		</if>
+		<if test="areaId != null and areaId != ''">
+			#{areaId},
+		</if>
+		<if test="name != null and name != ''">
+			#{name},
+		</if>
+		<if test="orderNum != null and orderNum != ''">
+			#{orderNum},
+		</if>
+		#{id},
+		#{createBy},
+		#{createDate},
+		#{updateBy},
+		#{updateDate},
+		#{remarks},
+		#{delFlag}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.cptech.system.domain.DeptDO">
+		update sys_dept
+		<set>
+			<if test="parentId != null">parent_id = #{parentId}, </if>
+			<if test="areaId != null">area_id = #{areaId}, </if>
+			<if test="name != null">name = #{name}, </if>
+			<if test="orderNum != null">order_num = #{orderNum}, </if>
+			<if test="createBy != null">create_by = #{createBy}, </if>
+			<if test="createDate != null">create_date = #{createDate}, </if>
+			<if test="updateBy != null">update_by = #{updateBy}, </if>
+			<if test="updateDate != null">update_date = #{updateDate}, </if>
+			<if test="remarks != null">remarks = #{remarks}, </if>
+			<if test="delFlag != null">del_flag = #{delFlag} </if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="remove">
+		update sys_dept set del_flag='1' where id = #{id}
+	</delete>
+
+	<delete id="batchRemove">
+		update sys_dept set del_flag='1' where id in
+		<foreach item="ids" collection="array" open="(" separator=","
+			close=")">
+			#{ids}
+		</foreach>
+	</delete>
+	
+	<select id="listParentDept" resultType="string">
+		select DISTINCT parent_id from sys_dept where del_flag='0'
+	</select>
+
+    <select id="getDeptUserNumber" resultType="int">
+		select count(*) from sys_user where dept_id = #{id} and del_flag='0'
+	</select>
+	<select id="getParentAreaName" resultType="java.lang.String">
+		SELECT GROUP_CONCAT(NAME ORDER BY ty SEPARATOR '-') area_name FROM (
+			SELECT '1' t ,NAME,TYPE ty FROM sys_area WHERE FIND_IN_SET(id,
+				(SELECT CONCAT(parent_ids,',',id) FROM sys_area WHERE id=#{areaId})
+			)
+		)tmp GROUP BY tmp.t
+	</select>
+</mapper>

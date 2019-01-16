@@ -1,0 +1,29 @@
+package ${package}.service;
+
+import ${package}.domain.${className}DO;
+
+import java.util.List;
+import com.github.pagehelper.Page;
+
+/**
+ * ${comments}
+ * 
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+public interface ${className}Service {
+	
+	${className}DO get(${pk.attrType} ${pk.attrname});
+	
+	List<${className}DO> findAll(${className}DO ${classname});
+	Page<${className}DO> findByPage(${className}DO ${classname});
+	
+	int save(${className}DO ${classname});
+	
+	int update(${className}DO ${classname});
+	
+	int remove(${pk.attrType} ${pk.attrname});
+	
+	int batchRemove(${pk.attrType}[] ${pk.attrname}s);
+}

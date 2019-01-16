@@ -1,0 +1,97 @@
+package com.cptech.checkInfo.controller;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.cptech.common.annotation.Log;
+import com.cptech.common.controller.BaseController;
+import com.cptech.common.domain.DictDO;
+import com.cptech.common.service.DictService;
+import com.cptech.common.utils.PageUtils;
+import com.cptech.common.utils.R;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
+import com.cptech.checkInfo.domain.CheckRecordDO;
+import com.cptech.checkInfo.service.CheckRecordService;
+import com.cptech.fillingInfo.domain.FillingRecordDO;
+import com.cptech.system.domain.UserDO;
+
+/**
+ * 检验记录表
+ * 
+ * @author pjy
+ * @email 1595418464@qq.com
+ * @date 2018-06-22 14:38:21
+ */
+ 
+@Controller
+@RequestMapping("/checkInfo/checkRecord")
+public class CheckRecordController extends BaseController{
+	@Autowired
+	private CheckRecordService checkRecordService;
+	@Autowired
+	private DictService dictService;
+	
+	@GetMapping()
+	@RequiresPermissions("checkInfo:checkRecord:checkRecord")
+	String checkRecord(Model model){
+		model.addAttribute("stations", getUserStations("1"));
+		DictDO dict = new DictDO();
+		dict.setType("bottle_type");
+		model.addAttribute("types", dictService.findAll(dict));
+	    return "checkInfo/checkRecord/checkRecord";
+	}
+	
+	@GetMapping("/checked")
+	@RequiresPermissions("checkInfo:checkRecord:checked")
+	String checked(Model model){
+		model.addAttribute("stations", getUserStations("1"));
+		DictDO dict = new DictDO();
+		dict.setType("bottle_type");
+		model.addAttribute("types", dictService.findAll(dict));
+	    return "checkInfo/checkRecord/checkedRecord";
+	}
+	
+	@GetMapping("/regular")
+	@RequiresPermissions("checkInfo:checkRecord:regular")
+	String regular(Model model){
+		model.addAttribute("stations", getUserStations("1"));
+		model.addAttribute("checkStations", getUserStations("2"));
+		DictDO dict = new DictDO();
+		dict.setType("bottle_type");
+		model.addAttribute("types", dictService.findAll(dict));
+	    return "checkInfo/checkRecord/regularRecord";
+	}
+	
+	@Log("检验记录表-查询列表")
+	@ResponseBody
+	@GetMapping("/list")
+	@RequiresPermissions("checkInfo:checkRecord:checkRecord")
+	public PageUtils list(CheckRecordDO checkRecord){
+		//查询列表数据
+		Page<CheckRecordDO> findByPage = checkRecordService.findByPage(checkRecord);
+		PageInfo<CheckRecordDO> pageInfo = new PageInfo<>(findByPage);
+		PageUtils pageUtil = new PageUtils(pageInfo.getList(), (int)pageInfo.getTotal());
+		return pageUtil;
+	}
+	
+	/**
+	 * 保存
+	 */
+	@Log("检验记录表-打印")
+	@ResponseBody
+	@PostMapping("/print")
+	@RequiresPermissions("checkInfo:checkRecord:print")
+	public R save( CheckRecordDO checkRecord){
+		return R.error();
+	}
+}

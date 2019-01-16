@@ -1,0 +1,62 @@
+package com.cptech.basicInfo.domain;
+
+import java.io.Serializable;
+import java.util.Date;
+import com.cptech.common.domain.BaseDo;
+
+
+
+/**
+ * 钢瓶生产厂家表
+ * 
+ * @author pjy
+ * @email 1595418464@qq.com
+ * @date 2018-06-19 09:26:18
+ */
+public class BottleFactoryDO extends BaseDo implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
+			//简称
+	private String shortName;
+			//全称
+	private String name;
+			//许可证编号
+	private String licenseNo;
+							
+			/**
+	 * 设置：简称
+	 */
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
+	/**
+	 * 获取：简称
+	 */
+	public String getShortName() {
+		return shortName;
+	}
+			/**
+	 * 设置：全称
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+	/**
+	 * 获取：全称
+	 */
+	public String getName() {
+		return name;
+	}
+			/**
+	 * 设置：许可证编号
+	 */
+	public void setLicenseNo(String licenseNo) {
+		this.licenseNo = licenseNo;
+	}
+	/**
+	 * 获取：许可证编号
+	 */
+	public String getLicenseNo() {
+		return licenseNo;
+	}
+							}

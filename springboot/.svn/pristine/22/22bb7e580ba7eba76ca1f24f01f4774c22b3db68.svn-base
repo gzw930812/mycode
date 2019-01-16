@@ -1,0 +1,58 @@
+package ${package}.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+import ${package}.dao.${className}Dao;
+import ${package}.domain.${className}DO;
+import ${package}.service.${className}Service;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
+
+
+@Service
+public class ${className}ServiceImpl implements ${className}Service {
+	@Autowired
+	private ${className}Dao ${classname}Dao;
+	
+	@Override
+	public ${className}DO get(${pk.attrType} ${pk.attrname}){
+		return ${classname}Dao.get(${pk.attrname});
+	}
+	
+	@Override
+	public List<${className}DO> findAll(${className}DO ${classname}){
+		return ${classname}Dao.findAll(${classname});
+	}
+	@Override
+	public Page<${className}DO> findByPage(${className}DO ${classname}){
+		PageHelper.startPage(${classname}.getOffset(), ${classname}.getLimit());
+		return ${classname}Dao.findByPage(${classname});
+	}
+	
+	@Override
+	public int save(${className}DO ${classname}){
+		${classname}.preInsert();
+		return ${classname}Dao.save(${classname});
+	}
+	
+	@Override
+	public int update(${className}DO ${classname}){
+		${classname}.preUpdate();
+		return ${classname}Dao.update(${classname});
+	}
+	
+	@Override
+	public int remove(${pk.attrType} ${pk.attrname}){
+		return ${classname}Dao.remove(${pk.attrname});
+	}
+	
+	@Override
+	public int batchRemove(${pk.attrType}[] ${pk.attrname}s){
+		return ${classname}Dao.batchRemove(${pk.attrname}s);
+	}
+	
+}

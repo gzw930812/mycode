@@ -1,0 +1,66 @@
+package com.cptech.stationinfo.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.cptech.stationinfo.dao.StationsDao;
+import com.cptech.stationinfo.domain.StationsDO;
+import com.cptech.stationinfo.service.StationsService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
+
+
+@Service
+public class StationsServiceImpl implements StationsService {
+	@Autowired
+	private StationsDao stationsDao;
+	
+	@Override
+	public StationsDO get(String id){
+		return stationsDao.get(id);
+	}
+	
+	@Override
+	public Page<StationsDO> findByPage(StationsDO stations){
+		PageHelper.startPage(stations.getOffset(), stations.getLimit());
+		return stationsDao.findByPage(stations);
+	}
+	
+	@Override
+	public int save(StationsDO stations){
+		stations.preInsert();
+		return stationsDao.save(stations);
+	}
+	
+	@Override
+	public int update(StationsDO stations){
+		stations.preUpdate();
+		return stationsDao.update(stations);
+	}
+	
+	@Override
+	public int remove(String id){
+		return stationsDao.remove(id);
+	}
+	
+	@Override
+	public int batchRemove(String[] ids){
+		return stationsDao.batchRemove(ids);
+	}
+
+	@Override
+	public boolean exit(StationsDO stations) {
+		boolean exit;
+        exit = stationsDao.exit(stations) > 0;
+        return exit;
+	}
+
+	@Override
+	public List<StationsDO> getStations(StationsDO stations) {
+		return stationsDao.getStations(stations);
+	}
+
+}

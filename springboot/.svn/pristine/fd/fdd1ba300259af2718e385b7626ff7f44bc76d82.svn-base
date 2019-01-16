@@ -1,0 +1,116 @@
+package com.cptech.fillingInfo.service.impl;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.cptech.common.utils.DateUtils;
+import com.cptech.common.utils.ReflectHelper;
+import com.cptech.fillingInfo.domain.FillingRecordDO;
+import com.cptech.fillingInfo.service.FillingRecordService;
+import com.github.pagehelper.Page;
+
+public class FillingRecordDownloadService implements Runnable{
+	private final static String[] HEADER = {"充装站名称","气瓶编号","二维码编号","充装时间","充装重量","枪号","充装前压力","充装后压力","作业人员名字","充装前检查","充装后检查","不合格原因"};
+	private final static String[] TYPES = {"stationName","bottleNo","qrcodeNo","fillingTime","fillingWeight","gunNo","beforeFillingPressure","afterFillingPressure","workerName","beforeFillingCheck","afterFillingCheck","reason"};
+	private FillingRecordDO fillingRecordDO;
+	private FillingRecordService fillingRecordService;
+	private PrintWriter out;
+	public FillingRecordDownloadService(FillingRecordService fillingRecordService,FillingRecordDO fillingRecordDO,HttpServletRequest request, HttpServletResponse response) {
+		this.fillingRecordService = fillingRecordService;
+		this.fillingRecordDO = fillingRecordDO;
+		try {
+			this.out = response.getWriter();
+		} catch (IOException e) {
+			throw new RuntimeException("连接已关闭。。。");
+		}
+	}
+	@Override
+	public void run() {
+
+	}
+	
+	@SuppressWarnings("resource")
+	public void exportCSV() {
+		int pageSize = 1000;
+		setTitle();
+		fillingRecordDO.setOffset(0);
+		fillingRecordDO.setLimit(pageSize);
+		Page<FillingRecordDO> page = fillingRecordService.findByPage(fillingRecordDO);
+		int pages = page.getPages();
+		do{
+			List<FillingRecordDO> records = page.getResult();
+			for (FillingRecordDO record : records) {
+				out.println(line(record));
+			}
+			fillingRecordDO.setOffset(page.getPageNum() + 1);
+			page = fillingRecordService.findByPage(fillingRecordDO);
+		}while(page.getPageNum() + 1 <= pages);
+		
+		out.close();
+	}
+	private void setTitle() {
+		int len = HEADER.length;
+		for (int i = 0; i < len; i++) {
+			out.print(element(HEADER[i])
+						+(i!=len-1?",":System.lineSeparator()));
+		}
+	}
+
+	private String line(FillingRecordDO record) {
+		StringBuffer sb = new StringBuffer();
+		int len = TYPES.length;
+		for (int i = 0; i < len; i++) {
+			String val = "";
+			try {
+				val = element(ReflectHelper.getValueByFieldName(record,TYPES[i]));
+				if("beforeFillingCheck".equals(TYPES[i])) {
+					val = "1".equals(val)?"合格":"不合格";
+				}
+				if("afterFillingCheck".equals(TYPES[i])) {
+					val = "1".equals(val)?"合格":"不合格";
+				}
+			} catch (SecurityException | NoSuchFieldException
+					| IllegalArgumentException | IllegalAccessException e) {
+			}
+			if(i!=len-1) {
+				sb.append(val+",");
+			} else {
+				sb.append(val);
+			}
+		}
+		
+		return sb.toString();
+	}
+	
+	/**
+	 *
+	 * @param val
+	 * @return
+	 */
+	private String element(Object val) {
+		String result = "\"";
+		if (val == null) {
+		} else if (val instanceof String) {
+			result += val.toString();
+		} else if (val instanceof Integer) {
+			result += val.toString();
+		} else if (val instanceof Long) {
+			result += val.toString();
+		} else if (val instanceof Double) {
+			result += val.toString();
+		} else if (val instanceof Float) {
+			result += val.toString();
+		} else if (val instanceof Date) {
+			Date date = (Date)val;
+			result += DateUtils.format(date, "yyyy-MM-dd");
+		} 
+		return result+"\"";
+	}
+}

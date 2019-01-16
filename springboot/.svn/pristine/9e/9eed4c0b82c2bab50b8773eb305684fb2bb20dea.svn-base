@@ -1,0 +1,713 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cptech.bottle.dao.SteelBottlesDao">
+	<sql id="SteelBottlesColumns">
+		id,bottle_no,qrcode_no,check_date,check_dept_id,check_dept_name,next_check_date,pre_filling_time,bottle_type_id,bottle_type_name,bottle_standard_name,bottle_standard_id,dept_id,dept_name,steel_seal_code,produce_date,produce_factory_id,produce_factory_code,produce_factory_name,produce_factory_license,use_age,hyd_pres_test_pres,nominal_work_pres,bottle_net_weight,in_fact_volume,bottle_wall_thickness,bottle_material_id,bottle_material_name,product_standard_no,check_supervise_mark,worker_id,worker_name,worker_phone,new_add_or_not,audit_status,not_pass_reason,pic_urls,status,scrap_reason,abnormal_reason,reserve1,reserve2,reserve3,reserve4,create_by,create_date,update_by,update_date,remarks,del_flag
+	</sql>
+
+	<sql id="SteelBottlesJoinColumns">
+		a.id,
+		a.bottle_no,
+		a.qrcode_no,
+		a.check_date,
+		a.check_dept_id,
+		a.check_dept_name,
+		a.next_check_date,
+		a.pre_filling_time,
+		a.bottle_type_id,
+		a.bottle_type_name,
+		a.bottle_standard_name,
+		a.bottle_standard_id,
+		a.dept_id,
+		a.dept_name,
+		a.steel_seal_code,
+		a.produce_date,
+		a.produce_factory_id,
+		a.produce_factory_code,
+		a.produce_factory_name,
+		a.produce_factory_license,
+		a.use_age,
+		a.hyd_pres_test_pres,
+		a.nominal_work_pres,
+		a.bottle_net_weight,
+		a.in_fact_volume,
+		a.bottle_wall_thickness,
+		a.bottle_material_id,
+		a.bottle_material_name,
+		a.product_standard_no,
+		a.check_supervise_mark,
+		a.worker_id,
+		a.worker_name,
+		a.worker_phone,
+		a.new_add_or_not,
+		a.audit_status,
+		a.not_pass_reason,
+		a.pic_urls,
+		a.status,
+		a.scrap_reason,
+		a.abnormal_reason,
+		a.reserve1,
+		a.reserve2,
+		a.reserve3,
+		a.reserve4,
+		a.create_by,
+		a.create_date,
+		a.update_by,
+		a.update_date,
+		a.remarks,
+		a.del_flag
+	</sql>
+	<select id="get" resultType="com.cptech.bottle.domain.SteelBottlesDO">
+		select
+		<include refid="SteelBottlesJoinColumns" />
+		from t_steel_bottles a
+		<where>
+			a.id = #{id}
+		</where>
+	</select>
+
+	<select id="findByPage" resultType="com.cptech.bottle.domain.SteelBottlesDO">
+		select
+		<include refid="SteelBottlesColumns" />
+		from t_steel_bottles a
+		<where>
+			<if test="bottleNo != null and bottleNo != ''">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.bottle_no like '%${ bottleNo}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.bottle_no like concat('%',#{bottleNo},'%')
+				</if>
+			</if>
+			<if test="qrcodeNo != null and qrcodeNo != ''">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.qrcode_no like '%${ qrcodeNo}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.qrcode_no like concat('%',#{qrcodeNo},'%')
+				</if>
+			</if>
+			<if test="checkDate != null">
+				and a.check_date = #{checkDate}
+			</if>
+			<if test="checkDeptId != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.check_dept_id like '%${ checkDeptId}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.check_dept_id like concat('%',#{checkDeptId},'%')
+				</if>
+			</if>
+			<if test="checkDeptName != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.check_dept_name like '%${ checkDeptName}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.check_dept_name like concat('%',#{checkDeptName},'%')
+				</if>
+			</if>
+			<if test="nextCheckDate != null">
+				and a.next_check_date = #{nextCheckDate}
+			</if>
+			<if test="nextCheckStartDate != null">
+				and date_format(a.next_check_date,'%Y%m%d') &gt;= date_format(#{nextCheckStartDate},'%Y%m%d')
+			</if>
+			<if test="nextCheckEndDate != null">
+				and date_format(a.next_check_date,'%Y%m%d') &lt;= date_format(#{nextCheckEndDate},'%Y%m%d')
+			</if>
+			<if test="preFillingTime != null">
+				and a.pre_filling_time = #{preFillingTime}
+			</if>
+			<if test="bottleTypeId != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.bottle_type_id like '%${ bottleTypeId}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.bottle_type_id like concat('%',#{bottleTypeId},'%')
+				</if>
+			</if>
+			<if test="bottleTypeName != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.bottle_type_name like '%${ bottleTypeName}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.bottle_type_name like concat('%',#{bottleTypeName},'%')
+				</if>
+			</if>
+			<if test="bottleStandardName != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.bottle_standard_name like '%${ bottleStandardName}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.bottle_standard_name like concat('%',#{bottleStandardName},'%')
+				</if>
+			</if>
+			<if test="bottleStandardId != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.bottle_standard_id like '%${ bottleStandardId}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.bottle_standard_id like concat('%',#{bottleStandardId},'%')
+				</if>
+			</if>
+			<if test="deptId != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.dept_id like '%${ deptId}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.dept_id like concat('%',#{deptId},'%')
+				</if>
+			</if>
+			<if test="deptName != null and deptName != ''">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.dept_name like '%${ deptName}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.dept_name like concat('%',#{deptName},'%')
+				</if>
+			</if>
+			<if test="steelSealCode != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.steel_seal_code like '%${ steelSealCode}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.steel_seal_code like concat('%',#{steelSealCode},'%')
+				</if>
+			</if>
+			<if test="produceDate != null">
+				and a.produce_date = #{produceDate}
+			</if>
+			<if test="produceFactoryId != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.produce_factory_id like '%${ produceFactoryId}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.produce_factory_id like concat('%',#{produceFactoryId},'%')
+				</if>
+			</if>
+			<if test="produceFactoryCode != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.produce_factory_code like '%${ produceFactoryCode}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.produce_factory_code like concat('%',#{produceFactoryCode},'%')
+				</if>
+			</if>
+			<if test="produceFactoryName != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.produce_factory_name like '%${ produceFactoryName}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.produce_factory_name like concat('%',#{produceFactoryName},'%')
+				</if>
+			</if>
+			<if test="produceFactoryLicense != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.produce_factory_license like '%${ produceFactoryLicense}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.produce_factory_license like
+					concat('%',#{produceFactoryLicense},'%')
+				</if>
+			</if>
+			<if test="useAge != null">
+				and a.use_age = #{useAge}
+			</if>
+			<if test="hydPresTestPres != null">
+				and a.hyd_pres_test_pres = #{hydPresTestPres}
+			</if>
+			<if test="nominalWorkPres != null">
+				and a.nominal_work_pres = #{nominalWorkPres}
+			</if>
+			<if test="bottleNetWeight != null">
+				and a.bottle_net_weight = #{bottleNetWeight}
+			</if>
+			<if test="inFactVolume != null">
+				and a.in_fact_volume = #{inFactVolume}
+			</if>
+			<if test="bottleWallThickness != null">
+				and a.bottle_wall_thickness = #{bottleWallThickness}
+			</if>
+			<if test="bottleMaterialId != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.bottle_material_id like '%${ bottleMaterialId}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.bottle_material_id like concat('%',#{bottleMaterialId},'%')
+				</if>
+			</if>
+			<if test="bottleMaterialName != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.bottle_material_name like '%${ bottleMaterialName}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.bottle_material_name like concat('%',#{bottleMaterialName},'%')
+				</if>
+			</if>
+			<if test="productStandardNo != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.product_standard_no like '%${ productStandardNo}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.product_standard_no like concat('%',#{productStandardNo},'%')
+				</if>
+			</if>
+			<if test="checkSuperviseMark != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.check_supervise_mark like '%${ checkSuperviseMark}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.check_supervise_mark like concat('%',#{checkSuperviseMark},'%')
+				</if>
+			</if>
+			<if test="workerId != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.worker_id like '%${ workerId}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.worker_id like concat('%',#{workerId},'%')
+				</if>
+			</if>
+			<if test="workerName != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.worker_name like '%${ workerName}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.worker_name like concat('%',#{workerName},'%')
+				</if>
+			</if>
+			<if test="newAddOrNot != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.new_add_or_not like '%${ newAddOrNot}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.new_add_or_not like concat('%',#{newAddOrNot},'%')
+				</if>
+			</if>
+			<if test="auditStatus != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.audit_status like '%${ auditStatus}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.audit_status like concat('%',#{auditStatus},'%')
+				</if>
+			</if>
+			<if test="notPassReason != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.not_pass_reason like '%${ notPassReason}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.not_pass_reason like concat('%',#{notPassReason},'%')
+				</if>
+			</if>
+			<if test="picUrls != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.pic_urls like '%${ picUrls}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.pic_urls like concat('%',#{picUrls},'%')
+				</if>
+			</if>
+			<if test="status != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.status like '%${ status}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.status like concat('%',#{status},'%')
+				</if>
+			</if>
+			<if test="scrapReason != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.scrap_reason like '%${ scrapReason}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.scrap_reason like concat('%',#{scrapReason},'%')
+				</if>
+			</if>
+			<if test="abnormalReason != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.abnormal_reason like '%${ abnormalReason}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.abnormal_reason like concat('%',#{abnormalReason},'%')
+				</if>
+			</if>
+			<if test="filterDeptIds != null">
+				<if test="databaseType == 'mysql'.toString()">
+					and exists(
+						select t.id from t_stations t 
+							where find_in_set(t.dept_id,#{filterDeptIds})>0 and a.dept_id = t.id
+					)
+				</if>
+			</if>
+		</where>
+		order by a.update_date
+	</select>
+
+	<insert id="save" parameterType="com.cptech.bottle.domain.SteelBottlesDO">
+		insert into t_steel_bottles
+		(
+		<if test="id != null">
+			id,
+		</if>
+		<if test="bottleNo != null">
+			bottle_no,
+		</if>
+		<if test="qrcodeNo != null">
+			qrcode_no,
+		</if>
+		<if test="checkDate != null">
+			check_date,
+		</if>
+		<if test="checkDeptId != null">
+			check_dept_id,
+		</if>
+		<if test="checkDeptName != null">
+			check_dept_name,
+		</if>
+		<if test="nextCheckDate != null">
+			next_check_date,
+		</if>
+		<if test="preFillingTime != null">
+			pre_filling_time,
+		</if>
+		<if test="bottleTypeId != null">
+			bottle_type_id,
+		</if>
+		<if test="bottleTypeName != null">
+			bottle_type_name,
+		</if>
+		<if test="bottleStandardName != null">
+			bottle_standard_name,
+		</if>
+		<if test="bottleStandardId != null">
+			bottle_standard_id,
+		</if>
+		<if test="deptId != null">
+			dept_id,
+		</if>
+		<if test="deptName != null">
+			dept_name,
+		</if>
+		<if test="steelSealCode != null">
+			steel_seal_code,
+		</if>
+		<if test="produceDate != null">
+			produce_date,
+		</if>
+		<if test="produceFactoryId != null">
+			produce_factory_id,
+		</if>
+		<if test="produceFactoryCode != null">
+			produce_factory_code,
+		</if>
+		<if test="produceFactoryName != null">
+			produce_factory_name,
+		</if>
+		<if test="produceFactoryLicense != null">
+			produce_factory_license,
+		</if>
+		<if test="useAge != null">
+			use_age,
+		</if>
+		<if test="hydPresTestPres != null">
+			hyd_pres_test_pres,
+		</if>
+		<if test="nominalWorkPres != null">
+			nominal_work_pres,
+		</if>
+		<if test="bottleNetWeight != null">
+			bottle_net_weight,
+		</if>
+		<if test="inFactVolume != null">
+			in_fact_volume,
+		</if>
+		<if test="bottleWallThickness != null">
+			bottle_wall_thickness,
+		</if>
+		<if test="bottleMaterialId != null">
+			bottle_material_id,
+		</if>
+		<if test="bottleMaterialName != null">
+			bottle_material_name,
+		</if>
+		<if test="productStandardNo != null">
+			product_standard_no,
+		</if>
+		<if test="checkSuperviseMark != null">
+			check_supervise_mark,
+		</if>
+		<if test="workerId != null">
+			worker_id,
+		</if>
+		<if test="workerName != null">
+			worker_name,
+		</if>
+		<if test="workerPhone != null">
+			worker_phone,
+		</if>
+		<if test="newAddOrNot != null">
+			new_add_or_not,
+		</if>
+		<if test="auditStatus != null">
+			audit_status,
+		</if>
+		<if test="notPassReason != null">
+			not_pass_reason,
+		</if>
+		<if test="picUrls != null">
+			pic_urls,
+		</if>
+		<if test="status != null">
+			status,
+		</if>
+		<if test="scrapReason != null">
+			scrap_reason,
+		</if>
+		<if test="abnormalReason != null">
+			abnormal_reason,
+		</if>
+		<if test="reserve1 != null">
+			reserve1,
+		</if>
+		<if test="reserve2 != null">
+			reserve2,
+		</if>
+		<if test="reserve3 != null">
+			reserve3,
+		</if>
+		<if test="reserve4 != null">
+			reserve4,
+		</if>
+		<if test="createBy != null">
+			create_by,
+		</if>
+		<if test="createDate != null">
+			create_date,
+		</if>
+		<if test="updateBy != null">
+			update_by,
+		</if>
+		<if test="updateDate != null">
+			update_date,
+		</if>
+		<if test="remarks != null">
+			remarks,
+		</if>
+		<if test="delFlag != null">
+			del_flag
+		</if>
+		)
+		values
+		(
+		<if test="id != null">
+			#{id},
+		</if>
+		<if test="bottleNo != null">
+			#{bottleNo},
+		</if>
+		<if test="qrcodeNo != null">
+			#{qrcodeNo},
+		</if>
+		<if test="checkDate != null">
+			#{checkDate},
+		</if>
+		<if test="checkDeptId != null">
+			#{checkDeptId},
+		</if>
+		<if test="checkDeptName != null">
+			#{checkDeptName},
+		</if>
+		<if test="nextCheckDate != null">
+			#{nextCheckDate},
+		</if>
+		<if test="preFillingTime != null">
+			#{preFillingTime},
+		</if>
+		<if test="bottleTypeId != null">
+			#{bottleTypeId},
+		</if>
+		<if test="bottleTypeName != null">
+			#{bottleTypeName},
+		</if>
+		<if test="bottleStandardName != null">
+			#{bottleStandardName},
+		</if>
+		<if test="bottleStandardId != null">
+			#{bottleStandardId},
+		</if>
+		<if test="deptId != null">
+			#{deptId},
+		</if>
+		<if test="deptName != null">
+			#{deptName},
+		</if>
+		<if test="steelSealCode != null">
+			#{steelSealCode},
+		</if>
+		<if test="produceDate != null">
+			#{produceDate},
+		</if>
+		<if test="produceFactoryId != null">
+			#{produceFactoryId},
+		</if>
+		<if test="produceFactoryCode != null">
+			#{produceFactoryCode},
+		</if>
+		<if test="produceFactoryName != null">
+			#{produceFactoryName},
+		</if>
+		<if test="produceFactoryLicense != null">
+			#{produceFactoryLicense},
+		</if>
+		<if test="useAge != null">
+			#{useAge},
+		</if>
+		<if test="hydPresTestPres != null">
+			#{hydPresTestPres},
+		</if>
+		<if test="nominalWorkPres != null">
+			#{nominalWorkPres},
+		</if>
+		<if test="bottleNetWeight != null">
+			#{bottleNetWeight},
+		</if>
+		<if test="inFactVolume != null">
+			#{inFactVolume},
+		</if>
+		<if test="bottleWallThickness != null">
+			#{bottleWallThickness},
+		</if>
+		<if test="bottleMaterialId != null">
+			#{bottleMaterialId},
+		</if>
+		<if test="bottleMaterialName != null">
+			#{bottleMaterialName},
+		</if>
+		<if test="productStandardNo != null">
+			#{productStandardNo},
+		</if>
+		<if test="checkSuperviseMark != null">
+			#{checkSuperviseMark},
+		</if>
+		<if test="workerId != null">
+			#{workerId},
+		</if>
+		<if test="workerName != null">
+			#{workerName},
+		</if>
+		<if test="workerPhone != null">
+			#{workerPhone},
+		</if>
+		<if test="newAddOrNot != null">
+			#{newAddOrNot},
+		</if>
+		<if test="auditStatus != null">
+			#{auditStatus},
+		</if>
+		<if test="notPassReason != null">
+			#{notPassReason},
+		</if>
+		<if test="picUrls != null">
+			#{picUrls},
+		</if>
+		<if test="status != null">
+			#{status},
+		</if>
+		<if test="scrapReason != null">
+			#{scrapReason},
+		</if>
+		<if test="abnormalReason != null">
+			#{abnormalReason},
+		</if>
+		<if test="reserve1 != null">
+			#{reserve1},
+		</if>
+		<if test="reserve2 != null">
+			#{reserve2},
+		</if>
+		<if test="reserve3 != null">
+			#{reserve3},
+		</if>
+		<if test="reserve4 != null">
+			#{reserve4},
+		</if>
+		<if test="createBy != null">
+			#{createBy},
+		</if>
+		<if test="createDate != null">
+			#{createDate},
+		</if>
+		<if test="updateBy != null">
+			#{updateBy},
+		</if>
+		<if test="updateDate != null">
+			#{updateDate},
+		</if>
+		<if test="remarks != null">
+			#{remarks},
+		</if>
+		<if test="delFlag != null">
+			#{delFlag}
+		</if>
+		)
+	</insert>
+
+	<update id="update" parameterType="com.cptech.bottle.domain.SteelBottlesDO">
+		update t_steel_bottles
+		<set>
+			<if test="bottleNo != null">bottle_no = #{bottleNo}, </if>
+			<if test="qrcodeNo != null">qrcode_no = #{qrcodeNo}, </if>
+			<if test="checkDate != null">check_date = #{checkDate}, </if>
+			<if test="checkDeptId != null">check_dept_id = #{checkDeptId}, </if>
+			<if test="checkDeptName != null">check_dept_name = #{checkDeptName}, </if>
+			<if test="nextCheckDate != null">next_check_date = #{nextCheckDate}, </if>
+			<if test="preFillingTime != null">pre_filling_time = #{preFillingTime}, </if>
+			<if test="bottleTypeId != null">bottle_type_id = #{bottleTypeId}, </if>
+			<if test="bottleTypeName != null">bottle_type_name = #{bottleTypeName}, </if>
+			<if test="bottleStandardName != null">bottle_standard_name = #{bottleStandardName}, </if>
+			<if test="bottleStandardId != null">bottle_standard_id = #{bottleStandardId}, </if>
+			<if test="deptId != null">dept_id = #{deptId}, </if>
+			<if test="deptName != null">dept_name = #{deptName}, </if>
+			<if test="steelSealCode != null">steel_seal_code = #{steelSealCode}, </if>
+			<if test="produceDate != null">produce_date = #{produceDate}, </if>
+			<if test="produceFactoryId != null">produce_factory_id = #{produceFactoryId}, </if>
+			<if test="produceFactoryCode != null">produce_factory_code = #{produceFactoryCode}, </if>
+			<if test="produceFactoryName != null">produce_factory_name = #{produceFactoryName}, </if>
+			<if test="produceFactoryLicense != null">produce_factory_license = #{produceFactoryLicense}, </if>
+			<if test="useAge != null">use_age = #{useAge}, </if>
+			<if test="hydPresTestPres != null">hyd_pres_test_pres = #{hydPresTestPres}, </if>
+			<if test="nominalWorkPres != null">nominal_work_pres = #{nominalWorkPres}, </if>
+			<if test="bottleNetWeight != null">bottle_net_weight = #{bottleNetWeight}, </if>
+			<if test="inFactVolume != null">in_fact_volume = #{inFactVolume}, </if>
+			<if test="bottleWallThickness != null">bottle_wall_thickness = #{bottleWallThickness}, </if>
+			<if test="bottleMaterialId != null">bottle_material_id = #{bottleMaterialId}, </if>
+			<if test="bottleMaterialName != null">bottle_material_name = #{bottleMaterialName}, </if>
+			<if test="productStandardNo != null">product_standard_no = #{productStandardNo}, </if>
+			<if test="checkSuperviseMark != null">check_supervise_mark = #{checkSuperviseMark}, </if>
+			<if test="workerId != null">worker_id = #{workerId}, </if>
+			<if test="workerName != null">worker_name = #{workerName}, </if>
+			<if test="workerPhone != null">worker_phone = #{workerPhone}, </if>
+			<if test="newAddOrNot != null">new_add_or_not = #{newAddOrNot}, </if>
+			<if test="auditStatus != null">audit_status = #{auditStatus}, </if>
+			<if test="notPassReason != null">not_pass_reason = #{notPassReason}, </if>
+			<if test="picUrls != null">pic_urls = #{picUrls}, </if>
+			<if test="status != null">status = #{status}, </if>
+			<if test="scrapReason != null">scrap_reason = #{scrapReason}, </if>
+			<if test="abnormalReason != null">abnormal_reason = #{abnormalReason}, </if>
+			<if test="reserve1 != null">reserve1 = #{reserve1}, </if>
+			<if test="reserve2 != null">reserve2 = #{reserve2}, </if>
+			<if test="reserve3 != null">reserve3 = #{reserve3}, </if>
+			<if test="reserve4 != null">reserve4 = #{reserve4}, </if>
+			<if test="createBy != null">create_by = #{createBy}, </if>
+			<if test="createDate != null">create_date = #{createDate}, </if>
+			<if test="updateBy != null">update_by = #{updateBy}, </if>
+			<if test="updateDate != null">update_date = #{updateDate}, </if>
+			<if test="remarks != null">remarks = #{remarks}, </if>
+			<if test="delFlag != null">del_flag = #{delFlag}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+</mapper>

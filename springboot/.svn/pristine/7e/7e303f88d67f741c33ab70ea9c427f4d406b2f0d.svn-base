@@ -1,0 +1,26 @@
+package com.cptech.checkInfo.dao;
+
+import com.cptech.checkInfo.domain.CheckRecordDO;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+import com.github.pagehelper.Page;
+
+/**
+ * 检验记录表
+ * @author pjy
+ * @email 1595418464@qq.com
+ * @date 2018-06-22 14:38:21
+ */
+@Mapper
+public interface CheckRecordDao {
+
+	CheckRecordDO get(String id);
+	
+	Page<CheckRecordDO> findByPage(CheckRecordDO checkRecord);
+	
+	int save(CheckRecordDO checkRecord);
+	
+	int update(CheckRecordDO checkRecord);
+}

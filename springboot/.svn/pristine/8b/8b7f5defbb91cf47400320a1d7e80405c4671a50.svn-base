@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+							<div th:include="bottle/steelBottles/bottleInfo::steelBottlesBottleInfo"></div>
+							<input type="hidden" id="status" name="status"/>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">不通过原因：</label>
+								<div class="col-sm-8 text-center">
+									<textarea rows="8" cols="50" name="reason" id="reason"></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-12 text-center">
+									<button type="submit" class="btn btn-primary" onclick="$('#status').val('1');">通过</button>
+									<button type="submit" class="btn btn-primary" onclick="$('#status').val('2');">不通过</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript"
+		th:src="@{/js/appjs/bottle/steelBottles/audit.js}">
+	</script>
+	<script type="text/javascript"
+		th:src="@{/js/appjs/bottle/steelBottles/bottleInfoInclude.js}">
+	</script>
+</body>
+</html>

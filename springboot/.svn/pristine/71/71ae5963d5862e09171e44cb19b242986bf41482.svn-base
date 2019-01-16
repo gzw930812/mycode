@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="${package}.dao.${className}Dao">
+	<sql id="${className}Columns">
+		#foreach($column in $columns)$column.columnName#if($velocityCount != $columns.size()),#end#end
+	</sql>
+
+	<select id="get" resultType="${package}.domain.${className}DO">
+		select  
+			<include refid="${className}Columns"/>
+		from ${tableName} where ${pk.columnName} = #{${pk.attrname}}
+	</select>
+
+	<select id="findAll" resultType="${package}.domain.${className}DO">
+		select 
+			<include refid="${className}Columns"/>
+		from ${tableName}
+        <where>  
+		  #foreach($column in $columns)
+		  	#if($column.attrname !='id' && $column.attrname !='createBy' && $column.attrname !='createDate' && $column.attrname !='updateBy' && $column.attrname !='updateDate' && $column.attrname !='remarks' && $column.attrname !='delFlag')
+			  	#if($column.attrType == 'String')
+				  <if test="$column.attrname != null"> 
+				  	<if test="databaseType == 'oracle'.toString()">
+				  		and $column.columnName like '%${ $column.attrname}%'
+					</if>
+					<if test="databaseType == 'mysql'.toString()">
+						and $column.columnName like concat('%',#{$column.attrname},'%')
+					</if>
+				  </if>
+				#else
+					<if test="$column.attrname != null"> 
+				  		and $column.columnName = #{$column.attrname}
+				  	</if>
+			  	#end
+			  #end
+		  #end
+		</where>
+	</select>
+	
+	<select id="findByPage" resultType="${package}.domain.${className}DO">
+		select 
+			<include refid="${className}Columns"/>
+		from ${tableName}
+        <where>  
+		  #foreach($column in $columns)
+		  	#if($column.attrname !='id' && $column.attrname !='createBy' && $column.attrname !='createDate' && $column.attrname !='updateBy' && $column.attrname !='updateDate' && $column.attrname !='remarks' && $column.attrname !='delFlag')
+			  	#if($column.attrType == 'String')
+				  <if test="$column.attrname != null"> 
+				  	<if test="databaseType == 'oracle'.toString()">
+				  		and $column.columnName like '%${ $column.attrname}%'
+					</if>
+					<if test="databaseType == 'mysql'.toString()">
+						and $column.columnName like concat('%',#{$column.attrname},'%')
+					</if>
+				  </if>
+				#else
+					<if test="$column.attrname != null"> 
+				  		and $column.columnName = #{$column.attrname}
+				  	</if>
+			  	#end
+			  #end
+		  #end
+		</where>
+        order by update_date
+	</select>
+	
+	<insert id="save" parameterType="${package}.domain.${className}DO"#if($pk.extra == 'auto_increment') useGeneratedKeys="true" keyProperty="$pk.attrname"#end>
+		insert into ${tableName}
+		(
+			#foreach($column in $columns)
+				<if test="$column.attrname != null"> 
+				$column.columnName#if($velocityCount != $columns.size()), #end
+				</if>		
+			#end
+		)
+		values
+		(
+			#foreach($column in $columns)
+				<if test="$column.attrname != null"> 
+						#{$column.attrname}#if($velocityCount != $columns.size()), #end
+				</if>
+			#end
+		)
+	</insert>
+	 
+	<update id="update" parameterType="${package}.domain.${className}DO">
+		update ${tableName} 
+		<set>
+			#foreach($column in $columns)
+				#if($column.columnName != $pk.columnName)
+					<if test="$column.attrname != null">$column.columnName = #{$column.attrname}#if($velocityCount != $columns.size()), #end</if>
+				#end
+			#end
+		</set>
+		where ${pk.columnName} = #{${pk.attrname}}
+	</update>
+	
+	<delete id="remove">
+		delete from ${tableName} where ${pk.columnName} = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from ${tableName} where ${pk.columnName} in 
+		<foreach item="${pk.attrname}" collection="array" open="(" separator="," close=")">
+			#{${pk.attrname}}
+		</foreach>
+	</delete>
+
+</mapper>

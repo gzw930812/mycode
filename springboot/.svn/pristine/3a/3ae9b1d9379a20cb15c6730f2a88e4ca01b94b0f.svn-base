@@ -1,0 +1,32 @@
+package com.cptech.stationinfo.service;
+
+import com.cptech.stationinfo.domain.DevicesDO;
+
+import java.util.List;
+
+import com.github.pagehelper.Page;
+
+/**
+ * 设备表
+ * 
+ * @author fb
+ * @email 1595418464@qq.com
+ * @date 2018-06-22 11:17:48
+ */
+public interface DevicesService {
+	
+	DevicesDO get(String id);
+	
+	List<DevicesDO> findAll(DevicesDO devices);
+	Page<DevicesDO> findByPage(DevicesDO devices);
+	
+	int save(DevicesDO devices);
+	
+	int update(DevicesDO devices);
+	
+	int remove(String id);
+	
+	int batchRemove(String[] ids);
+
+	DevicesDO getByOutCode(String outerNumber);
+}

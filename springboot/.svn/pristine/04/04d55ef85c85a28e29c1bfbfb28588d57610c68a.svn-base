@@ -1,0 +1,29 @@
+package com.cptech.basicInfo.service;
+
+import com.cptech.basicInfo.domain.BottleFactoryDO;
+
+import java.util.List;
+import com.github.pagehelper.Page;
+
+/**
+ * 钢瓶生产厂家表
+ * 
+ * @author pjy
+ * @email 1595418464@qq.com
+ * @date 2018-06-19 09:26:18
+ */
+public interface BottleFactoryService {
+	
+	BottleFactoryDO get(String id);
+	
+	List<BottleFactoryDO> findAll(BottleFactoryDO bottleFactory);
+	Page<BottleFactoryDO> findByPage(BottleFactoryDO bottleFactory);
+	
+	int save(BottleFactoryDO bottleFactory);
+	
+	int update(BottleFactoryDO bottleFactory);
+	
+	int remove(String id);
+	
+	int batchRemove(String[] ids);
+}

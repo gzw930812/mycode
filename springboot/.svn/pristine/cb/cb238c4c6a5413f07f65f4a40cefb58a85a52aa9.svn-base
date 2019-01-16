@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cptech.settings.dao.RechargeTimeIntervalDao">
+	<sql id="RechargeTimeIntervalColumns">
+		a.id as "id",
+		a.bottle_type_id as "bottleTypeId",
+		a.hour as
+		"hour",
+		a.status as "status",
+		a.early_warning_time as
+		"earlyWarningTime",
+		a.create_by as "createBy",
+		a.create_date as
+		"createDate",
+		a.update_by as "updateBy",
+		a.update_date as "updateDate",
+		a.remarks as "remarks",
+		a.del_flag as "delFlag"
+	</sql>
+
+	<select id="get" resultType="com.cptech.settings.domain.RechargeTimeIntervalDO">
+		select
+		<include refid="RechargeTimeIntervalColumns" />
+		from t_recharge_time_interval a where a.id = #{id}
+	</select>
+
+	<select id="findAll" resultType="com.cptech.settings.domain.RechargeTimeIntervalDO">
+		select
+		<include refid="RechargeTimeIntervalColumns" />
+		,
+		dic.name as "bottleType"
+		from t_recharge_time_interval a
+		left join
+		sys_dict dic on dic.type = 'bottle_type' and dic.id = a.bottle_type_id
+		<where>
+			<if test="bottleTypeId != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.bottle_type_id = ${ bottleTypeId}
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.bottle_type_id = #{bottleTypeId}
+				</if>
+			</if>
+			<if test="hour != null">
+				and a.hour = #{hour}
+			</if>
+			<if test="status != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.status = #{status}
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.status = #{status}
+				</if>
+			</if>
+			<if test="earlyWarningTime != null">
+				and a.early_warning_time = #{earlyWarningTime}
+			</if>
+		</where>
+	</select>
+
+	<select id="findByPage" resultType="com.cptech.settings.domain.RechargeTimeIntervalDO">
+		select
+		<include refid="RechargeTimeIntervalColumns" />
+		,
+		dic.name as "bottleType"
+		from t_recharge_time_interval a
+		left join
+		sys_dict dic on dic.type = 'bottle_type' and dic.id =
+		a.bottle_type_id
+		<where>
+			<if test="bottleTypeId != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.bottle_type_id like '%${ bottleTypeId}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.bottle_type_id like
+					concat('%',#{bottleTypeId},'%')
+				</if>
+			</if>
+			<if test="hour != null">
+				and a.hour = #{hour}
+			</if>
+			<if test="status != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.status like '%${ status}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.status like concat('%',#{status},'%')
+				</if>
+			</if>
+			<if test="earlyWarningTime != null">
+				and a.early_warning_time = #{earlyWarningTime}
+			</if>
+		</where>
+		order by a.status asc, a.bottle_type_id asc
+	</select>
+
+	<insert id="save" parameterType="com.cptech.settings.domain.RechargeTimeIntervalDO">
+		insert into t_recharge_time_interval
+		(
+		<if test="id != null">
+			id,
+		</if>
+		<if test="bottleTypeId != null">
+			bottle_type_id,
+		</if>
+		<if test="hour != null">
+			hour,
+		</if>
+		<if test="status != null">
+			status,
+		</if>
+		<if test="earlyWarningTime != null">
+			early_warning_time,
+		</if>
+		<if test="createBy != null">
+			create_by,
+		</if>
+		<if test="createDate != null">
+			create_date,
+		</if>
+		<if test="updateBy != null">
+			update_by,
+		</if>
+		<if test="updateDate != null">
+			update_date,
+		</if>
+		<if test="remarks != null">
+			remarks,
+		</if>
+		<if test="delFlag != null">
+			del_flag
+		</if>
+		)
+		values
+		(
+		<if test="id != null">
+			#{id},
+		</if>
+		<if test="bottleTypeId != null">
+			#{bottleTypeId},
+		</if>
+		<if test="hour != null">
+			#{hour},
+		</if>
+		<if test="status != null">
+			#{status},
+		</if>
+		<if test="earlyWarningTime != null">
+			#{earlyWarningTime},
+		</if>
+		<if test="createBy != null">
+			#{createBy},
+		</if>
+		<if test="createDate != null">
+			#{createDate},
+		</if>
+		<if test="updateBy != null">
+			#{updateBy},
+		</if>
+		<if test="updateDate != null">
+			#{updateDate},
+		</if>
+		<if test="remarks != null">
+			#{remarks},
+		</if>
+		<if test="delFlag != null">
+			#{delFlag}
+		</if>
+		)
+	</insert>
+
+	<update id="update" parameterType="com.cptech.settings.domain.RechargeTimeIntervalDO">
+		update t_recharge_time_interval
+		<set>
+			<if test="bottleTypeId != null">bottle_type_id = #{bottleTypeId}, </if>
+			<if test="hour != null">hour = #{hour}, </if>
+			<if test="status != null">status = #{status}, </if>
+			<if test="earlyWarningTime != null">early_warning_time = #{earlyWarningTime}, </if>
+			<if test="createBy != null">create_by = #{createBy}, </if>
+			<if test="createDate != null">create_date = #{createDate}, </if>
+			<if test="updateBy != null">update_by = #{updateBy}, </if>
+			<if test="updateDate != null">update_date = #{updateDate}, </if>
+			<if test="remarks != null">remarks = #{remarks}, </if>
+			<if test="delFlag != null">del_flag = #{delFlag}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+</mapper>

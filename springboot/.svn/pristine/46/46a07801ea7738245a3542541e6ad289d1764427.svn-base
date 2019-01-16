@@ -1,0 +1,116 @@
+$().ready(function() {
+	validateRule();
+});
+
+$.validator.setDefaults({
+	submitHandler : function() {
+		save();
+	}
+});
+function save() {
+	$.ajax({
+		cache : true,
+		type : "POST",
+		url : ctx+"/worker/workers/save",
+		data : $('#signupForm').serialize(),// 你的formid
+		async : false,
+		error : function(request) {
+			parent.layer.alert("Connection error");
+		},
+		success : function(data) {
+			if (data.code == 0) {
+				parent.layer.msg("操作成功");
+				parent.reLoad();
+				var index = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+				parent.layer.close(index);
+
+			} else {
+				parent.layer.alert(data.msg)
+			}
+
+		}
+	});
+
+}
+function validateRule() {
+	var icon = "<i class='fa fa-times-circle'></i> ";
+	$("#signupForm").validate({
+		rules : {
+			name : {
+				required : true,
+				maxlength:30
+			},
+			certificateCodeId : {
+				required : true
+			},
+			idCard : {
+				required : true,
+				minlength:15,
+				maxlength:18,
+				remote : {
+					url : ctx+"/worker/workers/exit", // 后台处理程序
+					type : "post", // 数据发送方式
+					dataType : "json", // 接受数据格式
+					data : { // 要传递的数据
+						idCard : function() {
+							return $("#idCard").val();
+						}
+					}
+				}
+			},
+			idCardExpireDate : {
+				required : true
+			},
+			publishArea : {
+				required : true
+			},
+			publishDeptName : {
+				required : true,
+				maxlength:30
+			},
+			grantDate : {
+				required : true
+			}
+		},
+		messages : {
+			name : {
+				required : icon+"不能为空",
+				maxlength: icon+"最长不能超过30位"
+			},
+			certificateCodeId : {
+				required : icon+"不能为空"
+			},
+			idCard : {
+				required :icon+"不能为空",
+				minlength:icon+"至少输入15位",
+				maxlength:icon+"最长不能超过18位",
+				remote : icon + "该证件已经注册"
+			},
+			idCardExpireDate : {
+				required : icon+"不能为空"
+			},
+			publishArea : {
+				required : icon+"不能为空"
+			},
+			publishDeptName : {
+				required : icon+"不能为空",
+				maxlength:icon+"最长不能超过30位"
+			},
+			grantDate : {
+				required : icon+"不能为空"
+			}
+		}
+	})
+}
+var openArea = function(){
+	layer.open({
+		type:2,
+		title:"选择颁发地",
+		area : [ '300px', '450px' ],
+		content:ctx+"/basicInfo/area/treeView"
+	});
+};
+function loadArea(areaId,areaName){
+	$("#publishAreaId").val(areaId);
+	$("#publishArea").val(areaName);
+};

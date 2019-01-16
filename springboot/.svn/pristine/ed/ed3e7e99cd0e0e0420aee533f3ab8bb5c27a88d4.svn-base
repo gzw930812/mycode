@@ -1,0 +1,24 @@
+package com.cptech.fillingInfo.service;
+
+import com.cptech.fillingInfo.domain.FillingRecordDO;
+
+import java.util.List;
+import com.github.pagehelper.Page;
+
+/**
+ * 充装记录表
+ * 
+ * @author pjy
+ * @email 1595418464@qq.com
+ * @date 2018-06-21 15:53:39
+ */
+public interface FillingRecordService {
+	
+	FillingRecordDO get(String id);
+	
+	Page<FillingRecordDO> findByPage(FillingRecordDO fillingRecord);
+	
+	int save(FillingRecordDO fillingRecord);
+	
+	int update(FillingRecordDO fillingRecord);
+}

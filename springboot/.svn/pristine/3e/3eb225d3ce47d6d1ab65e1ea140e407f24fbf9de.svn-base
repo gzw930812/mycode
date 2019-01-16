@@ -1,0 +1,163 @@
+package com.cptech.stationinfo.controller;
+
+import java.util.List;
+import java.util.Map;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.cptech.common.annotation.Log;
+import com.cptech.common.controller.BaseController;
+import com.cptech.common.utils.PageUtils;
+import com.cptech.common.utils.R;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
+import com.cptech.stationinfo.domain.DeviceRepairsDO;
+import com.cptech.stationinfo.domain.DevicesDO;
+import com.cptech.stationinfo.domain.StationsDO;
+import com.cptech.stationinfo.service.DeviceRepairsService;
+import com.cptech.stationinfo.service.DevicesService;
+
+/**
+ * 设备保修表
+ * 
+ * @author fb
+ * @email 1595418464@qq.com
+ * @date 2018-06-25 09:46:28
+ */
+ 
+@Controller
+@RequestMapping("/stationinfo/deviceRepairs")
+public class DeviceRepairsController extends BaseController{
+	@Autowired
+	private DeviceRepairsService deviceRepairsService;
+	@Autowired
+	private DevicesService deviceService;
+	
+	@GetMapping()
+	@RequiresPermissions("stationinfo:deviceRepairs:deviceRepairs")
+	String DeviceRepairs(Map<String, Object> map){
+		List<StationsDO> stations = getUserStations("0");
+		map.put("stations", stations);
+	    return "stationinfo/deviceRepairs/deviceRepairs";
+	}
+	
+	@GetMapping("/history")
+	@RequiresPermissions("stationinfo:deviceRepairs:deviceRepairsHistory")
+	String DeviceRepairsHistory(Map<String, Object> map){
+		List<StationsDO> stations = getUserStations("0");
+		map.put("stations", stations);
+		return "stationinfo/deviceRepairs/deviceRepairsHistory";
+	}
+	
+	@Log("设备保修表-查询列表")
+	@ResponseBody
+	@GetMapping("/list")
+	@RequiresPermissions(value={"stationinfo:deviceRepairs:deviceRepairs","stationinfo:deviceRepairs:deviceRepairsHistory"})
+	public PageUtils list(DeviceRepairsDO deviceRepairs){
+		deviceRepairs.setDeptId(getUser().getDeptId());
+		//查询列表数据
+		Page<DeviceRepairsDO> findByPage = deviceRepairsService.findByPage(deviceRepairs);
+		PageInfo<DeviceRepairsDO> pageInfo = new PageInfo<>(findByPage);
+		PageUtils pageUtil = new PageUtils(pageInfo.getList(), (int)pageInfo.getTotal());
+		return pageUtil;
+	}
+	
+	@GetMapping("/add")
+	@RequiresPermissions("stationinfo:deviceRepairs:add")
+	String add(Map<String, Object> map){
+		List<StationsDO> stations = getUserStations("0");
+		map.put("stations", stations);
+	    return "stationinfo/deviceRepairs/add";
+	}
+
+	@GetMapping("/edit/{id}")
+	@RequiresPermissions("stationinfo:deviceRepairs:edit")
+	String edit(@PathVariable("id") String id,Model model){
+		DeviceRepairsDO deviceRepairs = deviceRepairsService.get(id);
+		model.addAttribute("deviceRepairs", deviceRepairs);
+	    return "stationinfo/deviceRepairs/edit";
+	}
+	
+	/**
+	 * 保存
+	 */
+	@Log("设备保修表-保存")
+	@ResponseBody
+	@PostMapping("/save")
+	@RequiresPermissions("stationinfo:deviceRepairs:add")
+	public R save( DeviceRepairsDO deviceRepairs){
+		
+		DevicesDO deviceDo = deviceService.getByOutCode(deviceRepairs.getOuterNumber());
+		if(!deviceDo.getStationId().equals(deviceRepairs.getStationId())){
+			return R.error("该设备不属于该站点，请选择正确站点");
+		}
+		
+		if(!deviceDo.getName().equals(deviceRepairs.getDeviceName())){
+			return R.error("该设备名称不对，请选择正确设备名");
+		}
+		
+		if(deviceDo.getStatus().equals("3")){
+			return R.error("该设备已报废");
+		}
+		
+		if(deviceDo.getStatus().equals("2")){
+			return R.error("该设备已报维修");
+		}
+		
+		deviceRepairs.setDeviceId(deviceDo.getId());
+		deviceRepairs.setStatus("1");
+		if(deviceRepairsService.save(deviceRepairs)>0){
+			deviceDo.setStatus("2");
+			deviceService.update(deviceDo);
+			return R.ok();
+		}
+		return R.error();
+	}
+	/**
+	 * 修改
+	 */
+	@Log("设备保修表-修改")
+	@ResponseBody
+	@RequestMapping("/update")
+	@RequiresPermissions("stationinfo:deviceRepairs:edit")
+	public R update( DeviceRepairsDO deviceRepairs){
+		deviceRepairsService.update(deviceRepairs);
+		return R.ok();
+	}
+	
+	/**
+	 * 删除
+	 */
+	@Log("设备保修表-删除")
+	@PostMapping( "/remove")
+	@ResponseBody
+	@RequiresPermissions("stationinfo:deviceRepairs:remove")
+	public R remove( String id){
+		if(deviceRepairsService.remove(id)>0){
+		return R.ok();
+		}
+		return R.error();
+	}
+	
+	/**
+	 * 删除
+	 */
+	@Log("设备保修表-批量删除")
+	@PostMapping( "/batchRemove")
+	@ResponseBody
+	@RequiresPermissions("stationinfo:deviceRepairs:batchRemove")
+	public R remove(@RequestParam("ids[]") String[] ids){
+		deviceRepairsService.batchRemove(ids);
+		return R.ok();
+	}
+	
+}

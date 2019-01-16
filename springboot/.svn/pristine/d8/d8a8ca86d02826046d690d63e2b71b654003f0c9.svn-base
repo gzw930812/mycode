@@ -1,0 +1,93 @@
+package com.cptech.fillingInfo.controller;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.cptech.basicInfo.domain.AreaDO;
+import com.cptech.basicInfo.service.AreaService;
+import com.cptech.common.annotation.Log;
+import com.cptech.common.controller.BaseController;
+import com.cptech.common.utils.PageUtils;
+import com.cptech.common.utils.R;
+import com.cptech.fillingInfo.domain.FillingRecordDO;
+import com.cptech.fillingInfo.service.FillingRecordService;
+import com.cptech.fillingInfo.service.impl.FillingRecordDownloadService;
+import com.cptech.stationinfo.service.StationsService;
+import com.cptech.system.domain.DeptDO;
+import com.cptech.system.domain.UserDO;
+import com.cptech.system.service.DeptService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
+
+/**
+ * 充装记录表
+ * 
+ * @author pjy
+ * @email 1595418464@qq.com
+ * @date 2018-06-21 15:53:39
+ */
+ 
+@Controller
+@RequestMapping("/fillingInfo/fillingRecord")
+public class FillingRecordController extends BaseController{
+	@Autowired
+	private FillingRecordService fillingRecordService;
+	@Autowired
+	private StationsService stationsService;
+	@Autowired
+	private AreaService areaService;
+	@Autowired
+	private DeptService deptService;
+	
+	@GetMapping()
+	@RequiresPermissions("fillingInfo:fillingRecord:fillingRecord")
+	String FillingRecord(Model model){
+		model.addAttribute("stations", getUserStations("1"));
+	    return "fillingInfo/fillingRecord/fillingRecord";
+	}
+	
+	@Log("充装记录表-查询列表")
+	@ResponseBody
+	@GetMapping("/list")
+	@RequiresPermissions("fillingInfo:fillingRecord:fillingRecord")
+	public PageUtils list(FillingRecordDO fillingRecord){
+		//查询列表数据
+		Page<FillingRecordDO> findByPage = fillingRecordService.findByPage(fillingRecord);
+		PageInfo<FillingRecordDO> pageInfo = new PageInfo<>(findByPage);
+		PageUtils pageUtil = new PageUtils(pageInfo.getList(), (int)pageInfo.getTotal());
+		return pageUtil;
+	}
+	
+	/**
+	 * 导出
+	 */
+	@Log("充装记录表-导出")
+	@GetMapping("/export")
+	@RequiresPermissions("fillingInfo:fillingRecord:export")
+	public void export( FillingRecordDO fillingRecord, 
+							HttpServletRequest request, HttpServletResponse response){
+		String fileName = "充装记录表.csv";
+		try {
+			fileName = URLEncoder.encode(fileName,"UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			fileName = "a.csv";
+		}
+		response.setContentType("text/plain; charset=utf-8");
+		response.setHeader("Content-Disposition", "attachment; filename="
+				+ fileName);
+		new FillingRecordDownloadService(fillingRecordService, fillingRecord, request, response).exportCSV();
+	}
+	
+}

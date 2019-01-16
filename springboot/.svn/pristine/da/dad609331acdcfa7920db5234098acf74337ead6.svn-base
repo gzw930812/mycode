@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cptech.qrc.dao.QrcodeSectionNumberDao">
+	<sql id="QrcodeSectionNumberColumns">
+		a.id,
+		a.station_id,
+		a.prefix,
+		a.min_no,
+		a.max_no,
+		a.used_num,
+		a.warning_num,
+		a.create_by,
+		a.create_date,
+		a.update_by,
+		a.update_date,
+		a.remarks,
+		a.del_flag
+	</sql>
+
+	<select id="get" resultType="com.cptech.qrc.domain.QrcodeSectionNumberDO">
+		select
+		<include refid="QrcodeSectionNumberColumns" />
+		from t_qrcode_section_number a where a.id = #{id}
+	</select>
+
+	<select id="findAll" resultType="com.cptech.qrc.domain.QrcodeSectionNumberDO">
+		select
+		<include refid="QrcodeSectionNumberColumns" />
+		from t_qrcode_section_number a
+		where a.del_flag = '0' 
+	</select>
+
+	<select id="findByPage" resultType="com.cptech.qrc.domain.QrcodeSectionNumberDO">
+		select
+			a.id as id,
+			a.station_id as stationId,
+			a.prefix as prefix,
+			a.min_no as minNo,
+			a.max_no as maxNo,
+			a.used_num as usedNum,
+			a.warning_num as warningNum,
+			a.create_by as createBy,
+			a.create_date as createDate,
+			a.update_by as updateBy,
+			a.update_date as updateDate,
+			a.remarks as remarks,
+			a.del_flag as delFlag,
+			s.name as stationName 
+		from t_qrcode_section_number a
+		inner join t_stations s
+		on a.station_id = s.id
+		<where>a.del_flag = '0'
+			<if test="stationId != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and station_id like '%${ stationId}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and station_id like concat('%',#{stationId},'%')
+				</if>
+			</if>
+			<if test="deptId != null">
+				and FIND_IN_SET(s.dept_id, fun_get_sys_dept_children(#{deptId}))
+			</if>
+		</where>
+		order by a.update_date
+	</select>
+
+	<insert id="save" parameterType="com.cptech.qrc.domain.QrcodeSectionNumberDO">
+		insert into t_qrcode_section_number
+		(
+		<if test="id != null">
+			id,
+		</if>
+		<if test="stationId != null">
+			station_id,
+		</if>
+		<if test="prefix != null">
+			prefix,
+		</if>
+		<if test="minNo != null">
+			min_no,
+		</if>
+		<if test="maxNo != null">
+			max_no,
+		</if>
+		<if test="usedNum != null">
+			used_num,
+		</if>
+		<if test="warningNum != null">
+			warning_num,
+		</if>
+		<if test="createBy != null">
+			create_by,
+		</if>
+		<if test="createDate != null">
+			create_date,
+		</if>
+		<if test="updateBy != null">
+			update_by,
+		</if>
+		<if test="updateDate != null">
+			update_date,
+		</if>
+		<if test="remarks != null">
+			remarks,
+		</if>
+		<if test="delFlag != null">
+			del_flag
+		</if>
+		)
+		values
+		(
+		<if test="id != null">
+			#{id},
+		</if>
+		<if test="stationId != null">
+			#{stationId},
+		</if>
+		<if test="prefix != null">
+			#{prefix},
+		</if>
+		<if test="minNo != null">
+			#{minNo},
+		</if>
+		<if test="maxNo != null">
+			#{maxNo},
+		</if>
+		<if test="usedNum != null">
+			#{usedNum},
+		</if>
+		<if test="warningNum != null">
+			#{warningNum},
+		</if>
+		<if test="createBy != null">
+			#{createBy},
+		</if>
+		<if test="createDate != null">
+			#{createDate},
+		</if>
+		<if test="updateBy != null">
+			#{updateBy},
+		</if>
+		<if test="updateDate != null">
+			#{updateDate},
+		</if>
+		<if test="remarks != null">
+			#{remarks},
+		</if>
+		<if test="delFlag != null">
+			#{delFlag}
+		</if>
+		)
+	</insert>
+
+	<update id="update" parameterType="com.cptech.qrc.domain.QrcodeSectionNumberDO">
+		update t_qrcode_section_number
+		<set>
+			<if test="stationId != null">station_id = #{stationId}, </if>
+			<if test="prefix != null">prefix = #{prefix}, </if>
+			<if test="minNo != null">min_no = #{minNo}, </if>
+			<if test="maxNo != null">max_no = #{maxNo}, </if>
+			<if test="usedNum != null">used_num = #{usedNum}, </if>
+			<if test="warningNum != null">warning_num = #{warningNum}, </if>
+			<if test="createBy != null">create_by = #{createBy}, </if>
+			<if test="createDate != null">create_date = #{createDate}, </if>
+			<if test="updateBy != null">update_by = #{updateBy}, </if>
+			<if test="updateDate != null">update_date = #{updateDate}, </if>
+			<if test="remarks != null">remarks = #{remarks}, </if>
+			<if test="delFlag != null">del_flag = #{delFlag}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="remove">
+		delete from t_qrcode_section_number where id =
+		#{value}
+	</delete>
+
+	<delete id="batchRemove">
+		delete from t_qrcode_section_number where id in
+		<foreach item="id" collection="array" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,63 @@
+package com.cptech.basicInfo.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+import com.cptech.basicInfo.dao.SimpleFieldDao;
+import com.cptech.basicInfo.domain.SimpleFieldDO;
+import com.cptech.basicInfo.service.SimpleFieldService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
+
+
+@Service
+public class SimpleFieldServiceImpl implements SimpleFieldService {
+	@Autowired
+	private SimpleFieldDao simpleFieldDao;
+	
+	@Override
+	public SimpleFieldDO get(String id){
+		return simpleFieldDao.get(id);
+	}
+	
+	@Override
+	public List<SimpleFieldDO> findAll(SimpleFieldDO simpleField){
+		return simpleFieldDao.findAll(simpleField);
+	}
+	@Override
+	public Page<SimpleFieldDO> findByPage(SimpleFieldDO simpleField){
+		PageHelper.startPage(simpleField.getOffset(), simpleField.getLimit());
+		return simpleFieldDao.findByPage(simpleField);
+	}
+	
+	@Override
+	public int save(SimpleFieldDO simpleField){
+		simpleField.preInsert();
+		return simpleFieldDao.save(simpleField);
+	}
+	
+	@Override
+	public int update(SimpleFieldDO simpleField){
+		simpleField.preUpdate();
+		return simpleFieldDao.update(simpleField);
+	}
+	
+	@Override
+	public int remove(String id){
+		return simpleFieldDao.remove(id);
+	}
+	
+	@Override
+	public int batchRemove(String[] ids){
+		return simpleFieldDao.batchRemove(ids);
+	}
+
+	@Override
+	public int isExist(String type, String name) {
+		return simpleFieldDao.isExist(type, name);
+	}
+	
+}

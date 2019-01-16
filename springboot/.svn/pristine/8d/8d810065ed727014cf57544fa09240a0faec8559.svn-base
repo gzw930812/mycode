@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="col-md-12">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="fixed-table-toolbar">
+						<div class="columns pull-left">
+							<button shiro:hasPermission="qrc:qrcode:add" type="button" class="btn  btn-primary" onclick="add()">
+								<i class="fa fa-plus" aria-hidden="true"></i>添加
+							</button>
+							<button shiro:hasPermission="qrc:qrcode:batchRemove" type="button" class="btn  btn-danger"
+								onclick="batchRemove()">
+								<i class="fa fa-trash" aria-hidden="true"></i>删除
+							</button>
+						</div>
+						<div class="columns  col-md-2 ">
+							<input id="bottleNo" type="text" class="form-control"
+								placeholder="钢瓶编号">
+						</div>
+						
+						<div class="columns  col-md-2 ">
+							<input id="qrcodeNo" type="text" class="form-control"
+								placeholder="关联二维码">
+						</div>
+						<div class="columns  col-md-2 ">
+							<select id="stationId"  class="form-control" >
+								<option value="">==产权单位-全部==</option>
+								<option th:each="station:${stations}" th:text="${station.name}" th:value="${station.id}"></option>
+							</select>
+						</div>
+						<div class="columns col-md-2">
+							<button class="btn btn-success" onclick="reLoad()">查询</button>
+						</div>
+						
+					</div>
+					<table id="exampleTable" data-mobile-responsive="true">
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--shiro控制bootstraptable行内按钮看见性 来自bootdo的创新方案 -->
+		<div>
+			<script type="text/javascript">
+				var s_edit_h = 'hidden';
+				var s_remove_h = 'hidden';
+			</script>
+		</div>
+		<div shiro:hasPermission="qrc:qrcode:edit">
+			<script type="text/javascript">
+				s_edit_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="qrc:qrcode:remove">
+			<script type="text/javascript">
+				var s_remove_h = '';
+			</script>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript" th:src="@{/js/appjs/qrc/qrcode/qrcodeOnuse.js}"></script>
+</body>
+</html>

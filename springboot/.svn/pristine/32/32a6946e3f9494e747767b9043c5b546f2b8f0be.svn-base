@@ -1,0 +1,39 @@
+package com.cptech.basicInfo.service;
+
+import com.cptech.basicInfo.domain.AreaDO;
+import com.cptech.common.domain.Tree;
+
+import java.util.List;
+
+import com.github.pagehelper.Page;
+
+/**
+ * 区域表
+ * 
+ * @author pjy
+ * @email 1595418464@qq.com
+ * @date 2018-06-19 09:24:05
+ */
+public interface AreaService {
+	
+	AreaDO get(String id);
+	
+	List<AreaDO> findAll(AreaDO area);
+	Page<AreaDO> findByPage(AreaDO area);
+	
+	int save(AreaDO area);
+	
+	int update(AreaDO area);
+	
+	int remove(String id);
+	
+	int batchRemove(String[] ids);
+	
+	Tree<AreaDO> getTree(AreaDO areaDO);
+	
+	AreaDO findAllTree(AreaDO area);
+	
+	Long countChildren(String id);
+	
+	AreaDO getByCode(String code);
+}

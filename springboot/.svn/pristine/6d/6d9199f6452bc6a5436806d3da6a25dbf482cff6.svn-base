@@ -1,0 +1,129 @@
+$().ready(function() {
+	$(".chosen-select1").chosen({
+		search_contains: true,
+	});
+	$(".chosen-select2").chosen({
+		search_contains: true,
+	});
+	validateRule();
+	//console.log($('#signupForm').serialize())
+	
+});
+
+$.validator.setDefaults({
+	submitHandler : function() {
+		save();
+	}
+});
+function save() {
+	$.ajax({
+		cache : true,
+		type : "POST",
+		url : ctx+"/stationinfo/deviceRepairs/save",
+		data : $('#signupForm').serialize(),// 你的formid
+		async : false,
+		error : function(request) {
+			parent.layer.alert("Connection error");
+		},
+		success : function(data) {
+			if (data.code == 0) {
+				parent.layer.msg("操作成功");
+				parent.reLoad();
+				var index = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+				parent.layer.close(index);
+
+			} else {
+				parent.layer.alert(data.msg)
+			}
+
+		}
+	});
+
+}
+function validateRule() {
+	var icon = "<i class='fa fa-times-circle'></i> ";
+	$("#signupForm").validate(
+		{
+		ignore: ":hidden:not(select)",
+		rules : {
+			stationId : {
+				required : true
+			},
+			deviceName : {
+				required : true
+			},
+			outerNumber : {
+				required : true
+			},
+			repairReason : {
+				required : true
+			},
+			concatPerson : {
+				required : true,
+				isName : true
+			},
+			cellPhone : {
+				required : true,
+				isTelPhone : true
+			}
+		},
+		messages : {
+			stationId : {
+				required : "请选择站点"
+			},
+			deviceName : {
+				required : "请选择设备名称"
+			},
+			outerNumber : {
+				required : "请选择设备编号"
+			},
+			repairReason : {
+				required : "请输入报修原因！"
+			},
+			concatPerson : {
+				required : "请输入联系人"
+			},
+			cellPhone : {
+				required : "请输入联系方式"
+			}
+		},
+		errorPlacement: function(error, element){
+			error.appendTo(element.parent());  
+		}
+		})
+}
+function getOuterCode(type,value){
+	//console.log($("#outerNumber option").length)
+	var data;
+	if(type==1){
+		data = {stationId:value,name:$("#deviceName").val()}
+	}else{
+		data = {stationId:$("#stationId").val(),name:value}
+	}
+	//console.log(data);
+	
+	$(".chosen-select2").empty();
+	//$("ul .chosen-results").empty();
+	$(".chosen-select2").append("<option value=''>==选择设备编号==</option>");
+	$.ajax({
+		url:ctx + "/stationinfo/deviceRepairs/getOuterCode",
+		type:"get",
+		data:data,
+		success:function(data){
+			//console.log(data.devices);
+			$.each(data.devices,function(i,o){
+				$("#outerNumber").append("<option value="+o.outerCode+">"+o.outerCode+"</option>");
+			})
+			
+			$(".chosen-select2").trigger('chosen:updated');
+			$(".chosen-select2").chosen({
+				search_contains: true,
+			});
+			
+			//console.log($("#outerNumber option").length)
+		}
+		
+	})
+	
+	
+}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="col-sm-12">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="fixed-table-toolbar">
+						<!-- <div class="columns pull-left col-md-2">
+							<button shiro:hasPermission="stationinfo:stations:batchRemove" type="button" class="btn  btn-danger"
+								onclick="batchRemove()">
+								<i class="fa fa-trash" aria-hidden="true"></i>删除
+							</button>
+						</div> -->
+						<div class="columns pull-left col-md-2">
+							<select class="form-control chosen-select" id="searchStationId" name="stationId" place>
+								<option value="">==检验站名称-全部==</option>
+								<option th:each="station : ${stations}" th:value="${station.id}" th:text="${station.name}"></option>
+							</select>
+						</div>
+						<div class="columns pull-left col-md-2">
+							<select class="form-control chosen-select" id="status" name="status" place>
+								<option value="">==站点状态-全部==</option>
+								<option value="1">营业中</option>
+								<option value="2">停业中</option>
+							</select>
+						</div>
+						<div class="columns pull-left col-md-2">
+							<input id="MEID" type="text" class="form-control"
+                               placeholder="MEID">
+						</div>
+						<div class="columns pull-left col-md-2" style="padding-right: 0px;">
+							<input id="deptId" name="deptId" class="form-control hidden" type="text">
+							<input id="deptName" name="deptName"
+								class="form-control" type="text" style="cursor: pointer;" onclick="openDept()"
+							readonly="readonly" placeholder="所属机构">
+						</div>
+						<div class="columns pull-left col-md-1" style="padding-left: 0px;">
+							<a href="#" onclick="clearDept()">清空所选机构</a>
+						</div>
+						<div class="columns pull-right">
+							<button class="btn btn-success" onclick="reLoad()">查询</button>
+							<button shiro:hasPermission="stationinfo:stations:add" type="button" class="btn  btn-primary" onclick="add()">
+								<i class="fa fa-plus" aria-hidden="true"></i>注册
+							</button>
+						</div>
+					</div>
+					<table id="exampleTable" data-mobile-responsive="true">
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--shiro控制bootstraptable行内按钮看见性 来自bootdo的创新方案 -->
+		<div>
+			<script type="text/javascript">
+				var s_edit_h = 'hidden';
+				var s_remove_h = 'hidden';
+			</script>
+		</div>
+		<div shiro:hasPermission="stationinfo:stations:edit">
+			<script type="text/javascript">
+				s_edit_h = '';
+			</script>
+		</div>
+		<div shiro:hasPermission="stationinfo:stations:remove">
+			<script type="text/javascript">
+				var s_remove_h = '';
+			</script>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script th:inline="javascript">
+		var fileServerAddress=[[${fileServerAddress}]];
+	</script>
+	<script type="text/javascript" th:src="@{/js/appjs/stationinfo/stations/checkStations.js}"></script>
+</body>
+</html>

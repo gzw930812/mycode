@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="col-sm-12">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="fixed-table-toolbar">
+						<fieldset  class="columns pull-left btn-group">
+							<legend>充装起止时间</legend>
+							<input type="text" class="laydate-icon layer-date" id="searchFillingStartDate" name="fillingStartDate" 
+                                         onclick="laydate()" style="background-color: #fff;"
+                                         placeholder="充装起始时间" readonly="readonly"/>
+                            <span>-</span>
+							<input type="text" class="laydate-icon layer-date" id="searchFillingEndDate" name="fillingEndDate" 
+                                         onclick="laydate()" style="background-color: #fff;" 
+                                         placeholder="充装结束时间" readonly="readonly"/>
+						</fieldset>
+						<div class="columns pull-right">
+							<div shiro:hasPermission="fillingInfo:fillingRecord:export">
+								<a href="javascript:" class="btn btn-success" onclick="exportExcel()">导出</a>
+							</div>
+							<button class="btn btn-success" onclick="reLoad()">查询</button>
+						</div>
+						<div class="columns pull-right col-md-2">
+							<input id="searchBottleNo" name="bottleNo" type="text" class="form-control" placeholder="气瓶编号">
+						</div>
+						<div class="columns pull-right col-md-2">
+							<input id="searchQrcodeNo" name="qrcodeNo" type="text" class="form-control" placeholder="二维码编号">
+						</div>
+						<div class="columns pull-right col-md-2">
+							<select class="form-control chosen-select" id="searchStationId" name="stationId">
+								<option value="">==站点名称==</option>
+								<option th:each="station : ${stations}" th:value="${station.id}" th:text="${station.name}"></option>
+							</select>
+						</div>
+					</div>
+					<table id="exampleTable" data-mobile-responsive="true">
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript" th:src="@{/js/appjs/fillingInfo/fillingRecord/fillingRecord.js}"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+package com.cptech.stationinfo.dao;
+
+import com.cptech.stationinfo.domain.DevicesDO;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+import com.github.pagehelper.Page;
+
+/**
+ * 设备表
+ * @author fb
+ * @email 1595418464@qq.com
+ * @date 2018-06-22 11:17:48
+ */
+@Mapper
+public interface DevicesDao {
+
+	DevicesDO get(String id);
+	
+	List<DevicesDO> findAll(DevicesDO devices);
+	Page<DevicesDO> findByPage(DevicesDO devices);
+	
+	int save(DevicesDO devices);
+	
+	int update(DevicesDO devices);
+	
+	int remove(String id);
+	
+	int batchRemove(String[] ids);
+}

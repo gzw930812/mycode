@@ -1,0 +1,59 @@
+package com.cptech.qrc.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+import com.cptech.qrc.dao.QrcodeDao;
+import com.cptech.qrc.domain.QrcodeDO;
+import com.cptech.qrc.service.QrcodeService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
+
+
+@Service
+public class QrcodeServiceImpl implements QrcodeService {
+	@Autowired
+	private QrcodeDao qrcodeDao;
+	
+	@Override
+	public QrcodeDO get(String id){
+		return qrcodeDao.get(id);
+	}
+	
+	@Override
+	public List<QrcodeDO> findAll(QrcodeDO qrcode){
+		return qrcodeDao.findAll(qrcode);
+	}
+	@Override
+	public Page<QrcodeDO> findByPage(QrcodeDO qrcode){
+		PageHelper.startPage(qrcode.getOffset(), qrcode.getLimit());
+		
+		return qrcodeDao.findByPage(qrcode);
+	}
+	
+	@Override
+	public int save(QrcodeDO qrcode){
+		qrcode.preInsert();
+		return qrcodeDao.save(qrcode);
+	}
+	
+	@Override
+	public int update(QrcodeDO qrcode){
+		qrcode.preUpdate();
+		return qrcodeDao.update(qrcode);
+	}
+	
+	@Override
+	public int remove(String id){
+		return qrcodeDao.remove(id);
+	}
+	
+	@Override
+	public int batchRemove(String[] ids){
+		return qrcodeDao.batchRemove(ids);
+	}
+	
+}

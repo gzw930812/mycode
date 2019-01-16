@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cptech.fillingInfo.dao.FillingRecordDao">
+	<sql id="FillingRecordColumns">
+		id,station_id,station_name,bottle_no,qrcode_no,area_id,area_name,filling_time,filling_weight,gun_no,before_filling_pressure,after_filling_pressure,worker_id,worker_name,before_filling_check,after_filling_check,reason,create_by,create_date,update_by,update_date,remarks,del_flag
+	</sql>
+	
+	<sql id="FillingRecordJoinColumns">
+		a.id,
+		a.station_id,
+		a.station_name,
+		a.bottle_no,
+		a.qrcode_no,
+		a.area_id,
+		a.area_name,
+		a.filling_time,
+		a.filling_weight,
+		a.gun_no,
+		a.before_filling_pressure,
+		a.after_filling_pressure,
+		a.worker_id,
+		a.worker_name,
+		a.before_filling_check,
+		a.after_filling_check,
+		a.reason,
+		a.create_by,
+		a.create_date,
+		a.update_by,
+		a.update_date,
+		a.remarks,
+		a.del_flag
+	</sql>
+	
+	<select id="get" resultType="com.cptech.fillingInfo.domain.FillingRecordDO">
+		select
+		<include refid="FillingRecordColumns" />
+		from t_filling_record where id = #{id}
+	</select>
+
+	<select id="findByPage" resultType="com.cptech.fillingInfo.domain.FillingRecordDO">
+		select
+		<include refid="FillingRecordJoinColumns" />
+		from t_filling_record a
+		<where>
+			<if test="stationId != null and stationId != ''">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.station_id like '%${ stationId}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.station_id = #{stationId}
+				</if>
+			</if>
+			<if test="stationName != null and stationName != ''">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.station_name like '%${ stationName}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.station_name like concat('%',#{stationName},'%')
+				</if>
+			</if>
+			<if test="bottleNo != null and bottleNo != ''">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.bottle_no like '%${ bottleNo}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.bottle_no like concat('%',#{bottleNo},'%')
+				</if>
+			</if>
+			<if test="qrcodeNo != null and qrcodeNo != ''">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.qrcode_no like '%${ qrcodeNo}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.qrcode_no like concat('%',#{qrcodeNo},'%')
+				</if>
+			</if>
+			<if test="areaId != null and areaId != ''">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.area_id like '%${ areaId}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and exists(
+						select are.id from sys_area are 
+							where are.id = a.area_id 
+							and find_in_set(#{areaId},concat(are.parent_ids,',',are.id)) &gt; 0
+					)
+				</if>
+			</if>
+			<if test="areaName != null and areaName != ''">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.area_name like '%${ areaName}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.area_name like concat('%',#{areaName},'%')
+				</if>
+			</if>
+			<if test="fillingTime != null">
+				and a.filling_time = #{fillingTime}
+			</if>
+			<if test="fillingStartDate != null">
+				and date_format(a.filling_time,'%Y%m%d') &gt;= date_format(#{fillingStartDate},'%Y%m%d')
+			</if>
+			<if test="fillingEndDate != null">
+				and date_format(a.filling_time,'%Y%m%d') &lt;= date_format(#{fillingEndDate},'%Y%m%d')
+			</if>
+			<if test="fillingWeight != null">
+				and a.filling_weight = #{fillingWeight}
+			</if>
+			<if test="gunNo != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.gun_no like '%${ gunNo}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.gun_no like concat('%',#{gunNo},'%')
+				</if>
+			</if>
+			<if test="beforeFillingPressure != null">
+				and a.before_filling_pressure = #{beforeFillingPressure}
+			</if>
+			<if test="afterFillingPressure != null">
+				and a.after_filling_pressure = #{afterFillingPressure}
+			</if>
+			<if test="workerId != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.worker_id like '%${ workerId}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.worker_id like concat('%',#{workerId},'%')
+				</if>
+			</if>
+			<if test="workerName != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.worker_name like '%${ workerName}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.worker_name like concat('%',#{workerName},'%')
+				</if>
+			</if>
+			<if test="beforeFillingCheck != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.before_filling_check like '%${ beforeFillingCheck}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.before_filling_check like concat('%',#{beforeFillingCheck},'%')
+				</if>
+			</if>
+			<if test="afterFillingCheck != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.after_filling_check like '%${ afterFillingCheck}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.after_filling_check like concat('%',#{afterFillingCheck},'%')
+				</if>
+			</if>
+			<if test="reason != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and a.reason like '%${ reason}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and a.reason like concat('%',#{reason},'%')
+				</if>
+			</if>
+			<if test="deptFilter != null">
+				<if test="databaseType == 'mysql'.toString()">
+					and exists(
+						select t.id from t_stations t 
+							where find_in_set(t.dept_id,fun_get_sys_dept_children(#{deptFilter}))>0 and a.station_id = t.id
+					)
+				</if>
+			</if>
+		</where>
+		order by a.update_date
+	</select>
+
+	<insert id="save" parameterType="com.cptech.fillingInfo.domain.FillingRecordDO">
+		insert into t_filling_record
+		(
+		<if test="id != null">
+			id,
+		</if>
+		<if test="stationId != null">
+			station_id,
+		</if>
+		<if test="stationName != null">
+			station_name,
+		</if>
+		<if test="bottleNo != null">
+			bottle_no,
+		</if>
+		<if test="qrcodeNo != null">
+			qrcode_no,
+		</if>
+		<if test="areaId != null">
+			area_id,
+		</if>
+		<if test="areaName != null">
+			area_name,
+		</if>
+		<if test="fillingTime != null">
+			filling_time,
+		</if>
+		<if test="fillingWeight != null">
+			filling_weight,
+		</if>
+		<if test="gunNo != null">
+			gun_no,
+		</if>
+		<if test="beforeFillingPressure != null">
+			before_filling_pressure,
+		</if>
+		<if test="afterFillingPressure != null">
+			after_filling_pressure,
+		</if>
+		<if test="workerId != null">
+			worker_id,
+		</if>
+		<if test="workerName != null">
+			worker_name,
+		</if>
+		<if test="beforeFillingCheck != null">
+			before_filling_check,
+		</if>
+		<if test="afterFillingCheck != null">
+			after_filling_check,
+		</if>
+		<if test="reason != null">
+			reason,
+		</if>
+		<if test="createBy != null">
+			create_by,
+		</if>
+		<if test="createDate != null">
+			create_date,
+		</if>
+		<if test="updateBy != null">
+			update_by,
+		</if>
+		<if test="updateDate != null">
+			update_date,
+		</if>
+		<if test="remarks != null">
+			remarks,
+		</if>
+		<if test="delFlag != null">
+			del_flag
+		</if>
+		)
+		values
+		(
+		<if test="id != null">
+			#{id},
+		</if>
+		<if test="stationId != null">
+			#{stationId},
+		</if>
+		<if test="stationName != null">
+			#{stationName},
+		</if>
+		<if test="bottleNo != null">
+			#{bottleNo},
+		</if>
+		<if test="qrcodeNo != null">
+			#{qrcodeNo},
+		</if>
+		<if test="areaId != null">
+			#{areaId},
+		</if>
+		<if test="areaName != null">
+			#{areaName},
+		</if>
+		<if test="fillingTime != null">
+			#{fillingTime},
+		</if>
+		<if test="fillingWeight != null">
+			#{fillingWeight},
+		</if>
+		<if test="gunNo != null">
+			#{gunNo},
+		</if>
+		<if test="beforeFillingPressure != null">
+			#{beforeFillingPressure},
+		</if>
+		<if test="afterFillingPressure != null">
+			#{afterFillingPressure},
+		</if>
+		<if test="workerId != null">
+			#{workerId},
+		</if>
+		<if test="workerName != null">
+			#{workerName},
+		</if>
+		<if test="beforeFillingCheck != null">
+			#{beforeFillingCheck},
+		</if>
+		<if test="afterFillingCheck != null">
+			#{afterFillingCheck},
+		</if>
+		<if test="reason != null">
+			#{reason},
+		</if>
+		<if test="createBy != null">
+			#{createBy},
+		</if>
+		<if test="createDate != null">
+			#{createDate},
+		</if>
+		<if test="updateBy != null">
+			#{updateBy},
+		</if>
+		<if test="updateDate != null">
+			#{updateDate},
+		</if>
+		<if test="remarks != null">
+			#{remarks},
+		</if>
+		<if test="delFlag != null">
+			#{delFlag}
+		</if>
+		)
+	</insert>
+
+	<update id="update" parameterType="com.cptech.fillingInfo.domain.FillingRecordDO">
+		update t_filling_record
+		<set>
+			<if test="stationId != null">station_id = #{stationId}, </if>
+			<if test="stationName != null">station_name = #{stationName}, </if>
+			<if test="bottleNo != null">bottle_no = #{bottleNo}, </if>
+			<if test="qrcodeNo != null">qrcode_no = #{qrcodeNo}, </if>
+			<if test="areaId != null">area_id = #{areaId}, </if>
+			<if test="areaName != null">area_name = #{areaName}, </if>
+			<if test="fillingTime != null">filling_time = #{fillingTime}, </if>
+			<if test="fillingWeight != null">filling_weight = #{fillingWeight}, </if>
+			<if test="gunNo != null">gun_no = #{gunNo}, </if>
+			<if test="beforeFillingPressure != null">before_filling_pressure = #{beforeFillingPressure}, </if>
+			<if test="afterFillingPressure != null">after_filling_pressure = #{afterFillingPressure}, </if>
+			<if test="workerId != null">worker_id = #{workerId}, </if>
+			<if test="workerName != null">worker_name = #{workerName}, </if>
+			<if test="beforeFillingCheck != null">before_filling_check = #{beforeFillingCheck}, </if>
+			<if test="afterFillingCheck != null">after_filling_check = #{afterFillingCheck}, </if>
+			<if test="reason != null">reason = #{reason}, </if>
+			<if test="createBy != null">create_by = #{createBy}, </if>
+			<if test="createDate != null">create_date = #{createDate}, </if>
+			<if test="updateBy != null">update_by = #{updateBy}, </if>
+			<if test="updateDate != null">update_date = #{updateDate}, </if>
+			<if test="remarks != null">remarks = #{remarks}, </if>
+			<if test="delFlag != null">del_flag = #{delFlag}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+</mapper>

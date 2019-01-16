@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+																															<div class="form-group">	
+								<label class="col-sm-3 control-label">任务名称：</label>
+								<div class="col-sm-8">
+									<input id="jobName" name="jobName" class="form-control" type="text">
+								</div>
+							</div>
+																									<div class="form-group">	
+								<label class="col-sm-3 control-label">任务组名：</label>
+								<div class="col-sm-8">
+									<input id="jobGroup" name="jobGroup" class="form-control" type="text">
+								</div>
+							</div>
+																									<div class="form-group">	
+								<label class="col-sm-3 control-label">日志类型：</label>
+								<div class="col-sm-8">
+									<input id="jobType" name="jobType" class="form-control" type="text">
+								</div>
+							</div>
+																									<div class="form-group">	
+								<label class="col-sm-3 control-label">日志事件：</label>
+								<div class="col-sm-8">
+									<input id="jobEvent" name="jobEvent" class="form-control" type="text">
+								</div>
+							</div>
+																									<div class="form-group">	
+								<label class="col-sm-3 control-label">日志信息：</label>
+								<div class="col-sm-8">
+									<input id="jobMessage" name="jobMessage" class="form-control" type="text">
+								</div>
+							</div>
+																									<div class="form-group">	
+								<label class="col-sm-3 control-label">是否异常：</label>
+								<div class="col-sm-8">
+									<input id="isException" name="isException" class="form-control" type="text">
+								</div>
+							</div>
+																									<div class="form-group">	
+								<label class="col-sm-3 control-label">异常信息：</label>
+								<div class="col-sm-8">
+									<input id="exceptionInfo" name="exceptionInfo" class="form-control" type="text">
+								</div>
+							</div>
+																																																																																											<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" th:src="@{/js/appjs/common/jobLog/add.js}">
+	</script>
+</body>
+</html>

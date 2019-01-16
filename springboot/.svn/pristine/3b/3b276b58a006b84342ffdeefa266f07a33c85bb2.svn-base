@@ -1,0 +1,58 @@
+package com.cptech.basicInfo.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+import com.cptech.basicInfo.dao.LicenseCodeDao;
+import com.cptech.basicInfo.domain.LicenseCodeDO;
+import com.cptech.basicInfo.service.LicenseCodeService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
+
+
+@Service
+public class LicenseCodeServiceImpl implements LicenseCodeService {
+	@Autowired
+	private LicenseCodeDao licenseCodeDao;
+	
+	@Override
+	public LicenseCodeDO get(String id){
+		return licenseCodeDao.get(id);
+	}
+	
+	@Override
+	public List<LicenseCodeDO> findAll(LicenseCodeDO licenseCode){
+		return licenseCodeDao.findAll(licenseCode);
+	}
+	@Override
+	public Page<LicenseCodeDO> findByPage(LicenseCodeDO licenseCode){
+		PageHelper.startPage(licenseCode.getOffset(), licenseCode.getLimit());
+		return licenseCodeDao.findByPage(licenseCode);
+	}
+	
+	@Override
+	public int save(LicenseCodeDO licenseCode){
+		licenseCode.preInsert();
+		return licenseCodeDao.save(licenseCode);
+	}
+	
+	@Override
+	public int update(LicenseCodeDO licenseCode){
+		licenseCode.preUpdate();
+		return licenseCodeDao.update(licenseCode);
+	}
+	
+	@Override
+	public int remove(String id){
+		return licenseCodeDao.remove(id);
+	}
+	
+	@Override
+	public int batchRemove(String[] ids){
+		return licenseCodeDao.batchRemove(ids);
+	}
+	
+}

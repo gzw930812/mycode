@@ -1,0 +1,31 @@
+package com.cptech.qrc.dao;
+
+import com.cptech.qrc.domain.QrcodeDO;
+
+import java.util.List;
+import org.apache.ibatis.annotations.Mapper;
+
+import com.github.pagehelper.Page;
+
+/**
+ * 二维码表
+ * @author fb
+ * @email 1595418464@qq.com
+ * @date 2018-06-20 16:35:19
+ */
+@Mapper
+public interface QrcodeDao {
+
+	QrcodeDO get(String id);
+	
+	List<QrcodeDO> findAll(QrcodeDO qrcode);
+	Page<QrcodeDO> findByPage(QrcodeDO qrcode);
+	
+	int save(QrcodeDO qrcode);
+	
+	int update(QrcodeDO qrcode);
+	
+	int remove(String id);
+	
+	int batchRemove(String[] ids);
+}

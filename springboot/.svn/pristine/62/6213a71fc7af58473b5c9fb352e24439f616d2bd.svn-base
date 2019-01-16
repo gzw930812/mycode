@@ -1,0 +1,48 @@
+package com.cptech.basicInfo.domain;
+
+import java.io.Serializable;
+import java.util.Date;
+import com.cptech.common.domain.BaseDo;
+
+
+
+/**
+ * 项目代码表
+ * 
+ * @author pjy
+ * @email 1595418464@qq.com
+ * @date 2018-06-19 09:27:50
+ */
+public class LicenseCodeDO extends BaseDo implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
+			//项目代码
+	private String code;
+			//作业项目
+	private String workProject;
+							
+			/**
+	 * 设置：项目代码
+	 */
+	public void setCode(String code) {
+		this.code = code;
+	}
+	/**
+	 * 获取：项目代码
+	 */
+	public String getCode() {
+		return code;
+	}
+			/**
+	 * 设置：作业项目
+	 */
+	public void setWorkProject(String workProject) {
+		this.workProject = workProject;
+	}
+	/**
+	 * 获取：作业项目
+	 */
+	public String getWorkProject() {
+		return workProject;
+	}
+							}

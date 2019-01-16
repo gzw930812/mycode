@@ -1,0 +1,46 @@
+# \u56FA\u5B9A\u524D\u7F00org.quartz
+# \u4E3B\u8981\u5206\u4E3Ascheduler\u3001threadPool\u3001jobStore\u3001plugin\u7B49\u90E8\u5206
+#
+#
+org.quartz.scheduler.instanceName = DefaultQuartzScheduler
+org.quartz.scheduler.rmi.export = false
+org.quartz.scheduler.rmi.proxy = false
+org.quartz.scheduler.wrapJobExecutionInUserTransaction = false
+
+# \u5B9E\u4F8B\u5316ThreadPool\u65F6\uFF0C\u4F7F\u7528\u7684\u7EBF\u7A0B\u7C7B\u4E3ASimpleThreadPool
+org.quartz.threadPool.class = org.quartz.simpl.SimpleThreadPool
+
+# threadCount\u548CthreadPriority\u5C06\u4EE5setter\u7684\u5F62\u5F0F\u6CE8\u5165ThreadPool\u5B9E\u4F8B
+# \u5E76\u53D1\u4E2A\u6570
+org.quartz.threadPool.threadCount = 5
+# \u4F18\u5148\u7EA7
+org.quartz.threadPool.threadPriority = 5
+org.quartz.threadPool.threadsInheritContextClassLoaderOfInitializingThread = true
+
+org.quartz.jobStore.misfireThreshold = 5000
+
+# \u9ED8\u8BA4\u5B58\u50A8\u5728\u5185\u5B58\u4E2D
+#org.quartz.jobStore.class = org.quartz.simpl.RAMJobStore
+
+#\u6301\u4E45\u5316
+org.quartz.jobStore.class = org.quartz.impl.jdbcjobstore.JobStoreTX
+
+org.quartz.jobStore.tablePrefix = quartz_
+
+org.quartz.jobStore.dataSource = qzDS
+#driver:
+	#oracle:oracle.jdbc.OracleDriver
+	#mysql:com.mysql.jdbc.Driver
+org.quartz.dataSource.qzDS.driver = oracle.jdbc.OracleDriver
+#connection information
+	#oracle
+#org.quartz.dataSource.qzDS.URL = jdbc:oracle:thin:@192.168.2.227:1521:orcl
+#org.quartz.dataSource.qzDS.user = scott
+#org.quartz.dataSource.qzDS.password = 123456
+	#mysql
+org.quartz.dataSource.qzDS.URL = jdbc:mysql://182.61.7.132:3306/lpg?useUnicode=true&characterEncoding=utf8
+org.quartz.dataSource.qzDS.user = lpguser
+org.quartz.dataSource.qzDS.password = lpguser
+
+org.quartz.dataSource.qzDS.maxConnections = 10
+org.springframework.scheduling.quartz.SchedulerFactoryBean.autowire=no

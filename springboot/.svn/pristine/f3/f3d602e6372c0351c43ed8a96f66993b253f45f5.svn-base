@@ -1,0 +1,44 @@
+package com.cptech.fillingInfo.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+import com.cptech.fillingInfo.dao.FillingRecordDao;
+import com.cptech.fillingInfo.domain.FillingRecordDO;
+import com.cptech.fillingInfo.service.FillingRecordService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
+
+
+@Service
+public class FillingRecordServiceImpl implements FillingRecordService {
+	@Autowired
+	private FillingRecordDao fillingRecordDao;
+	
+	@Override
+	public FillingRecordDO get(String id){
+		return fillingRecordDao.get(id);
+	}
+	
+	@Override
+	public Page<FillingRecordDO> findByPage(FillingRecordDO fillingRecord){
+		PageHelper.startPage(fillingRecord.getOffset(), fillingRecord.getLimit());
+		return fillingRecordDao.findByPage(fillingRecord);
+	}
+	
+	@Override
+	public int save(FillingRecordDO fillingRecord){
+		fillingRecord.preInsert();
+		return fillingRecordDao.save(fillingRecord);
+	}
+	
+	@Override
+	public int update(FillingRecordDO fillingRecord){
+		fillingRecord.preUpdate();
+		return fillingRecordDao.update(fillingRecord);
+	}
+	
+}

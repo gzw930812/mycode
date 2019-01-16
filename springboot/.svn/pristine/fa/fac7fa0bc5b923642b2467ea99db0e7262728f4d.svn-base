@@ -1,0 +1,931 @@
+﻿SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for `oa_notify`
+-- ----------------------------
+DROP TABLE IF EXISTS `oa_notify`;
+CREATE TABLE `oa_notify` (
+  `id` varchar(64) NOT NULL  COMMENT '编号',
+  `type` char(1) COLLATE utf8_bin DEFAULT NULL COMMENT '类型',
+  `title` varchar(200) COLLATE utf8_bin DEFAULT NULL COMMENT '标题',
+  `content` varchar(2000) COLLATE utf8_bin DEFAULT NULL COMMENT '内容',
+  `files` varchar(2000) COLLATE utf8_bin DEFAULT NULL COMMENT '附件',
+  `status` char(1) COLLATE utf8_bin DEFAULT NULL COMMENT '状态',
+  `create_by` varchar(64) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT NULL COMMENT '更新时间',
+  `remarks` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) COLLATE utf8_bin DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='通知通告';
+
+-- ----------------------------
+-- Table structure for `oa_notify_record`
+-- ----------------------------
+DROP TABLE IF EXISTS `oa_notify_record`;
+CREATE TABLE `oa_notify_record` (
+  `id` varchar(64) NOT NULL COMMENT '编号',
+  `notify_id` varchar(64) DEFAULT NULL COMMENT '通知通告ID',
+  `user_id` varchar(64) DEFAULT NULL COMMENT '接受人',
+  `is_read` tinyint(1) DEFAULT '0' COMMENT '阅读标记',
+  `read_date` datetime DEFAULT NULL COMMENT '阅读时间',
+  `create_by` varchar(64) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT NULL COMMENT '更新时间',
+  `remarks` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) COLLATE utf8_bin DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='通知通告发送记录';
+
+-- ----------------------------
+-- Table structure for `sys_dept`
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_dept`;
+CREATE TABLE `sys_dept` (
+  `id` varchar(64) NOT NULL,
+  `parent_id` varchar(64) DEFAULT NULL COMMENT '上级机构ID，一级机构为0',
+  `name` varchar(50) DEFAULT NULL COMMENT '机构名称',
+  `order_num` int(11) DEFAULT NULL COMMENT '排序',
+  `create_by` varchar(64) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT NULL COMMENT '更新时间',
+  `remarks` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) COLLATE utf8_bin DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='机构管理';
+
+-- ----------------------------
+-- Table structure for `sys_dict`
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_dict`;
+CREATE TABLE `sys_dict` (
+  `id` varchar(64) NOT NULL COMMENT '编号',
+  `name` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '标签名',
+  `value` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '数据值',
+  `type` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '类型',
+  `description` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '描述',
+  `sort` decimal(10,0) DEFAULT NULL COMMENT '排序（升序）',
+  `parent_id` varchar(64) DEFAULT '0' COMMENT '父级编号',
+  `create_by` varchar(64) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT NULL COMMENT '更新时间',
+  `remarks` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) COLLATE utf8_bin DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='字典表';
+
+-- ----------------------------
+-- Table structure for `sys_file`
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_file`;
+CREATE TABLE `sys_file` (
+  `id` varchar(64) NOT NULL,
+  `type` int(11) DEFAULT NULL COMMENT '文件类型',
+  `url` varchar(200) DEFAULT NULL COMMENT 'URL地址',
+  `create_by` varchar(64) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT NULL COMMENT '更新时间',
+  `remarks` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) COLLATE utf8_bin DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文件上传';
+
+-- ----------------------------
+-- Table structure for `sys_log`
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_log`;
+CREATE TABLE `sys_log` (
+  `id` varchar(64) NOT NULL,
+  `user_id` varchar(64) DEFAULT NULL COMMENT '用户id',
+  `username` varchar(50) DEFAULT NULL COMMENT '用户名',
+  `operation` varchar(50) DEFAULT NULL COMMENT '用户操作',
+  `time` int(11) DEFAULT NULL COMMENT '响应时间',
+  `method` varchar(200) DEFAULT NULL COMMENT '请求方法',
+  `params` varchar(5000) DEFAULT NULL COMMENT '请求参数',
+  `ip` varchar(64) DEFAULT NULL COMMENT 'IP地址',
+  `create_by` varchar(64) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT NULL COMMENT '更新时间',
+  `remarks` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) COLLATE utf8_bin DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统日志';
+
+-- ----------------------------
+-- Records of sys_log
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `sys_menu`
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_menu`;
+CREATE TABLE `sys_menu` (
+  `id` varchar(64) NOT NULL,
+  `parent_id` varchar(64) DEFAULT NULL COMMENT '父菜单ID，一级菜单为0',
+  `name` varchar(50) DEFAULT NULL COMMENT '菜单名称',
+  `url` varchar(200) DEFAULT NULL COMMENT '菜单URL',
+  `perms` varchar(500) DEFAULT NULL COMMENT '授权(多个用逗号分隔，如：user:list,user:create)',
+  `type` int(11) DEFAULT NULL COMMENT '类型   0：目录   1：菜单   2：按钮',
+  `icon` varchar(50) DEFAULT NULL COMMENT '菜单图标',
+  `order_num` int(11) DEFAULT NULL COMMENT '排序',
+  `create_by` varchar(64) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT NULL COMMENT '更新时间',
+  `remarks` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) COLLATE utf8_bin DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='菜单管理';
+
+-- ----------------------------
+-- Table structure for `sys_role`
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_role`;
+CREATE TABLE `sys_role` (
+  `id` varchar(64) NOT NULL,
+  `role_name` varchar(100) DEFAULT NULL COMMENT '角色名称',
+  `role_sign` varchar(100) DEFAULT NULL COMMENT '角色标识',
+  `create_by` varchar(64) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT NULL COMMENT '更新时间',
+  `remarks` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) COLLATE utf8_bin DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色';
+
+-- ----------------------------
+-- Table structure for `sys_role_menu`
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_role_menu`;
+CREATE TABLE `sys_role_menu` (
+  `id` varchar(64) NOT NULL,
+  `role_id` varchar(64) DEFAULT NULL COMMENT '角色ID',
+  `menu_id` varchar(64) DEFAULT NULL COMMENT '菜单ID',
+  `create_by` varchar(64) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT NULL COMMENT '更新时间',
+  `remarks` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) COLLATE utf8_bin DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色与菜单对应关系';
+
+-- ----------------------------
+-- Table structure for `sys_task`
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_task`;
+CREATE TABLE `sys_task` (
+  `id` varchar(64) NOT NULL,
+  `cron_expression` varchar(255) DEFAULT NULL COMMENT 'cron表达式',
+  `method_name` varchar(255) DEFAULT NULL COMMENT '任务调用的方法名',
+  `is_concurrent` varchar(255) DEFAULT NULL COMMENT '任务是否有状态',
+  `description` varchar(255) DEFAULT NULL COMMENT '任务描述',
+  `bean_class` varchar(255) DEFAULT NULL COMMENT '任务执行时调用哪个类的方法 包名+类名',
+  `job_status` varchar(255) DEFAULT NULL COMMENT '任务状态',
+  `job_group` varchar(255) DEFAULT NULL COMMENT '任务分组',
+  `spring_bean` varchar(255) DEFAULT NULL COMMENT 'Spring bean',
+  `job_name` varchar(255) DEFAULT NULL COMMENT '任务名',
+  `create_by` varchar(64) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT NULL COMMENT '更新时间',
+  `remarks` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) COLLATE utf8_bin DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sys_task_log` (
+  `id` VARCHAR(64) NOT NULL COMMENT '编号',
+  `job_name` VARCHAR(64) NOT NULL COMMENT '任务名称',
+  `job_group` VARCHAR(64) NOT NULL COMMENT '任务组名',
+  `job_type` VARCHAR(50) DEFAULT NULL COMMENT '日志类型',
+  `job_event` VARCHAR(200) DEFAULT NULL COMMENT '日志事件',
+  `job_message` VARCHAR(500) DEFAULT NULL COMMENT '日志信息',
+  `is_exception` CHAR(1) DEFAULT NULL COMMENT '是否异常',
+  `exception_info` TEXT COMMENT '异常信息',
+  `create_date` DATETIME DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_sys_task_log_jn` (`job_name`),
+  KEY `idx_sys_task_log_jg` (`job_group`),
+  KEY `idx_sys_task_log_t` (`job_type`),
+  KEY `idx_sys_task_log_e` (`job_event`),
+  KEY `idx_sys_task_log_ie` (`is_exception`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='任务调度日志表';
+
+-- ----------------------------
+-- Table structure for `sys_user`
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user`;
+CREATE TABLE `sys_user` (
+  `id` varchar(64) NOT NULL,
+  `username` varchar(50) DEFAULT NULL COMMENT '用户名',
+  `name` varchar(100) DEFAULT NULL,
+  `password` varchar(50) DEFAULT NULL COMMENT '密码',
+  `dept_id` varchar(64) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL COMMENT '邮箱',
+  `mobile` varchar(100) DEFAULT NULL COMMENT '手机号',
+  `status` tinyint(255) DEFAULT NULL COMMENT '状态 0:禁用，1:正常',
+  `sex` bigint(32) DEFAULT NULL COMMENT '性别',
+  `birth` datetime DEFAULT NULL COMMENT '出身日期',
+  `pic_id` varchar(64) DEFAULT NULL,
+  `live_address` varchar(500) DEFAULT NULL COMMENT '现居住地',
+  `hobby` varchar(255) DEFAULT NULL COMMENT '爱好',
+  `province` varchar(255) DEFAULT NULL COMMENT '省份',
+  `city` varchar(255) DEFAULT NULL COMMENT '所在城市',
+  `district` varchar(255) DEFAULT NULL COMMENT '所在地区',
+  `create_by` varchar(64) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT NULL COMMENT '更新时间',
+  `remarks` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) COLLATE utf8_bin DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+-- ----------------------------
+-- Table structure for `sys_user_plus`
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user_plus`;
+CREATE TABLE `sys_user_plus` (
+  `id` varchar(64) NOT NULL,
+  `user_id` varchar(64) NOT NULL,
+  `payment` double DEFAULT NULL,
+  `create_by` varchar(64) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT NULL COMMENT '更新时间',
+  `remarks` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) COLLATE utf8_bin DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sys_user_plus
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `sys_user_role`
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user_role`;
+CREATE TABLE `sys_user_role` (
+  `id` varchar(64) NOT NULL,
+  `user_id` varchar(64) DEFAULT NULL COMMENT '用户ID',
+  `role_id` varchar(64) DEFAULT NULL COMMENT '角色ID',
+  `create_by` varchar(64) DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime DEFAULT NULL COMMENT '更新时间',
+  `remarks` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) COLLATE utf8_bin DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户与角色对应关系';
+
+--quartz持久化
+DROP TABLE IF EXISTS quartz_job_DETAILS;
+CREATE TABLE quartz_job_DETAILS(
+SCHED_NAME VARCHAR(120) NOT NULL,
+JOB_NAME VARCHAR(200) NOT NULL,
+JOB_GROUP VARCHAR(200) NOT NULL,
+DESCRIPTION VARCHAR(250) NULL,
+JOB_CLASS_NAME VARCHAR(250) NOT NULL,
+IS_DURABLE VARCHAR(1) NOT NULL,
+IS_NONCONCURRENT VARCHAR(1) NOT NULL,
+IS_UPDATE_DATA VARCHAR(1) NOT NULL,
+REQUESTS_RECOVERY VARCHAR(1) NOT NULL,
+JOB_DATA BLOB NULL,
+PRIMARY KEY (SCHED_NAME,JOB_NAME,JOB_GROUP))
+ENGINE=INNODB;
+
+DROP TABLE IF EXISTS quartz_TRIGGERS;
+CREATE TABLE quartz_TRIGGERS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+TRIGGER_NAME VARCHAR(200) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+JOB_NAME VARCHAR(200) NOT NULL,
+JOB_GROUP VARCHAR(200) NOT NULL,
+DESCRIPTION VARCHAR(250) NULL,
+NEXT_FIRE_TIME BIGINT(13) NULL,
+PREV_FIRE_TIME BIGINT(13) NULL,
+PRIORITY INTEGER NULL,
+TRIGGER_STATE VARCHAR(16) NOT NULL,
+TRIGGER_TYPE VARCHAR(8) NOT NULL,
+START_TIME BIGINT(13) NOT NULL,
+END_TIME BIGINT(13) NULL,
+CALENDAR_NAME VARCHAR(200) NULL,
+MISFIRE_INSTR SMALLINT(2) NULL,
+JOB_DATA BLOB NULL,
+PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+FOREIGN KEY (SCHED_NAME,JOB_NAME,JOB_GROUP)
+REFERENCES quartz_job_DETAILS(SCHED_NAME,JOB_NAME,JOB_GROUP))
+ENGINE=INNODB;
+
+DROP TABLE IF EXISTS quartz_SIMPLE_TRIGGERS;
+CREATE TABLE quartz_SIMPLE_TRIGGERS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+TRIGGER_NAME VARCHAR(200) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+REPEAT_COUNT BIGINT(7) NOT NULL,
+REPEAT_INTERVAL BIGINT(12) NOT NULL,
+TIMES_TRIGGERED BIGINT(10) NOT NULL,
+PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
+REFERENCES quartz_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP))
+ENGINE=INNODB;
+
+DROP TABLE IF EXISTS quartz_CRON_TRIGGERS;
+CREATE TABLE quartz_CRON_TRIGGERS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+TRIGGER_NAME VARCHAR(200) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+CRON_EXPRESSION VARCHAR(120) NOT NULL,
+TIME_ZONE_ID VARCHAR(80),
+PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
+REFERENCES quartz_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP))
+ENGINE=INNODB;
+
+DROP TABLE IF EXISTS quartz_SIMPROP_TRIGGERS;
+CREATE TABLE quartz_SIMPROP_TRIGGERS
+  (          
+    SCHED_NAME VARCHAR(120) NOT NULL,
+    TRIGGER_NAME VARCHAR(200) NOT NULL,
+    TRIGGER_GROUP VARCHAR(200) NOT NULL,
+    STR_PROP_1 VARCHAR(512) NULL,
+    STR_PROP_2 VARCHAR(512) NULL,
+    STR_PROP_3 VARCHAR(512) NULL,
+    INT_PROP_1 INT NULL,
+    INT_PROP_2 INT NULL,
+    LONG_PROP_1 BIGINT NULL,
+    LONG_PROP_2 BIGINT NULL,
+    DEC_PROP_1 NUMERIC(13,4) NULL,
+    DEC_PROP_2 NUMERIC(13,4) NULL,
+    BOOL_PROP_1 VARCHAR(1) NULL,
+    BOOL_PROP_2 VARCHAR(1) NULL,
+    PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+    FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP) 
+    REFERENCES quartz_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP))
+ENGINE=INNODB;
+
+DROP TABLE IF EXISTS quartz_BLOB_TRIGGERS;
+CREATE TABLE quartz_BLOB_TRIGGERS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+TRIGGER_NAME VARCHAR(200) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+BLOB_DATA BLOB NULL,
+PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+INDEX (SCHED_NAME,TRIGGER_NAME, TRIGGER_GROUP),
+FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
+REFERENCES quartz_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP))
+ENGINE=INNODB;
+
+DROP TABLE IF EXISTS quartz_CALENDARS;
+CREATE TABLE quartz_CALENDARS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+CALENDAR_NAME VARCHAR(200) NOT NULL,
+CALENDAR BLOB NOT NULL,
+PRIMARY KEY (SCHED_NAME,CALENDAR_NAME))
+ENGINE=INNODB;
+
+DROP TABLE IF EXISTS quartz_PAUSED_TRIGGER_GRPS;
+CREATE TABLE quartz_PAUSED_TRIGGER_GRPS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+PRIMARY KEY (SCHED_NAME,TRIGGER_GROUP))
+ENGINE=INNODB;
+
+DROP TABLE IF EXISTS quartz_FIRED_TRIGGERS;
+CREATE TABLE quartz_FIRED_TRIGGERS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+ENTRY_ID VARCHAR(95) NOT NULL,
+TRIGGER_NAME VARCHAR(200) NOT NULL,
+TRIGGER_GROUP VARCHAR(200) NOT NULL,
+INSTANCE_NAME VARCHAR(200) NOT NULL,
+FIRED_TIME BIGINT(13) NOT NULL,
+SCHED_TIME BIGINT(13) NOT NULL,
+PRIORITY INTEGER NOT NULL,
+STATE VARCHAR(16) NOT NULL,
+JOB_NAME VARCHAR(200) NULL,
+JOB_GROUP VARCHAR(200) NULL,
+IS_NONCONCURRENT VARCHAR(1) NULL,
+REQUESTS_RECOVERY VARCHAR(1) NULL,
+PRIMARY KEY (SCHED_NAME,ENTRY_ID))
+ENGINE=INNODB;
+
+DROP TABLE IF EXISTS quartz_SCHEDULER_STATE;
+CREATE TABLE quartz_SCHEDULER_STATE (
+SCHED_NAME VARCHAR(120) NOT NULL,
+INSTANCE_NAME VARCHAR(200) NOT NULL,
+LAST_CHECKIN_TIME BIGINT(13) NOT NULL,
+CHECKIN_INTERVAL BIGINT(13) NOT NULL,
+PRIMARY KEY (SCHED_NAME,INSTANCE_NAME))
+ENGINE=INNODB;
+
+DROP TABLE IF EXISTS quartz_LOCKS;
+CREATE TABLE quartz_LOCKS (
+SCHED_NAME VARCHAR(120) NOT NULL,
+LOCK_NAME VARCHAR(40) NOT NULL,
+PRIMARY KEY (SCHED_NAME,LOCK_NAME))
+ENGINE=INNODB;
+
+CREATE INDEX IDX_QRTZ_J_REQ_RECOVERY ON quartz_job_DETAILS(SCHED_NAME,REQUESTS_RECOVERY);
+CREATE INDEX IDX_QRTZ_J_GRP ON quartz_job_DETAILS(SCHED_NAME,JOB_GROUP);
+
+CREATE INDEX IDX_QRTZ_T_J ON quartz_TRIGGERS(SCHED_NAME,JOB_NAME,JOB_GROUP);
+CREATE INDEX IDX_QRTZ_T_JG ON quartz_TRIGGERS(SCHED_NAME,JOB_GROUP);
+CREATE INDEX IDX_QRTZ_T_C ON quartz_TRIGGERS(SCHED_NAME,CALENDAR_NAME);
+CREATE INDEX IDX_QRTZ_T_G ON quartz_TRIGGERS(SCHED_NAME,TRIGGER_GROUP);
+CREATE INDEX IDX_QRTZ_T_STATE ON quartz_TRIGGERS(SCHED_NAME,TRIGGER_STATE);
+CREATE INDEX IDX_QRTZ_T_N_STATE ON quartz_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP,TRIGGER_STATE);
+CREATE INDEX IDX_QRTZ_T_N_G_STATE ON quartz_TRIGGERS(SCHED_NAME,TRIGGER_GROUP,TRIGGER_STATE);
+CREATE INDEX IDX_QRTZ_T_NEXT_FIRE_TIME ON quartz_TRIGGERS(SCHED_NAME,NEXT_FIRE_TIME);
+CREATE INDEX IDX_QRTZ_T_NFT_ST ON quartz_TRIGGERS(SCHED_NAME,TRIGGER_STATE,NEXT_FIRE_TIME);
+CREATE INDEX IDX_QRTZ_T_NFT_MISFIRE ON quartz_TRIGGERS(SCHED_NAME,MISFIRE_INSTR,NEXT_FIRE_TIME);
+CREATE INDEX IDX_QRTZ_T_NFT_ST_MISFIRE ON quartz_TRIGGERS(SCHED_NAME,MISFIRE_INSTR,NEXT_FIRE_TIME,TRIGGER_STATE);
+CREATE INDEX IDX_QRTZ_T_NFT_ST_MISFIRE_GRP ON quartz_TRIGGERS(SCHED_NAME,MISFIRE_INSTR,NEXT_FIRE_TIME,TRIGGER_GROUP,TRIGGER_STATE);
+
+CREATE INDEX IDX_QRTZ_FT_TRIG_INST_NAME ON quartz_FIRED_TRIGGERS(SCHED_NAME,INSTANCE_NAME);
+CREATE INDEX IDX_QRTZ_FT_INST_JOB_REQ_RCVRY ON quartz_FIRED_TRIGGERS(SCHED_NAME,INSTANCE_NAME,REQUESTS_RECOVERY);
+CREATE INDEX IDX_QRTZ_FT_J_G ON quartz_FIRED_TRIGGERS(SCHED_NAME,JOB_NAME,JOB_GROUP);
+CREATE INDEX IDX_QRTZ_FT_JG ON quartz_FIRED_TRIGGERS(SCHED_NAME,JOB_GROUP);
+CREATE INDEX IDX_QRTZ_FT_T_G ON quartz_FIRED_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP);
+CREATE INDEX IDX_QRTZ_FT_TG ON quartz_FIRED_TRIGGERS(SCHED_NAME,TRIGGER_GROUP);
+drop table if exists sys_area;
+
+drop table if exists t_app_version;
+
+drop table if exists t_bottle_factory;
+
+drop table if exists t_bottle_standard;
+
+drop table if exists t_check_record;
+
+drop table if exists t_device_repairs;
+
+drop table if exists t_devices;
+
+drop table if exists t_filling_record;
+
+drop table if exists t_license_code;
+
+drop table if exists t_qrcode;
+
+drop table if exists t_qrcode_section_number;
+
+drop table if exists t_recharge_time_interval;
+
+drop table if exists t_simple_field;
+
+drop table if exists t_stations;
+
+drop table if exists t_steel_bottles;
+
+drop table if exists t_wok_time_interval;
+
+drop table if exists t_workers;
+
+/*==============================================================*/
+/* Table: sys_area                                              */
+/*==============================================================*/
+create table sys_area
+(
+   id                   varchar(64) not null comment 'id',
+   type                 char(10) comment '区域类型（1：省；2：市；3：区县）',
+   code                 varchar(20) comment '区域代码',
+   name                 varchar(50) comment '区域名称',
+   parent_id            varchar(64) comment '父级id',
+   parent_ids           varchar(255) comment '多级父级id，以逗号隔开',
+   create_by            varchar(64) comment '创建者id',
+   create_date          date comment '创建日期',
+   update_by            varchar(64) comment '修改者id',
+   update_date          date comment '修改日期',
+   remarks              varchar(200) comment '备注',
+   del_flag             char(1) default '0' comment '删除标记(1:删除；默认0)',
+   primary key (id)
+);
+
+alter table sys_area comment '区域表';
+
+/*==============================================================*/
+/* Table: t_app_version                                         */
+/*==============================================================*/
+create table t_app_version
+(
+   id                   varchar(64) not null comment 'id',
+   version              varchar(20) comment '版本号',
+   des                  varchar(255) comment '描述',
+   is_force_update      char(1) comment '是否强制更新',
+   app_type             char(1) comment '应用类型（1：钢瓶注册；2：钢瓶充装；3：钢瓶检验）',
+   update_url           varchar(100) comment '更新地址',
+   create_by            varchar(64) comment '创建者id',
+   create_date          date comment '创建日期',
+   update_by            varchar(64) comment '修改者id',
+   update_date          date comment '修改日期',
+   remarks              varchar(200) comment '备注',
+   del_flag             char(1) default '0' comment '删除标记(1:删除；默认0)',
+   primary key (id)
+);
+
+alter table t_app_version comment 'app版本管理表';
+
+/*==============================================================*/
+/* Table: t_bottle_factory                                      */
+/*==============================================================*/
+create table t_bottle_factory
+(
+   id                   varchar(64) not null comment 'id',
+   short_name           varchar(20) comment '简称',
+   name                 varchar(50) comment '全称',
+   license_no           varchar(20) comment '许可证编号',
+   create_by            varchar(64) comment '创建者id',
+   create_date          date comment '创建日期',
+   update_by            varchar(64) comment '修改者id',
+   update_date          date comment '修改日期',
+   remarks              varchar(200) comment '备注',
+   del_flag             char(1) default '0' comment '删除标记(1:删除；默认0)',
+   primary key (id)
+);
+
+alter table t_bottle_factory comment '钢瓶生产厂家表';
+
+/*==============================================================*/
+/* Table: t_bottle_standard                                     */
+/*==============================================================*/
+create table t_bottle_standard
+(
+   id                   varchar(64) not null comment 'id',
+   name                 varchar(20) comment '规格名称',
+   create_by            varchar(64) comment '创建者id',
+   create_date          date comment '创建日期',
+   update_by            varchar(64) comment '修改者id',
+   update_date          date comment '修改日期',
+   remarks              varchar(200) comment '备注',
+   del_flag             char(1) default '0' comment '删除标记(1:删除；默认0)',
+   primary key (id)
+);
+
+alter table t_bottle_standard comment '钢瓶规格表';
+
+/*==============================================================*/
+/* Table: t_check_record                                        */
+/*==============================================================*/
+create table t_check_record
+(
+   id                   varchar(64) not null comment 'id',
+   dept_id              varchar(64) comment '充装站id',
+   check_dept_id        varchar(64) comment '检验站id',
+   check_dept_name      varchar(30) comment '检验站名称',
+   dept_name            varchar(30) comment '充装站名称',
+   bottle_no            varchar(20) comment '钢瓶编号',
+   qrcode_no            varchar(20) comment '二维码编号',
+   area_id              varchar(64) comment '所属区域id',
+   area_name            varchar(30) comment '所属区域名称',
+   worker_id            varchar(64) comment '作业人员id',
+   worker_name          varchar(30) comment '作业人员名字',
+   check_date           date comment '检验日期',
+   next_check_date      date comment '下次检验日期',
+   bottle_type_id       varchar(64) comment '钢瓶类型id(对应字典表中的钢瓶类型value)',
+   bottle_type_name     varchar(30) comment '钢瓶类型名称(对应字典表中的钢瓶类型name)',
+   bottle_standard_name varchar(30) comment '钢瓶规格名称',
+   bottle_standard_id   varchar(64) comment '钢瓶规格id',
+   produce_date         date comment '生产日期',
+   produce_factory_id   varchar(64) comment '生产厂家id',
+   produce_factory_name varchar(30) comment '生产厂家名称',
+   steel_seal_code      varchar(20) comment '充装钢印号',
+   status               char(1) comment '检验状态(1：待检；2：检验完成)',
+   check_result         char(1) comment '检验结果（1：合格；2：报废）',
+   report_no            varchar(30) comment '打印报告编号（打印后需回填）',
+   create_by            varchar(64) comment '创建人',
+   create_date          date comment '创建日期',
+   update_by            varchar(64) comment '修改者id',
+   update_date          date comment '修改日期',
+   remarks              varchar(200) comment '备注',
+   del_flag             char(1) default '0' comment '删除标记(1:删除；默认0)',
+   primary key (id)
+);
+
+alter table t_check_record comment '检验记录表';
+
+/*==============================================================*/
+/* Table: t_device_repairs                                      */
+/*==============================================================*/
+create table t_device_repairs
+(
+   id                   varchar(64) not null comment 'id',
+   device_id            varchar(64) comment '设备id',
+   repair_date          date comment '报修日期',
+   repair_reason        varchar(255) comment '报修原因',
+   concat_person        varchar(20) comment '联系人',
+   cell_phone           varchar(20) comment '联系电话',
+   repair_content       varchar(255) comment '维修内容',
+   repair_result        char(1) comment '维修结果(1:正常；2：报废)',
+   create_by            varchar(64) comment '创建者id',
+   create_date          date comment '创建日期',
+   update_by            varchar(64) comment '修改者id',
+   update_date          date comment '修改日期',
+   remarks              varchar(200) comment '备注',
+   del_flag             char(1) default '0' comment '删除标记(1:删除；默认0)(1即维修历史)',
+   primary key (id)
+);
+
+alter table t_device_repairs comment '设备保修表';
+
+/*==============================================================*/
+/* Table: t_devices                                             */
+/*==============================================================*/
+create table t_devices
+(
+   id                   varchar(64) not null comment 'id',
+   name                 varchar(50) comment '设备名称',
+   meid                 varchar(64) comment '移动设备识别码',
+   outer_code           varchar(20) comment '设备外编号',
+   status               char(1) comment '状态（1：正常；2：维修；3：报废）',
+   station_id           varchar(64) comment '所属站点id',
+   create_by            varchar(64) comment '创建者id',
+   create_date          date comment '创建日期',
+   update_by            varchar(64) comment '修改者id',
+   update_date          date comment '修改日期',
+   remarks              varchar(200) comment '备注',
+   del_flag             char(1) default '0' comment '删除标记(1:删除；默认0)',
+   primary key (id)
+);
+
+alter table t_devices comment '设备表';
+
+/*==============================================================*/
+/* Table: t_filling_record                                      */
+/*==============================================================*/
+create table t_filling_record
+(
+   id                   varchar(64) not null comment 'id',
+   station_id           varchar(64) comment '充装站id',
+   station_name         varchar(30) comment '充装站名称',
+   bottle_no            varchar(20) comment '钢瓶编号',
+   qrcode_no            varchar(20) comment '二维码编号',
+   area_id              varchar(64) comment '所属区域id',
+   area_name            varchar(30) comment '所属区域名称',
+   filling_time         date comment '充装时间',
+   filling_weight       float comment '充装重量',
+   gun_no               varchar(30) comment '枪号',
+   before_filling_pressure float comment '充装前压力',
+   after_filling_pressure float comment '充装后压力',
+   worker_id            varchar(64) comment '作业人员id',
+   worker_name          varchar(30) comment '作业人员名字',
+   before_filling_check char(1) comment '充装前检查是否合格（1：合格；2：不合格）',
+   after_filling_check  char(1) comment '充装后检查是否合格（1：合格；2：不合格）',
+   reason               varchar(255) comment '不合格原因',
+   create_by            varchar(64) comment '创建者id',
+   create_date          date comment '创建日期',
+   update_by            varchar(64) comment '修改者id',
+   update_date          date comment '修改日期',
+   remarks              varchar(200) comment '备注',
+   del_flag             char(1) default '0' comment '删除标记(1:删除；默认0)',
+   primary key (id)
+);
+
+alter table t_filling_record comment '充装记录表';
+
+/*==============================================================*/
+/* Table: t_license_code                                        */
+/*==============================================================*/
+create table t_license_code
+(
+   id                   varchar(64) not null comment 'id',
+   code                 varchar(10) comment '项目代码',
+   work_project         varchar(30) comment '作业项目',
+   create_by            varchar(64) comment '创建者id',
+   create_date          date comment '创建日期',
+   update_by            varchar(64) comment '修改者id',
+   update_date          date comment '修改日期',
+   remarks              varchar(200) comment '备注',
+   del_flag             char(1) default '0' comment '删除标记(1:删除；默认0)',
+   primary key (id)
+);
+
+alter table t_license_code comment '项目代码表';
+
+/*==============================================================*/
+/* Table: t_qrcode                                              */
+/*==============================================================*/
+create table t_qrcode
+(
+   id                   varchar(64) not null comment 'id',
+   qrcode_no            varchar(30) comment '二维码编号',
+   bottle_id            varchar(64) comment '归属气瓶id',
+   status               char(1) comment '状态（1：正常；2：报废）',
+   scrap_reason         varchar(255) comment '报废原因',
+   scrap_date           date comment '报废日期',
+   create_by            varchar(64) comment '创建者id',
+   create_date          date comment '创建日期',
+   update_by            varchar(64) comment '修改者id',
+   update_date          date comment '修改日期',
+   remarks              varchar(200) comment '备注',
+   del_flag             char(1) default '0' comment '删除标记(1:删除；默认0)',
+   primary key (id)
+);
+
+alter table t_qrcode comment '二维码表';
+
+/*==============================================================*/
+/* Table: t_qrcode_section_number                               */
+/*==============================================================*/
+create table t_qrcode_section_number
+(
+   id                   varchar(64) not null comment 'id',
+   station_id           varchar(64) comment '充装站id',
+   prefix               varchar(10) comment '号段前缀',
+   min_no               int comment '最小号段',
+   max_no               int comment '最大号段',
+   used_num             int comment '已使用数量',
+   warning_num          int comment '预警数量',
+   create_by            varchar(64) comment '创建者id',
+   create_date          date comment '创建日期',
+   update_by            varchar(64) comment '修改者id',
+   update_date          date comment '修改日期',
+   remarks              varchar(200) comment '备注',
+   del_flag             char(1) default '0' comment '删除标记(1:删除；默认0)',
+   primary key (id)
+);
+
+alter table t_qrcode_section_number comment '二维码号段设置表';
+
+/*==============================================================*/
+/* Table: t_recharge_time_interval                              */
+/*==============================================================*/
+create table t_recharge_time_interval
+(
+   id                   varchar(64) not null comment 'id',
+   bottle_type_id       varchar(64) comment '钢瓶类型id',
+   hour                 int comment '时间间隔',
+   status               char(1) comment '状态（1：正常；2：过期）',
+   early_warning_time   int comment '预警次数',
+   create_by            varchar(64) comment '创建者id',
+   create_date          date comment '创建日期',
+   update_by            varchar(64) comment '修改者id',
+   update_date          date comment '修改日期',
+   remarks              varchar(200) comment '备注',
+   del_flag             char(1) default '0' comment '删除标记(1:删除；默认0)',
+   primary key (id)
+);
+
+alter table t_recharge_time_interval comment '充装时间间隔表';
+
+/*==============================================================*/
+/* Table: t_simple_field                                        */
+/*==============================================================*/
+create table t_simple_field
+(
+   id                   varchar(64) not null comment 'id',
+   name                 varchar(20) comment '名称',
+   type                 char(10) comment '菜单类型（1：报废方式；2：不通过原因；3：二维码补发原因）',
+   create_by            varchar(64) comment '创建者id',
+   create_date          date comment '创建日期',
+   update_by            varchar(64) comment '修改者id',
+   update_date          date comment '修改日期',
+   remarks              varchar(200) comment '备注',
+   del_flag             char(1) default '0' comment '删除标记(1:删除；默认0)',
+   primary key (id)
+);
+
+alter table t_simple_field comment '报废方式、不通过原因、二维码补发原因表';
+
+/*==============================================================*/
+/* Table: t_stations                                            */
+/*==============================================================*/
+create table t_stations
+(
+   id                   varchar(64) not null,
+   type                 char(1) comment '站点类型（1：充装站；2：检验站）',
+   name                 varchar(50) comment '名称',
+   status               char(1) comment '站点状态（1：营业中；2：停业中）',
+   dept_id              varchar(64) comment '所属机构id',
+   charge_person        varchar(20) comment '负责人',
+   cell_phone           varchar(20) comment '联系电话',
+   credit_code          varchar(30) comment '信用代码',
+   steel_seal_code      varchar(20) comment '充装钢印号',
+   licence_code         varchar(20) comment '许可证号',
+   licence_expire_date  date comment '许可证有效期',
+   address              varchar(50) comment '地址',
+   pic_urls             varchar(255) comment '图片相对路径，多个以逗号隔开',
+   create_by            varchar(64) comment '创建者id',
+   create_date          date comment '创建日期',
+   update_by            varchar(64) comment '修改者id',
+   update_date          date comment '修改日期',
+   remarks              varchar(200) comment '备注',
+   del_flag             char(1) default '0' comment '删除标记(1:删除；默认0)',
+   primary key (id)
+);
+
+alter table t_stations comment '站点（充装站、检验站）';
+
+/*==============================================================*/
+/* Table: t_steel_bottles                                       */
+/*==============================================================*/
+create table t_steel_bottles
+(
+   id                   varchar(64) not null comment 'id',
+   bottle_no            varchar(20) comment '编号',
+   check_date           date comment '检验日期',
+   check_dept_id        varchar(64) comment '上次检验单位id',
+   check_dept_name      varchar(30) comment '上次检验单位名称',
+   next_check_date      date comment '下次检验日期',
+   pre_filling_time     time comment '上次充装时间',
+   bottle_type_id       varchar(64) comment '钢瓶类型id(对应字典表中的钢瓶类型value)',
+   bottle_type_name     varchar(30) comment '钢瓶类型名称(对应字典表中的钢瓶类型name)',
+   bottle_standard_name varchar(30) comment '钢瓶规格名称',
+   bottle_standard_id   varchar(64) comment '钢瓶规格id',
+   dept_id              varchar(64) comment '所属单位id',
+   dept_name            varchar(30) comment '所属单位名称',
+   steel_seal_code      varchar(20) comment '充装钢印号',
+   produce_date         date comment '生产日期',
+   produce_factory_id   varchar(64) comment '生产厂家id',
+   produce_factory_name varchar(30) comment '生产厂家名称',
+   produce_factory_license varchar(30) comment '生产厂家许可证号',
+   use_age              int comment '使用年限',
+   worker_id            varchar(64) comment '工作人员id',
+   worker_name          varchar(30) comment '工作人员名称',
+   audit_status         char(1) comment '审核状态（0：待审核；1：通过；2：不通过）',
+   not_pass_reason      varchar(255) comment '审核未通过原因',
+   pic_urls             text comment '图片，以json格式传入',
+   status               char(1) default '0' comment '钢瓶状态（1:正常；2：报废；3：异常；）',
+   scrap_reason         varchar(255) comment '报废原因',
+   abnormal_reason      varchar(255) comment '异常原因',
+   reserve1             varchar(255) comment '预留字段1',
+   reserve2             varchar(255) comment '预留字段2',
+   reserve3             varchar(255) comment '预留字段3',
+   reserve4             varchar(255) comment '预留字段4',
+   reserve5             varchar(255) comment '预留字段5',
+   create_by            varchar(64) comment '创建者id',
+   create_date          date comment '创建日期',
+   update_by            varchar(64) comment '修改者id',
+   update_date          date comment '修改日期',
+   remarks              varchar(200) comment '备注',
+   del_flag             char(1) default '0' comment '删除标记(1:删除；默认0)(1即维修历史)',
+   primary key (id)
+);
+
+alter table t_steel_bottles comment '钢瓶表';
+
+/*==============================================================*/
+/* Table: t_wok_time_interval                                   */
+/*==============================================================*/
+create table t_wok_time_interval
+(
+   id                   varchar(64) not null comment 'id',
+   hour                 int comment '时间间隔',
+   status               char(1) comment '状态（1：正常；2：过期）',
+   create_by            varchar(64) comment '创建者id',
+   create_date          date comment '创建日期',
+   update_by            varchar(64) comment '修改者id',
+   update_date          date comment '修改日期',
+   remarks              varchar(200) comment '备注',
+   del_flag             char(1) default '0' comment '删除标记(1:删除；默认0)',
+   primary key (id)
+);
+
+alter table t_wok_time_interval comment '作业人员工作时间设置表';
+
+/*==============================================================*/
+/* Table: t_workers                                             */
+/*==============================================================*/
+create table t_workers
+(
+   id                   varchar(64) not null comment 'id',
+   name                 varchar(30) comment '姓名',
+   password             varchar(64) comment '密码（默认证件编号后6位）',
+   certificate_code_id  varchar(64) comment '证书代码id',
+   id_card              varchar(18) comment '证件编号',
+   id_card_expire_date  date comment '证件有效期',
+   publish_area         varchar(50) comment '颁发地',
+   publish_dept_name    varchar(30) comment '颁发机构',
+   grant_date           date comment '颁发日期',
+   dept_id              varchar(64) comment '工作单位，即机构id',
+   create_by            varchar(64) comment '创建者id',
+   create_date          date comment '创建日期',
+   update_by            varchar(64) comment '修改者id',
+   update_date          date comment '修改日期',
+   remarks              varchar(200) comment '备注',
+   del_flag             char(1) default '0' comment '删除标记(1:删除；默认0)(1即维修历史)',
+   primary key (id)
+);
+alter table t_workers comment '作业人员表';
+
+DROP TABLE IF EXISTS `app_token`;
+CREATE TABLE `app_token` (
+  `id` varchar(64) NOT NULL  COMMENT '编号',
+  `worker_id` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '作业人员id',
+  `token` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '登录token',
+  `fresh_token` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '刷新token',
+  `expire_time` datetime COLLATE utf8_bin DEFAULT NULL COMMENT '超时日期',
+  `create_time` datetime COLLATE utf8_bin DEFAULT NULL COMMENT '创建日期',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='APP token登录记录';
+
+commit;

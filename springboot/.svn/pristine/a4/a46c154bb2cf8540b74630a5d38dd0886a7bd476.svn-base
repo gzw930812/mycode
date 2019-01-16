@@ -1,0 +1,54 @@
+package com.cptech.settings.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+import com.cptech.settings.dao.WokTimeIntervalDao;
+import com.cptech.settings.domain.WokTimeIntervalDO;
+import com.cptech.settings.service.WokTimeIntervalService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
+
+
+@Service
+@Transactional
+public class WokTimeIntervalServiceImpl implements WokTimeIntervalService {
+	@Autowired
+	private WokTimeIntervalDao wokTimeIntervalDao;
+	
+	@Override
+	public WokTimeIntervalDO get(String id){
+		return wokTimeIntervalDao.get(id);
+	}
+	
+	@Override
+	public List<WokTimeIntervalDO> findAll(WokTimeIntervalDO wokTimeInterval){
+		return wokTimeIntervalDao.findAll(wokTimeInterval);
+	}
+	@Override
+	public Page<WokTimeIntervalDO> findByPage(WokTimeIntervalDO wokTimeInterval){
+		PageHelper.startPage(wokTimeInterval.getOffset(), wokTimeInterval.getLimit());
+		return wokTimeIntervalDao.findByPage(wokTimeInterval);
+	}
+	
+	@Override
+	@Transactional(readOnly = false)
+	public int set(WokTimeIntervalDO wokTimeInterval){
+		WokTimeIntervalDO searchNewest = new WokTimeIntervalDO();
+		searchNewest.setStatus("1");
+		List<WokTimeIntervalDO> newest = findAll(searchNewest);
+		for (WokTimeIntervalDO wokTimeIntervalDO : newest) {
+			wokTimeIntervalDO.setStatus("2");
+			wokTimeIntervalDO.preUpdate();
+			wokTimeIntervalDao.update(wokTimeIntervalDO);
+		}
+		wokTimeInterval.setStatus("1");
+		wokTimeInterval.preInsert();
+		return wokTimeIntervalDao.save(wokTimeInterval);
+	}
+	
+}

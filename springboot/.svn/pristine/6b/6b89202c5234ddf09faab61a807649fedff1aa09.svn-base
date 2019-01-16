@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cptech.basicInfo.dao.BottleMaterialDao">
+	<sql id="BottleMaterialColumns">
+		id,name,create_by,create_date,update_by,update_date,remarks,del_flag	</sql>
+
+	<select id="get" resultType="com.cptech.basicInfo.domain.BottleMaterialDO">
+		select  
+			<include refid="BottleMaterialColumns"/>
+		from t_bottle_material where id = #{id}
+	</select>
+
+	<select id="findAll" resultType="com.cptech.basicInfo.domain.BottleMaterialDO">
+		select 
+			<include refid="BottleMaterialColumns"/>
+		from t_bottle_material
+        <where>  
+		  		  			  		  				  					  <if test="name != null"> 
+				  	<if test="databaseType == 'oracle'.toString()">
+				  		and name like '%${ name}%'
+					</if>
+					<if test="databaseType == 'mysql'.toString()">
+						and name like concat('%',#{name},'%')
+					</if>
+				  </if>
+							  		  		  			  		  			  		  			  		  			  		  			  		  			  		</where>
+	</select>
+	
+	<select id="findByPage" resultType="com.cptech.basicInfo.domain.BottleMaterialDO">
+		select 
+			<include refid="BottleMaterialColumns"/>
+		from t_bottle_material
+        <where>  
+		  		  			  		  				  					  <if test="name != null"> 
+				  	<if test="databaseType == 'oracle'.toString()">
+				  		and name like '%${ name}%'
+					</if>
+					<if test="databaseType == 'mysql'.toString()">
+						and name like concat('%',#{name},'%')
+					</if>
+				  </if>
+							  		  		  			  		  			  		  			  		  			  		  			  		  			  		</where>
+        order by update_date
+	</select>
+	
+	<insert id="save" parameterType="com.cptech.basicInfo.domain.BottleMaterialDO">
+		insert into t_bottle_material
+		(
+							<if test="id != null"> 
+				id, 				</if>		
+							<if test="name != null"> 
+				name, 				</if>		
+							<if test="createBy != null"> 
+				create_by, 				</if>		
+							<if test="createDate != null"> 
+				create_date, 				</if>		
+							<if test="updateBy != null"> 
+				update_by, 				</if>		
+							<if test="updateDate != null"> 
+				update_date, 				</if>		
+							<if test="remarks != null"> 
+				remarks, 				</if>		
+							<if test="delFlag != null"> 
+				del_flag				</if>		
+					)
+		values
+		(
+							<if test="id != null"> 
+						#{id}, 				</if>
+							<if test="name != null"> 
+						#{name}, 				</if>
+							<if test="createBy != null"> 
+						#{createBy}, 				</if>
+							<if test="createDate != null"> 
+						#{createDate}, 				</if>
+							<if test="updateBy != null"> 
+						#{updateBy}, 				</if>
+							<if test="updateDate != null"> 
+						#{updateDate}, 				</if>
+							<if test="remarks != null"> 
+						#{remarks}, 				</if>
+							<if test="delFlag != null"> 
+						#{delFlag}				</if>
+					)
+	</insert>
+	 
+	<update id="update" parameterType="com.cptech.basicInfo.domain.BottleMaterialDO">
+		update t_bottle_material 
+		<set>
+																			<if test="name != null">name = #{name}, </if>
+																<if test="createBy != null">create_by = #{createBy}, </if>
+																<if test="createDate != null">create_date = #{createDate}, </if>
+																<if test="updateBy != null">update_by = #{updateBy}, </if>
+																<if test="updateDate != null">update_date = #{updateDate}, </if>
+																<if test="remarks != null">remarks = #{remarks}, </if>
+																<if test="delFlag != null">del_flag = #{delFlag}</if>
+									</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from t_bottle_material where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from t_bottle_material where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

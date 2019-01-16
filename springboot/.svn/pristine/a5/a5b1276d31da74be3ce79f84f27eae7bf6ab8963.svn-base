@@ -1,0 +1,65 @@
+package com.cptech.appInfor.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.io.File;
+import java.util.List;
+
+import com.cptech.appInfor.dao.AppVersionDao;
+import com.cptech.appInfor.domain.AppVersionDO;
+import com.cptech.appInfor.service.AppVersionService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
+
+
+@Service
+public class AppVersionServiceImpl implements AppVersionService {
+	@Autowired
+	private AppVersionDao appVersionDao;
+	
+	@Override
+	public AppVersionDO get(String id){
+		return appVersionDao.get(id);
+	}
+	
+	@Override
+	public List<AppVersionDO> findAll(AppVersionDO appVersion){
+		return appVersionDao.findAll(appVersion);
+	}
+	@Override
+	public Page<AppVersionDO> findByPage(AppVersionDO appVersion){
+ 		PageHelper.startPage(appVersion.getOffset(), appVersion.getLimit());
+		return appVersionDao.findByPage(appVersion);
+	}
+	
+	@Override
+	public int save(AppVersionDO appVersion){
+		
+		appVersion.preInsert();
+		return appVersionDao.save(appVersion);
+	}
+	
+	@Override
+	public int update(AppVersionDO appVersion){
+		appVersion.preUpdate();
+		return appVersionDao.update(appVersion);
+	}
+	
+	@Override
+	public int remove(String id){
+		AppVersionDO appVersion = get(id);
+		File file = new File(appVersion.getUpdateUrl());
+		if (file.exists()) {
+			file.delete();
+		}
+		return appVersionDao.remove(id);
+	}
+	
+	@Override
+	public int batchRemove(String[] ids){
+		return appVersionDao.batchRemove(ids);
+	}
+	
+}

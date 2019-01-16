@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cptech.common.dao.TaskLogDao">
+	<sql id="TaskLogColumns">
+		ID,JOB_NAME,JOB_GROUP,JOB_TYPE,JOB_EVENT,JOB_MESSAGE,IS_EXCEPTION,EXCEPTION_INFO,CREATE_DATE
+	</sql>
+
+	<select id="get" resultType="com.cptech.common.domain.TaskLogDO">
+		select
+		<include refid="TaskLogColumns" />
+		from SYS_TASK_LOG where ID = #{id}
+	</select>
+
+	<select id="findAll" resultType="com.cptech.common.domain.TaskLogDO">
+		select
+		<include refid="TaskLogColumns" />
+		from SYS_TASK_LOG
+		<where>
+			<if test="jobName != null and jobName != ''">
+				<if test="databaseType == 'oracle'.toString()">
+					and JOB_NAME like '%${ jobName}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and JOB_NAME like concat('%',#{jobName},'%')
+				</if>
+			</if>
+			<if test="jobGroup != null and jobGroup != ''">
+				<if test="databaseType == 'oracle'.toString()">
+					and JOB_GROUP like '%${ jobGroup}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and JOB_GROUP like concat('%',#{jobGroup},'%')
+				</if>
+			</if>
+			<if test="jobType != null and jobType != ''">
+				<if test="databaseType == 'oracle'.toString()">
+					and JOB_TYPE like '%${ jobType}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and JOB_TYPE like concat('%',#{jobType},'%')
+				</if>
+			</if>
+			<if test="jobEvent != null and jobEvent != ''">
+				<if test="databaseType == 'oracle'.toString()">
+					and JOB_EVENT like '%${ jobEvent}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and JOB_EVENT like concat('%',#{jobEvent},'%')
+				</if>
+			</if>
+			<if test="jobMessage != null and jobMessage != ''">
+				<if test="databaseType == 'oracle'.toString()">
+					and JOB_MESSAGE like '%${ jobMessage}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and JOB_MESSAGE like concat('%',#{jobMessage},'%')
+				</if>
+			</if>
+			<if test="isException != null and isException != ''">
+				<if test="databaseType == 'oracle'.toString()">
+					and IS_EXCEPTION like '%${ isException}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and IS_EXCEPTION like concat('%',#{isException},'%')
+				</if>
+			</if>
+			<if test="exceptionInfo != null and exceptionInfo != ''">
+				<if test="databaseType == 'oracle'.toString()">
+					and EXCEPTION_INFO like '%${ exceptionInfo}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and EXCEPTION_INFO like concat('%',#{exceptionInfo},'%')
+				</if>
+			</if>
+		</where>
+	</select>
+
+	<select id="findByPage" resultType="com.cptech.common.domain.TaskLogDO">
+		select
+		<include refid="TaskLogColumns" />
+		from SYS_TASK_LOG
+		<where>
+			<if test="jobName != null and jobName != ''">
+				<if test="databaseType == 'oracle'.toString()">
+					and JOB_NAME like '%${ jobName}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and JOB_NAME like concat('%',#{jobName},'%')
+				</if>
+			</if>
+			<if test="jobGroup != null and jobGroup != ''">
+				<if test="databaseType == 'oracle'.toString()">
+					and JOB_GROUP like '%${ jobGroup}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and JOB_GROUP like concat('%',#{jobGroup},'%')
+				</if>
+			</if>
+			<if test="jobType != null and jobType != ''">
+				<if test="databaseType == 'oracle'.toString()">
+					and JOB_TYPE like '%${ jobType}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and JOB_TYPE like concat('%',#{jobType},'%')
+				</if>
+			</if>
+			<if test="isException != null and isException != ''">
+				<if test="databaseType == 'oracle'.toString()">
+					and IS_EXCEPTION like '%${ isException}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and IS_EXCEPTION like concat('%',#{isException},'%')
+				</if>
+			</if>
+			<if test="exceptionInfo != null and exceptionInfo != ''">
+				<if test="databaseType == 'oracle'.toString()">
+					and EXCEPTION_INFO like '%${ exceptionInfo}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and EXCEPTION_INFO like concat('%',#{exceptionInfo},'%')
+				</if>
+			</if>
+		</where>
+		order by CREATE_DATE desc
+	</select>
+
+	<insert id="save" parameterType="com.cptech.common.domain.TaskLogDO">
+		insert into SYS_TASK_LOG
+		(
+		<if test="id != null">
+			ID,
+		</if>
+		<if test="jobName != null">
+			JOB_NAME,
+		</if>
+		<if test="jobGroup != null">
+			JOB_GROUP,
+		</if>
+		<if test="jobType != null">
+			JOB_TYPE,
+		</if>
+		<if test="jobEvent != null">
+			JOB_EVENT,
+		</if>
+		<if test="jobMessage != null">
+			JOB_MESSAGE,
+		</if>
+		<if test="isException != null">
+			IS_EXCEPTION,
+		</if>
+		<if test="exceptionInfo != null">
+			EXCEPTION_INFO,
+		</if>
+		<if test="createDate != null">
+			CREATE_DATE
+		</if>
+		)
+		values
+		(
+		<if test="id != null">
+			#{id},
+		</if>
+		<if test="jobName != null">
+			#{jobName},
+		</if>
+		<if test="jobGroup != null">
+			#{jobGroup},
+		</if>
+		<if test="jobType != null">
+			#{jobType},
+		</if>
+		<if test="jobEvent != null">
+			#{jobEvent},
+		</if>
+		<if test="jobMessage != null">
+			#{jobMessage},
+		</if>
+		<if test="isException != null">
+			#{isException},
+		</if>
+		<if test="exceptionInfo != null">
+			#{exceptionInfo},
+		</if>
+		<if test="createDate != null">
+			#{createDate}
+		</if>
+		)
+	</insert>
+
+	<update id="update" parameterType="com.cptech.common.domain.TaskLogDO">
+		update SYS_TASK_LOG
+		<set>
+			<if test="jobName != null">JOB_NAME = #{jobName}, </if>
+			<if test="jobGroup != null">JOB_GROUP = #{jobGroup}, </if>
+			<if test="jobType != null">JOB_TYPE = #{jobType}, </if>
+			<if test="jobEvent != null">JOB_EVENT = #{jobEvent}, </if>
+			<if test="jobMessage != null">JOB_MESSAGE = #{jobMessage}, </if>
+			<if test="isException != null">IS_EXCEPTION = #{isException}, </if>
+			<if test="exceptionInfo != null">EXCEPTION_INFO = #{exceptionInfo}, </if>
+			<if test="createDate != null">CREATE_DATE = #{createDate} </if>
+		</set>
+		where ID = #{id}
+	</update>
+
+	<delete id="remove">
+		delete from SYS_TASK_LOG where ID = #{value}
+	</delete>
+
+	<delete id="batchRemove">
+		delete from SYS_TASK_LOG where ID in
+		<foreach item="id" collection="array" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

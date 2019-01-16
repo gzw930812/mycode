@@ -1,0 +1,58 @@
+package com.cptech.basicInfo.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+import com.cptech.basicInfo.dao.BottleFactoryDao;
+import com.cptech.basicInfo.domain.BottleFactoryDO;
+import com.cptech.basicInfo.service.BottleFactoryService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
+
+
+@Service
+public class BottleFactoryServiceImpl implements BottleFactoryService {
+	@Autowired
+	private BottleFactoryDao bottleFactoryDao;
+	
+	@Override
+	public BottleFactoryDO get(String id){
+		return bottleFactoryDao.get(id);
+	}
+	
+	@Override
+	public List<BottleFactoryDO> findAll(BottleFactoryDO bottleFactory){
+		return bottleFactoryDao.findAll(bottleFactory);
+	}
+	@Override
+	public Page<BottleFactoryDO> findByPage(BottleFactoryDO bottleFactory){
+		PageHelper.startPage(bottleFactory.getOffset(), bottleFactory.getLimit());
+		return bottleFactoryDao.findByPage(bottleFactory);
+	}
+	
+	@Override
+	public int save(BottleFactoryDO bottleFactory){
+		bottleFactory.preInsert();
+		return bottleFactoryDao.save(bottleFactory);
+	}
+	
+	@Override
+	public int update(BottleFactoryDO bottleFactory){
+		bottleFactory.preUpdate();
+		return bottleFactoryDao.update(bottleFactory);
+	}
+	
+	@Override
+	public int remove(String id){
+		return bottleFactoryDao.remove(id);
+	}
+	
+	@Override
+	public int batchRemove(String[] ids){
+		return bottleFactoryDao.batchRemove(ids);
+	}
+	
+}

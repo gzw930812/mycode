@@ -1,0 +1,35 @@
+package com.cptech.stationinfo.service;
+
+import com.cptech.stationinfo.domain.StationsDO;
+
+import java.util.List;
+
+import com.github.pagehelper.Page;
+
+/**
+ * 站点（充装站、检验站）
+ * 
+ * @author fb
+ * @email 1595418464@qq.com
+ * @date 2018-06-20 16:41:38
+ */
+public interface StationsService {
+	
+	StationsDO get(String id);
+	
+	List<StationsDO> findAll(StationsDO stations);
+	Page<StationsDO> findByPage(StationsDO stations);
+	
+	int save(StationsDO stations);
+	
+	int update(StationsDO stations);
+	
+	int remove(String id);
+	
+	int batchRemove(String[] ids);
+
+	boolean exit(StationsDO stations);
+
+	List<StationsDO> getFillingStations(StationsDO stations);
+
+}

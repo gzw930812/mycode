@@ -1,0 +1,230 @@
+package com.cptech.stationinfo.domain;
+
+import java.io.Serializable;
+import java.util.Date;
+
+import com.cptech.common.domain.BaseDo;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+/**
+ * 站点（充装站、检验站）
+ * 
+ * @author fb
+ * @email 1595418464@qq.com
+ * @date 2018-06-20 16:41:38
+ */
+public class StationsDO extends BaseDo implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	// 站点类型（1：充装站；2：检验站）
+	private String type;
+	// 名称
+	private String name;
+	// 站点状态（1：营业中；2：停业中）
+	private String status;
+	// 所属机构id
+	private String deptId;
+	private String deptName;
+	// 负责人
+	private String chargePerson;
+	// 联系电话
+	private String cellPhone;
+	// 信用代码
+	private String creditCode;
+	// 充装钢印号
+	private String steelSealCode;
+	// 许可证号
+	private String licenceCode;
+	// 许可证有效期
+	@JsonFormat(pattern="yyyy-MM-dd")
+	private Date licenceExpireDate;
+	// 地址
+	private String address;
+	// 图片相对路径，多个以逗号隔开
+	private String picUrls;
+	private String MEID;
+
+	/**
+	 * 设置：站点类型（1：充装站；2：检验站）
+	 */
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	/**
+	 * 获取：站点类型（1：充装站；2：检验站）
+	 */
+	public String getType() {
+		return type;
+	}
+
+	/**
+	 * 设置：名称
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * 获取：名称
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * 设置：站点状态（1：营业中；2：停业中）
+	 */
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	/**
+	 * 获取：站点状态（1：营业中；2：停业中）
+	 */
+	public String getStatus() {
+		return status;
+	}
+
+	/**
+	 * 设置：所属机构id
+	 */
+	public void setDeptId(String deptId) {
+		this.deptId = deptId;
+	}
+
+	/**
+	 * 获取：所属机构id
+	 */
+	public String getDeptId() {
+		return deptId;
+	}
+
+	/**
+	 * 设置：负责人
+	 */
+	public void setChargePerson(String chargePerson) {
+		this.chargePerson = chargePerson;
+	}
+
+	/**
+	 * 获取：负责人
+	 */
+	public String getChargePerson() {
+		return chargePerson;
+	}
+
+	/**
+	 * 设置：联系电话
+	 */
+	public void setCellPhone(String cellPhone) {
+		this.cellPhone = cellPhone;
+	}
+
+	/**
+	 * 获取：联系电话
+	 */
+	public String getCellPhone() {
+		return cellPhone;
+	}
+
+	/**
+	 * 设置：信用代码
+	 */
+	public void setCreditCode(String creditCode) {
+		this.creditCode = creditCode;
+	}
+
+	/**
+	 * 获取：信用代码
+	 */
+	public String getCreditCode() {
+		return creditCode;
+	}
+
+	/**
+	 * 设置：充装钢印号
+	 */
+	public void setSteelSealCode(String steelSealCode) {
+		this.steelSealCode = steelSealCode;
+	}
+
+	/**
+	 * 获取：充装钢印号
+	 */
+	public String getSteelSealCode() {
+		return steelSealCode;
+	}
+
+	/**
+	 * 设置：许可证号
+	 */
+	public void setLicenceCode(String licenceCode) {
+		this.licenceCode = licenceCode;
+	}
+
+	/**
+	 * 获取：许可证号
+	 */
+	public String getLicenceCode() {
+		return licenceCode;
+	}
+
+	/**
+	 * 设置：许可证有效期
+	 */
+	public void setLicenceExpireDate(Date licenceExpireDate) {
+		this.licenceExpireDate = licenceExpireDate;
+	}
+
+	/**
+	 * 获取：许可证有效期
+	 */
+	public Date getLicenceExpireDate() {
+		return licenceExpireDate;
+	}
+
+	/**
+	 * 设置：地址
+	 */
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	/**
+	 * 获取：地址
+	 */
+	public String getAddress() {
+		return address;
+	}
+
+	/**
+	 * 设置：图片相对路径，多个以逗号隔开
+	 */
+	public void setPicUrls(String picUrls) {
+		this.picUrls = picUrls;
+	}
+
+	/**
+	 * 获取：图片相对路径，多个以逗号隔开
+	 */
+	public String getPicUrls() {
+		return picUrls;
+	}
+
+	public String getDeptName() {
+		return deptName;
+	}
+
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
+
+	public String getMEID() {
+		return MEID;
+	}
+
+	public void setMEID(String mEID) {
+		MEID = mEID;
+	}
+}

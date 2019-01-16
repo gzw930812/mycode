@@ -1,0 +1,30 @@
+package com.cptech.oa.service;
+
+import java.util.List;
+
+import com.cptech.oa.domain.NotifyRecordDO;
+import com.github.pagehelper.Page;
+
+public interface NotifyRecordService {
+	
+	NotifyRecordDO get(String id);
+	
+	List<NotifyRecordDO> findAll(NotifyRecordDO notifyRecord);
+	Page<NotifyRecordDO> findByPage(NotifyRecordDO notifyRecord);
+	
+	int count(NotifyRecordDO notifyRecord);
+	
+	int save(NotifyRecordDO notifyRecord);
+	
+	int update(NotifyRecordDO notifyRecord);
+	
+	int remove(String id);
+	
+	int batchRemove(String[] ids);
+
+	/**
+	 * 更改阅读状态
+	 * @return
+	 */
+	int changeRead(NotifyRecordDO notifyRecord);
+}

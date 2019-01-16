@@ -1,0 +1,205 @@
+package com.cptech.stationinfo.domain;
+
+import java.io.Serializable;
+import java.util.Date;
+import com.cptech.common.domain.BaseDo;
+
+/**
+ * 设备保修表
+ * 
+ * @author fb
+ * @email 1595418464@qq.com
+ * @date 2018-06-25 09:46:28
+ */
+public class DeviceRepairsDO extends BaseDo implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	// 设备id
+	private String deviceId;
+	//产权单位
+	private String stationName;
+	//设备名称
+	private String deviceName;
+	//设备编号
+	private String outerNumber;
+	//设备状态
+	private String deviceStatus;
+	//站点id
+	private String stationId;
+	// 报修日期
+	private Date repairDate;
+	// 报修原因
+	private String repairReason;
+	// 联系人
+	private String concatPerson;
+	// 联系电话
+	private String cellPhone;
+	// 维修内容
+	private String repairContent;
+	// 维修结果(1:正常；2：报废)
+	private String repairResult;
+	// 维修状态（1，未维修 2，维修中 3，已维修）
+	private String status;
+	//机构id
+	private String deptId;
+	
+	public String getStationId() {
+		return stationId;
+	}
+
+	public void setStationId(String stationId) {
+		this.stationId = stationId;
+	}
+
+	public String getDeviceStatus() {
+		return deviceStatus;
+	}
+
+	public void setDeviceStatus(String deviceStatus) {
+		this.deviceStatus = deviceStatus;
+	}
+
+	public String getDeptId() {
+		return deptId;
+	}
+
+	public void setDeptId(String deptId) {
+		this.deptId = deptId;
+	}
+
+	public String getStationName() {
+		return stationName;
+	}
+
+	public void setStationName(String stationName) {
+		this.stationName = stationName;
+	}
+
+	public String getDeviceName() {
+		return deviceName;
+	}
+
+	public void setDeviceName(String deviceName) {
+		this.deviceName = deviceName;
+	}
+
+	public String getOuterNumber() {
+		return outerNumber;
+	}
+
+	public void setOuterNumber(String outerNumber) {
+		this.outerNumber = outerNumber;
+	}
+
+	/**
+	 * 设置：设备id
+	 */
+	public void setDeviceId(String deviceId) {
+		this.deviceId = deviceId;
+	}
+
+	/**
+	 * 获取：设备id
+	 */
+	public String getDeviceId() {
+		return deviceId;
+	}
+
+	/**
+	 * 设置：报修日期
+	 */
+	public void setRepairDate(Date repairDate) {
+		this.repairDate = repairDate;
+	}
+
+	/**
+	 * 获取：报修日期
+	 */
+	public Date getRepairDate() {
+		return repairDate;
+	}
+
+	/**
+	 * 设置：报修原因
+	 */
+	public void setRepairReason(String repairReason) {
+		this.repairReason = repairReason;
+	}
+
+	/**
+	 * 获取：报修原因
+	 */
+	public String getRepairReason() {
+		return repairReason;
+	}
+
+	/**
+	 * 设置：联系人
+	 */
+	public void setConcatPerson(String concatPerson) {
+		this.concatPerson = concatPerson;
+	}
+
+	/**
+	 * 获取：联系人
+	 */
+	public String getConcatPerson() {
+		return concatPerson;
+	}
+
+	/**
+	 * 设置：联系电话
+	 */
+	public void setCellPhone(String cellPhone) {
+		this.cellPhone = cellPhone;
+	}
+
+	/**
+	 * 获取：联系电话
+	 */
+	public String getCellPhone() {
+		return cellPhone;
+	}
+
+	/**
+	 * 设置：维修内容
+	 */
+	public void setRepairContent(String repairContent) {
+		this.repairContent = repairContent;
+	}
+
+	/**
+	 * 获取：维修内容
+	 */
+	public String getRepairContent() {
+		return repairContent;
+	}
+
+	/**
+	 * 设置：维修结果(1:正常；2：报废)
+	 */
+	public void setRepairResult(String repairResult) {
+		this.repairResult = repairResult;
+	}
+
+	/**
+	 * 获取：维修结果(1:正常；2：报废)
+	 */
+	public String getRepairResult() {
+		return repairResult;
+	}
+
+	/**
+	 * 设置：维修状态（1，未维修 2，维修中 3，已维修）
+	 */
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	/**
+	 * 获取：维修状态（1，未维修 2，维修中 3，已维修）
+	 */
+	public String getStatus() {
+		return status;
+	}
+}

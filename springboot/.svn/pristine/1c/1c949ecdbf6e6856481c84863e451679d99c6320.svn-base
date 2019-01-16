@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cptech.settings.dao.WokTimeIntervalDao">
+	<sql id="WokTimeIntervalColumns">
+		id,hour,status,create_by,create_date,update_by,update_date,remarks,del_flag
+	</sql>
+
+	<select id="get" resultType="com.cptech.settings.domain.WokTimeIntervalDO">
+		select
+		<include refid="WokTimeIntervalColumns" />
+		from t_wok_time_interval where id = #{id}
+	</select>
+
+	<select id="findAll" resultType="com.cptech.settings.domain.WokTimeIntervalDO">
+		select
+		<include refid="WokTimeIntervalColumns" />
+		from t_wok_time_interval
+		<where>
+			<if test="hour != null">
+				and hour = #{hour}
+			</if>
+			<if test="status != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and status like '%${ status}%'
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and status like concat('%',#{status},'%')
+				</if>
+			</if>
+		</where>
+	</select>
+
+	<select id="findByPage" resultType="com.cptech.settings.domain.WokTimeIntervalDO">
+		select
+		<include refid="WokTimeIntervalColumns" />
+		from t_wok_time_interval
+		<where>
+			<if test="hour != null">
+				and hour = #{hour}
+			</if>
+			<if test="status != null">
+				<if test="databaseType == 'oracle'.toString()">
+					and status = #{ status}
+				</if>
+				<if test="databaseType == 'mysql'.toString()">
+					and status = #{status}
+				</if>
+			</if>
+		</where>
+		order by status asc, update_date desc
+	</select>
+
+	<insert id="save" parameterType="com.cptech.settings.domain.WokTimeIntervalDO">
+		insert into t_wok_time_interval
+		(
+		<if test="id != null">
+			id,
+		</if>
+		<if test="hour != null">
+			hour,
+		</if>
+		<if test="status != null">
+			status,
+		</if>
+		<if test="createBy != null">
+			create_by,
+		</if>
+		<if test="createDate != null">
+			create_date,
+		</if>
+		<if test="updateBy != null">
+			update_by,
+		</if>
+		<if test="updateDate != null">
+			update_date,
+		</if>
+		<if test="remarks != null">
+			remarks,
+		</if>
+		<if test="delFlag != null">
+			del_flag
+		</if>
+		)
+		values
+		(
+		<if test="id != null">
+			#{id},
+		</if>
+		<if test="hour != null">
+			#{hour},
+		</if>
+		<if test="status != null">
+			#{status},
+		</if>
+		<if test="createBy != null">
+			#{createBy},
+		</if>
+		<if test="createDate != null">
+			#{createDate},
+		</if>
+		<if test="updateBy != null">
+			#{updateBy},
+		</if>
+		<if test="updateDate != null">
+			#{updateDate},
+		</if>
+		<if test="remarks != null">
+			#{remarks},
+		</if>
+		<if test="delFlag != null">
+			#{delFlag}
+		</if>
+		)
+	</insert>
+
+	<update id="update" parameterType="com.cptech.settings.domain.WokTimeIntervalDO">
+		update t_wok_time_interval
+		<set>
+			<if test="hour != null">hour = #{hour}, </if>
+			<if test="status != null">status = #{status}, </if>
+			<if test="createBy != null">create_by = #{createBy}, </if>
+			<if test="createDate != null">create_date = #{createDate}, </if>
+			<if test="updateBy != null">update_by = #{updateBy}, </if>
+			<if test="updateDate != null">update_date = #{updateDate}, </if>
+			<if test="remarks != null">remarks = #{remarks}, </if>
+			<if test="delFlag != null">del_flag = #{delFlag}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+</mapper>

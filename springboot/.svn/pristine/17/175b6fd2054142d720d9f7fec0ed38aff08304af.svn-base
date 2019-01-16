@@ -1,0 +1,28 @@
+package com.cptech.worker.dao;
+
+import org.apache.ibatis.annotations.Mapper;
+
+import com.cptech.worker.domain.WorkersDO;
+import com.github.pagehelper.Page;
+
+/**
+ * 作业人员表
+ * @author fb
+ * @email 1595418464@qq.com
+ * @date 2018-06-22 14:54:34
+ */
+@Mapper
+public interface WorkersDao {
+
+	WorkersDO get(String id);
+	
+	Page<WorkersDO> findByPage(WorkersDO workers);
+	
+	int save(WorkersDO workers);
+	
+	int update(WorkersDO workers);
+	
+	int remove(String id);
+	
+	int batchRemove(String[] ids);
+}

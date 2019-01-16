@@ -1,0 +1,147 @@
+package com.cptech.worker.controller;
+
+import java.util.List;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.cptech.basicInfo.domain.LicenseCodeDO;
+import com.cptech.basicInfo.service.AreaService;
+import com.cptech.basicInfo.service.LicenseCodeService;
+import com.cptech.common.annotation.Log;
+import com.cptech.common.controller.BaseController;
+import com.cptech.common.utils.MD5Utils;
+import com.cptech.common.utils.PageUtils;
+import com.cptech.common.utils.R;
+import com.cptech.system.domain.UserDO;
+import com.cptech.system.service.DeptService;
+import com.cptech.worker.domain.WorkersDO;
+import com.cptech.worker.service.WorkersService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
+
+/**
+ * 作业人员表
+ * 
+ * @author fb
+ * @email 1595418464@qq.com
+ * @date 2018-06-22 14:54:34
+ */
+ 
+@Controller
+@RequestMapping("/worker/workers")
+public class WorkersController extends BaseController{
+	@Autowired
+	private WorkersService workersService;
+	@Autowired
+	private LicenseCodeService licenseCodeService;
+	@Autowired
+	private DeptService deptService;
+	
+	@GetMapping()
+	@RequiresPermissions("worker:workers:workers")
+	String Workers(Model model){
+		model.addAttribute("stations", getUserStations("0"));
+	    return "worker/workers/workers";
+	}
+	
+	@Log("作业人员表-查询列表")
+	@ResponseBody
+	@GetMapping("/list")
+	@RequiresPermissions("worker:workers:workers")
+	public PageUtils list(WorkersDO workers){
+		//查询列表数据
+		Page<WorkersDO> findByPage = workersService.findByPage(workers);
+		PageInfo<WorkersDO> pageInfo = new PageInfo<>(findByPage);
+		PageUtils pageUtil = new PageUtils(pageInfo.getList(), (int)pageInfo.getTotal());
+		return pageUtil;
+	}
+	
+	@GetMapping("/add")
+	@RequiresPermissions("worker:workers:add")
+	String add(Model model){
+		List<LicenseCodeDO> licenseCodes = licenseCodeService.findAll(new LicenseCodeDO());
+		model.addAttribute("licenseCodes", licenseCodes);
+		model.addAttribute("stations", getUserStations("0"));
+	    return "worker/workers/add";
+	}
+
+	@GetMapping("/edit/{id}")
+	@RequiresPermissions("worker:workers:edit")
+	String edit(@PathVariable("id") String id,Model model){
+		WorkersDO workers = workersService.get(id);
+		model.addAttribute("workers", workers);
+	    return "worker/workers/edit";
+	}
+	
+	/**
+	 * 保存
+	 */
+	@Log("作业人员表-保存")
+	@ResponseBody
+	@PostMapping("/save")
+	@RequiresPermissions("worker:workers:add")
+	public R save( WorkersDO workers){
+		String publishArea = deptService.getParentAreaName(workers.getPublishAreaId());
+		workers.setPublishArea(publishArea);
+		String idCard = workers.getIdCard();
+		//密码默认身份证后六位(密码加密规则：身份证+身份证后六位)
+		workers.setPassword(MD5Utils.encrypt(idCard, idCard.substring(idCard.length()-6, idCard.length())));
+		if(workersService.save(workers)>0){
+			return R.ok();
+		}
+		return R.error();
+	}
+	/**
+	 * 修改
+	 */
+	@Log("作业人员表-修改")
+	@ResponseBody
+	@RequestMapping("/update")
+	@RequiresPermissions("worker:workers:edit")
+	public R update( WorkersDO workers){
+		workersService.update(workers);
+		return R.ok();
+	}
+	
+	/**
+	 * 删除
+	 */
+	@Log("作业人员表-删除")
+	@PostMapping( "/remove")
+	@ResponseBody
+	@RequiresPermissions("worker:workers:remove")
+	public R remove( String id){
+		if(workersService.remove(id)>0){
+		return R.ok();
+		}
+		return R.error();
+	}
+	
+	/**
+	 * 删除
+	 */
+	@Log("作业人员表-批量删除")
+	@PostMapping( "/batchRemove")
+	@ResponseBody
+	@RequiresPermissions("worker:workers:batchRemove")
+	public R remove(@RequestParam("ids[]") String[] ids){
+		workersService.batchRemove(ids);
+		return R.ok();
+	}
+	
+	@PostMapping("/exit")
+	@ResponseBody
+	boolean exit(WorkersDO workers) {
+		// 存在，不通过，false
+		return !workersService.exit(workers);
+	}
+}

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cptech.system.dao.RoleDao">
+	<sql id="roleColumns">
+		id,role_name,role_sign,create_by,create_date,update_by,update_date,remarks,del_flag
+	</sql>
+	<select id="get" resultType="com.cptech.system.domain.RoleDO">
+		select
+			<include refid="roleColumns"/>
+		from sys_role where id = #{id}
+	</select>
+
+	<select id="findAll" resultType="com.cptech.system.domain.RoleDO">
+		select
+			<include refid="roleColumns"/>
+		from sys_role
+		<where> del_flag='0'
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="roleName != null and roleName != ''"> and role_name = #{roleName} </if>
+			<if test="roleSign != null and roleSign != ''"> and role_sign = #{roleSign} </if>
+		</where>
+	</select>
+	<select id="findByPage" resultType="com.cptech.system.domain.RoleDO">
+		select
+			<include refid="roleColumns"/>
+		from sys_role
+		<where> del_flag='0'
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="roleName != null and roleName != ''"> and role_name = #{roleName} </if>
+			<if test="roleSign != null and roleSign != ''"> and role_sign = #{roleSign} </if>
+		</where>
+		order by update_date desc
+	</select>
+
+	<insert id="save" parameterType="com.cptech.system.domain.RoleDO"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into sys_role
+		(
+		<if test="roleName !=null and roleName !='' ">
+			role_name,
+		</if>
+		<if test="roleSign !=null and roleSign !='' ">
+			role_sign,
+		</if>
+		id,
+		create_by,
+		create_date,
+		update_by,
+		update_date,
+		remarks,
+		del_flag
+		)
+		values
+		(
+		<if test="roleName !=null and roleName !='' ">
+			#{roleName},
+		</if>
+		<if test="roleSign !=null and roleSign !='' ">
+			#{roleSign},
+		</if>
+		#{id},
+		#{createBy},
+		#{createDate},
+		#{updateBy},
+		#{updateDate},
+		#{remarks},
+		#{delFlag}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.cptech.system.domain.RoleDO">
+		update sys_role
+		<set>
+			<if test="roleName != null">role_name = #{roleName}, </if>
+			<if test="roleSign != null">role_sign = #{roleSign}, </if>
+			<if test="createBy != null">create_by = #{createBy}, </if>
+			<if test="createDate != null">create_date = #{createDate}, </if>
+			<if test="updateBy != null">update_by = #{updateBy}, </if>
+			<if test="updateDate != null">update_date = #{updateDate}, </if>
+			<if test="remarks != null">remarks = #{remarks}, </if>
+			<if test="delFlag != null">del_flag = #{delFlag} </if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="remove">
+		update sys_role set del_flag='1' where id = #{id}
+	</delete>
+
+	<delete id="batchRemove">
+		update sys_role set del_flag='1' where id in
+		<foreach item="ids" collection="array" open="(" separator=","
+			close=")">
+			#{ids}
+		</foreach>
+	</delete>
+
+</mapper>

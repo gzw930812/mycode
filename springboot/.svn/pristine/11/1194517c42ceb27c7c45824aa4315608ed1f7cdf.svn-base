@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title th:text="${systemName}"></title>
+	<meta name="keywords" th:content="${systemName}">
+	<meta name="description" th:content="${systemName}">
+	<!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html"/>
+    <![endif]-->
+	<link rel="shortcut icon" th:href="@{/favicon.ico}">
+    <link rel="stylesheet" th:href="@{/css/layui.css}" media="all">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css?v=4.4.0}" >
+    <link rel="stylesheet" th:href="@{/css/app.css}" media="all">
+    
+	<link th:href="@{/css/plugins/toastr/toastr.min.css}" rel="stylesheet">
+	<link th:href="@{/css/animate.css}" rel="stylesheet">
+	
+	
+	<link th:href="@{/css/common.css}" rel="stylesheet">
+	
+	
+</head>
+
+<body>
+    <div class="layui-layout layui-layout-admin kit-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo" th:text="${systemName}"></div>
+            <div class="layui-logo kit-logo-mobile">MIS</div>
+            <ul class="layui-nav layui-layout-left kit-nav top-nav text_color_white" id="topMenuUl">
+                <li class="layui-nav-item" th:each="menu : ${topMenus}">
+                	<a href="javascript:;" onclick="showMenus(this)" th:id="${menu.id}">
+                		<i th:class="${menu.icon}" aria-hidden="true"></i>
+                		<span th:text="${menu.name}">顶部菜单</span>
+                	</a>
+                </li>
+            </ul>
+            <ul class="layui-nav layui-layout-right top-nav-right kit-nav">
+                <li class="layui-nav-item">
+                    <a href="javascript:;" class="color_white">
+                        <img th:src="${picUrl}" class="layui-nav-img"> 欢迎您 <span class="umar-r" th:text="${name}"></span>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" id="setting">个人设置</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a th:href="@{/logout}" class="color_white"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销</a></li>
+            </ul>
+        </div>
+
+        <div class="layui-side layui-bg-black kit-side">
+            <div class="layui-side-scroll">
+                <div class="kit-side-fold"><i class="fa fa-navicon" aria-hidden="true"></i></div>
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                <ul class="layui-nav layui-nav-tree text_color_white" lay-filter="kitNavbar" kit-navbar>
+                    <li class="layui-nav-item" th:each="menu : ${menus}" th:name="${menu.attributes.real_parent_id}" style="display:none;"><!-- 默认所有菜单都不显示，需点击顶部菜单才显示对应的菜单 -->
+                        <a class="" href="javascript:;">
+                        	<i th:class="${menu.attributes.icon}" aria-hidden="true"></i>
+                         	<span th:text="${menu.text}">父级菜单</span>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd th:each="cmenu : ${menu.children}">
+                            	<span style="display: none;" th:text="${cmenu.id}"></span>
+                            	<span style="display: none;" th:text="${cmenu.text}"></span>
+                            	<span style="display: none;" th:text="${cmenu.attributes.icon}"></span>
+                            	<span style="display: none;" th:text="${cmenu.attributes.url}"></span>
+                                <a href="javascript:;" onclick="openTab(this)"><i th:class="${cmenu.attributes.icon}" aria-hidden="true"></i> <span th:text="${cmenu.text}"></span></a>
+                            </dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="layui-body" id="container">
+            <!-- 内容主体区域 -->
+            <div style="padding: 15px;">主体内容加载中,请稍等...</div>
+        </div>
+
+        <div class="layui-footer">
+            <!-- 底部固定区域 -->
+            <div class="pull-right">欢迎使用<span th:text="${systemName}"></span></div>
+        </div>
+    </div>
+	<script th:inline="javascript"> var ctx = [[@{/}]] ; </script>
+	<script th:src="@{/js/jquery.min.js?v=2.1.4}"></script>
+    <script th:src="@{/js/layui.js}"></script>
+    <script th:src="@{/js/plugins/layer/layer.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js?v=3.3.6}"></script>
+	<script th:src="@{/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+	<script th:src="@{/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
+	<script th:src="@{/js/contabs.js}"></script>
+	<script th:src="@{/js/plugins/pace/pace.min.js}"></script>
+	<script th:src="@{/js/appjs/common/webSocket/sockjs.min.js}"></script>
+	<script th:src="@{/js/appjs/common/webSocket/stomp.min.js}"></script>
+	<!-- Toastr script -->
+	<script src="/js/plugins/toastr/toastr.min.js" th:src="@{/js/plugins/toastr/toastr.min.js}"></script>
+    <script>
+        var message;
+        layui.config({
+            base: ctx+'/build/js/'
+        }).use(['app', 'message'], function() {
+            var app = layui.app,
+                $ = layui.jquery,
+                layer = layui.layer;
+            //将message设置为全局以便子页面调用
+            message = layui.message;
+            //主入口
+            app.set({
+                type: 'iframe'
+            }).init();
+        });
+        function openTab(el){
+        	var url=$(el).prev().text();
+        	var icon=$(el).prev().prev().text();
+        	var title=$(el).prev().prev().prev().text();
+        	var id=$(el).prev().prev().prev().prev().text();
+        	tab.tabAdd({
+        	    icon:icon,
+        	    id:id,
+        	    title:title,
+        	    url:url
+        	});
+        }
+
+		$("#setting").click(function(){
+			layer.open({
+				type : 2,
+				title : '个人设置',
+				maxmin : true,
+				shadeClose : false,
+				area : [ '800px', '600px' ],
+				content : ctx+'/sys/user/personal'
+			});
+		});
+		var preTopMenuId="";
+		function showMenus(el){
+			var topMenuId=$(el).attr("id");
+			if(preTopMenuId!=""){
+				$("li[name="+preTopMenuId+"]").hide();
+			}
+			$("li[name="+topMenuId+"]").show();
+			preTopMenuId=topMenuId;
+		}
+		$(function(){
+			var firstTopMenu=$("#topMenuUl").find("li:first-child");
+			$(firstTopMenu).find("a").click();
+			
+			//websocket连接加入
+			connect();
+		});
+		
+		/* 左侧菜单栏 */
+		$(".layui-nav-tree>.layui-nav-item").click(function(){
+			$(this).addClass('layui-nav-itemed').siblings().removeClass('layui-nav-itemed');
+		}); 
+		
+		function connect() {
+	        var sock = new SockJS(ctx+"/endpointChat");
+	        var stomp = Stomp.over(sock);
+	        stomp.connect('guest', 'guest', function(frame) {
+	            /**订阅了/user/queue/notifications 发送的消息,这里雨在控制器的 convertAndSendToUser 定义的地址保持一致, 
+	             *  这里多用了一个/user,并且这个user 是必须的,使用user 才会发送消息到指定的用户。
+	             *  */
+	            stomp.subscribe("/user/queue/forceLogout", handleForceLogout);//强制下线提醒
+	            stomp.subscribe("/user/queue/remoteLogin", handleRemoteLogin);//异地登录提醒
+	        });
+	        function handleForceLogout(message) {
+	            layer.alert(message.body,{
+	            		title:"强制下线提醒",
+		            	icon:2,
+		            	closeBtn:0
+		            },function(){
+		            	window.location.href=ctx+"/login";
+		            }
+	            );
+	        }
+	        function handleRemoteLogin(message) {
+	            layer.alert(message.body,{
+	            		title:"异地登录提醒",
+		            	icon:2,
+		            	closeBtn:0
+		            },function(){
+		            	window.location.href=ctx+"/login";
+		            }
+	            );
+	        }
+	    }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,307 @@
+package com.cptech.fillingInfo.domain;
+
+import java.io.Serializable;
+import java.util.Date;
+
+import com.cptech.common.domain.BaseDo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+/**
+ * 充装记录表
+ * 
+ * @author pjy
+ * @email 1595418464@qq.com
+ * @date 2018-06-21 15:53:39
+ */
+public class FillingRecordDO extends BaseDo implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	// 充装站id
+	private String stationId;
+	// 充装站名称
+	private String stationName;
+	// 钢瓶编号
+	private String bottleNo;
+	// 二维码编号
+	private String qrcodeNo;
+	// 所属区域id
+	private String areaId;
+	// 所属区域名称
+	private String areaName;
+	// 充装时间
+	private Date fillingTime;
+	// 充装重量
+	private Float fillingWeight;
+	// 枪号
+	private String gunNo;
+	// 充装前压力
+	private Float beforeFillingPressure;
+	// 充装后压力
+	private Float afterFillingPressure;
+	// 作业人员id
+	private String workerId;
+	// 作业人员名字
+	private String workerName;
+	// 充装前检查是否合格（1：合格；2：不合格）
+	private String beforeFillingCheck;
+	// 充装后检查是否合格（1：合格；2：不合格）
+	private String afterFillingCheck;
+	// 不合格原因
+	private String reason;
+
+	// 查询字段
+	@JsonIgnore
+	private Date fillingStartDate; // 充装起始时间
+	@JsonIgnore
+	private Date fillingEndDate; // 充装结束时间
+	@JsonIgnore
+	private String deptFilter; //机构过滤字段
+	/**
+	 * 设置：充装站id
+	 */
+	public void setStationId(String stationId) {
+		this.stationId = stationId;
+	}
+
+	/**
+	 * 获取：充装站id
+	 */
+	public String getStationId() {
+		return stationId;
+	}
+
+	/**
+	 * 设置：充装站名称
+	 */
+	public void setStationName(String stationName) {
+		this.stationName = stationName;
+	}
+
+	/**
+	 * 获取：充装站名称
+	 */
+	public String getStationName() {
+		return stationName;
+	}
+
+	/**
+	 * 设置：钢瓶编号
+	 */
+	public void setBottleNo(String bottleNo) {
+		this.bottleNo = bottleNo;
+	}
+
+	/**
+	 * 获取：钢瓶编号
+	 */
+	public String getBottleNo() {
+		return bottleNo;
+	}
+
+	/**
+	 * 设置：二维码编号
+	 */
+	public void setQrcodeNo(String qrcodeNo) {
+		this.qrcodeNo = qrcodeNo;
+	}
+
+	/**
+	 * 获取：二维码编号
+	 */
+	public String getQrcodeNo() {
+		return qrcodeNo;
+	}
+
+	/**
+	 * 设置：所属区域id
+	 */
+	public void setAreaId(String areaId) {
+		this.areaId = areaId;
+	}
+
+	/**
+	 * 获取：所属区域id
+	 */
+	public String getAreaId() {
+		return areaId;
+	}
+
+	/**
+	 * 设置：所属区域名称
+	 */
+	public void setAreaName(String areaName) {
+		this.areaName = areaName;
+	}
+
+	/**
+	 * 获取：所属区域名称
+	 */
+	public String getAreaName() {
+		return areaName;
+	}
+
+	/**
+	 * 设置：充装时间
+	 */
+	public void setFillingTime(Date fillingTime) {
+		this.fillingTime = fillingTime;
+	}
+
+	/**
+	 * 获取：充装时间
+	 */
+	public Date getFillingTime() {
+		return fillingTime;
+	}
+
+	/**
+	 * 设置：充装重量
+	 */
+	public void setFillingWeight(Float fillingWeight) {
+		this.fillingWeight = fillingWeight;
+	}
+
+	/**
+	 * 获取：充装重量
+	 */
+	public Float getFillingWeight() {
+		return fillingWeight;
+	}
+
+	/**
+	 * 设置：枪号
+	 */
+	public void setGunNo(String gunNo) {
+		this.gunNo = gunNo;
+	}
+
+	/**
+	 * 获取：枪号
+	 */
+	public String getGunNo() {
+		return gunNo;
+	}
+
+	/**
+	 * 设置：充装前压力
+	 */
+	public void setBeforeFillingPressure(Float beforeFillingPressure) {
+		this.beforeFillingPressure = beforeFillingPressure;
+	}
+
+	/**
+	 * 获取：充装前压力
+	 */
+	public Float getBeforeFillingPressure() {
+		return beforeFillingPressure;
+	}
+
+	/**
+	 * 设置：充装后压力
+	 */
+	public void setAfterFillingPressure(Float afterFillingPressure) {
+		this.afterFillingPressure = afterFillingPressure;
+	}
+
+	/**
+	 * 获取：充装后压力
+	 */
+	public Float getAfterFillingPressure() {
+		return afterFillingPressure;
+	}
+
+	/**
+	 * 设置：作业人员id
+	 */
+	public void setWorkerId(String workerId) {
+		this.workerId = workerId;
+	}
+
+	/**
+	 * 获取：作业人员id
+	 */
+	public String getWorkerId() {
+		return workerId;
+	}
+
+	/**
+	 * 设置：作业人员名字
+	 */
+	public void setWorkerName(String workerName) {
+		this.workerName = workerName;
+	}
+
+	/**
+	 * 获取：作业人员名字
+	 */
+	public String getWorkerName() {
+		return workerName;
+	}
+
+	/**
+	 * 设置：充装前检查是否合格（1：合格；2：不合格）
+	 */
+	public void setBeforeFillingCheck(String beforeFillingCheck) {
+		this.beforeFillingCheck = beforeFillingCheck;
+	}
+
+	/**
+	 * 获取：充装前检查是否合格（1：合格；2：不合格）
+	 */
+	public String getBeforeFillingCheck() {
+		return beforeFillingCheck;
+	}
+
+	/**
+	 * 设置：充装后检查是否合格（1：合格；2：不合格）
+	 */
+	public void setAfterFillingCheck(String afterFillingCheck) {
+		this.afterFillingCheck = afterFillingCheck;
+	}
+
+	/**
+	 * 获取：充装后检查是否合格（1：合格；2：不合格）
+	 */
+	public String getAfterFillingCheck() {
+		return afterFillingCheck;
+	}
+
+	/**
+	 * 设置：不合格原因
+	 */
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+
+	/**
+	 * 获取：不合格原因
+	 */
+	public String getReason() {
+		return reason;
+	}
+
+	public Date getFillingStartDate() {
+		return fillingStartDate;
+	}
+
+	public void setFillingStartDate(Date fillingStartDate) {
+		this.fillingStartDate = fillingStartDate;
+	}
+
+	public Date getFillingEndDate() {
+		return fillingEndDate;
+	}
+
+	public void setFillingEndDate(Date fillingEndDate) {
+		this.fillingEndDate = fillingEndDate;
+	}
+
+	public String getDeptFilter() {
+		return deptFilter;
+	}
+
+	public void setDeptFilter(String deptFilter) {
+		this.deptFilter = deptFilter;
+	}
+	
+}
